@@ -3,6 +3,7 @@ package sgu.j2ee.medifamily.dtos;
 
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import sgu.j2ee.medifamily.entities.enums.Gender;
 
 import java.time.LocalDate;
 
@@ -34,8 +35,10 @@ public class RegisterDTO {
     @Past(message = "Ngày sinh phải là ngày trong quá khứ")
     private LocalDate dateOfBirth;
 
-    private boolean isDoctor;
+    private Gender gender = Gender.MALE;
 
+    private boolean isDoctor;
+    @Data
     public static class DoctorInFo {
         @Size(min = 2, max = 100, message = "Chuyên khoa phải có từ 2 đến 100 ký tự")
         private String specialty;
