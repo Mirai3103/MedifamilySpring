@@ -38,4 +38,6 @@ public class AuthController {
 
         return ResponseEntity.ok(userDetailsService.login(username, password));
     }
+
+    @PostMapping()
 }
