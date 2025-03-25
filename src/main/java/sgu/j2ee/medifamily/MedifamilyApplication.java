@@ -21,6 +21,7 @@ public class MedifamilyApplication {
 
     public static void main(String[] args)  {
         SpringApplication.run(MedifamilyApplication.class, args);
+        System.out.println("Server is running at http://localhost:8080/swagger-ui/index.html#/");
         }
         @Bean
         public AuthenticationManager authManager(UserDetailsService userDetailsService) {

@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.Builder.Default;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -26,8 +28,7 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-@Column(unique = true)
-    private String username;
+
     private String password;
     @Column(unique = true)
     private String email;
@@ -39,7 +40,10 @@ public class User implements UserDetails {
     private Gender gender;
 
     private String address;
+
+    @CreatedDate
     private LocalDateTime createdAt;
+    @LastModifiedDate
     private LocalDateTime updatedAt;
     @Default
     private Boolean isActive=true;
@@ -68,5 +72,10 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return true ;
+    }
+
+    @Override
+    public String getUsername() {
+        return this.id.toString();
     }
 }

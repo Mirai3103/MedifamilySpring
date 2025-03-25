@@ -2,7 +2,10 @@ package sgu.j2ee.medifamily.services;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
 import org.apache.commons.lang3.math.NumberUtils;
+import org.springframework.data.domain.AuditorAware;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -25,10 +28,11 @@ import java.time.LocalDate;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
  
-    private final JwtService jwtUtil;
+    private AuditorAware<String> auditorAware;
 
 
     @Override
@@ -44,11 +48,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
 
     public User getCurrentUser() {
-        var authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication == null) {
-            return null;
-        }
-       var userIdentifier = jwtUtil.extractUsername(authentication.getCredentials().toString());
-        return userRepository.findFirstByUsername(userIdentifier).orElse(null);
+        log.info("Getting current user");
+        var userId = auditorAware.getCurrentAuditor().orElseThrow(() -> new RuntimeException("No user found"));
+        return userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new RuntimeException("User not found"));
     }
 }

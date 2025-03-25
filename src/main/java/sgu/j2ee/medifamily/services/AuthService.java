@@ -31,7 +31,6 @@ public class AuthService {
                 .email(registerDTO.getEmail())
                 .dateOfBirth(registerDTO.getDateOfBirth())
                 .fullName(registerDTO.getFullName())
-                .username(registerDTO.getUsername())
                 .gender(registerDTO.getGender())
                 .build();
         user = userRepository.save(user);

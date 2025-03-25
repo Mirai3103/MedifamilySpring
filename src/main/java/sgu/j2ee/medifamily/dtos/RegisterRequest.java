@@ -11,10 +11,6 @@ import java.time.LocalDate;
 
 
 public class RegisterRequest {
-    @NotBlank(message = "Tên đăng nhập không được để trống")
-    @Size(min = 4, max = 50, message = "Tên đăng nhập phải có từ 4 đến 50 ký tự")
-    @Pattern(regexp = "^[a-zA-Z0-9_]+$", message = "Tên đăng nhập chỉ được chứa chữ cái, số và dấu gạch dưới")
-    private String username;
 
     @NotBlank(message = "Mật khẩu không được để trống")
     @Size(min = 8, max = 100, message = "Mật khẩu phải có từ 8 đến 100 ký tự")

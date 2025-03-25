@@ -49,8 +49,5 @@ public class AuthController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/me")
-    public ResponseEntity<User> me() {
-        return ResponseEntity.ok(userDetailsService.getCurrentUser());
-    }
+  
 }

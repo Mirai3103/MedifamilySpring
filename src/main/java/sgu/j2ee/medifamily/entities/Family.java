@@ -5,12 +5,17 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 @Entity
 @Table(name = "families")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 public class Family {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +41,9 @@ public class Family {
     @Size(max = 100, message = "Email không được vượt quá 100 ký tự")
     private String email;
 
+    @CreatedDate
     private LocalDateTime createdAt;
+    @LastModifiedDate
     private LocalDateTime updatedAt;
 
     @NotNull(message = "Trạng thái hoạt động không được để trống")

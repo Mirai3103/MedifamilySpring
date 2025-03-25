@@ -40,8 +40,8 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
       @NonNull HttpServletResponse response,
       @NonNull FilterChain filterChain
   ) throws ServletException, IOException {
+    log.info("Processing authentication for '{}'", request.getRequestURL());
     if (request.getServletPath().contains("/api/auth")) {
-log.info("This is public path");
       filterChain.doFilter(request, response);
       return;
     }

@@ -3,10 +3,13 @@ package sgu.j2ee.medifamily.entities;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import lombok.Builder.Default;
 import sgu.j2ee.medifamily.entities.enums.Gender;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import org.springframework.data.annotation.CreatedDate;
 
 @Entity
 @Table(name = "family_members")
@@ -28,11 +31,9 @@ public class FamilyMember {
     @JoinColumn(name = "user_id")
     private User user;
 
-
     private String fullName;
 
     private LocalDate dateOfBirth;
-
 
     private Gender gender;
 
@@ -46,8 +47,8 @@ public class FamilyMember {
 
     private boolean isHasAccount;
 
+    @CreatedDate
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-
-    private Boolean isActive=true;
+    @Default
+    private Boolean isActive = true;
 }
