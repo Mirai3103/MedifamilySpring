@@ -1,7 +1,9 @@
 package sgu.j2ee.medifamily.configs;
 
+import jakarta.validation.ConstraintViolation;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -46,6 +48,22 @@ public class GlobalExceptionHandler {
         return modelAndView;
     }
 
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ErrorResponse> handleBadCredentialsException(BadCredentialsException ex) {
+        log.warn("Exception: {}", ex.getMessage());
+
+        ErrorResponse errorResponse = ErrorResponse.builder()
+                .timestamp(LocalDateTime.now())
+                .status(HttpStatus.UNAUTHORIZED.value())
+                .error(HttpStatus.UNAUTHORIZED.getReasonPhrase())
+                .code("UNAUTHORIZED")
+                .message("Sai tên đăng nhập hoặc mật khẩu")
+                .build();
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(errorResponse);
+    }
+
+
     @ExceptionHandler(BaseException.class)
     public ResponseEntity<ErrorResponse> handleBaseException(BaseException ex) {
         log.warn("Exception: {} - {}", ex.getErrorCode(), ex.getMessage());
@@ -86,7 +104,7 @@ public class GlobalExceptionHandler {
                 .stream()
                 .collect(Collectors.toMap(
                         v -> v.getPropertyPath().toString(),
-                        v -> v.getMessage(),
+                        ConstraintViolation::getMessage,
                         (msg1, msg2) -> msg1));
 
         Map<String, Object> response = new HashMap<>();
