@@ -2,8 +2,13 @@ package sgu.j2ee.medifamily.entities;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.Builder.Default;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import sgu.j2ee.medifamily.entities.enums.Gender;
 
 import java.time.LocalDate;
@@ -21,9 +26,10 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
+@Column(unique = true)
     private String username;
     private String password;
+    @Column(unique = true)
     private String email;
     private String fullName;
     private String phoneNumber;
@@ -35,7 +41,8 @@ public class User implements UserDetails {
     private String address;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
-    private Boolean isActive;
+    @Default
+    private Boolean isActive=true;
     private LocalDateTime lastLogin;
 
     @Override
@@ -45,21 +52,21 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isAccountNonLocked() {
-        return isActive;
+        return true ;
     }
 
     @Override
     public boolean isCredentialsNonExpired() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean isEnabled() {
-        return isActive;
+        return true ;
     }
 }

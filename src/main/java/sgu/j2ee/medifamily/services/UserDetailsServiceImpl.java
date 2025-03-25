@@ -5,19 +5,21 @@ import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.math.NumberUtils;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Service;
-import sgu.j2ee.medifamily.dtos.LoginResponseDTO;
-import sgu.j2ee.medifamily.dtos.RegisterDTO;
-import sgu.j2ee.medifamily.dtos.TokenDTO;
+import sgu.j2ee.medifamily.dtos.LoginResponse;
+import sgu.j2ee.medifamily.dtos.RegisterRequest;
+import sgu.j2ee.medifamily.dtos.AuthenticationResponse;
 import sgu.j2ee.medifamily.entities.Doctor;
 import sgu.j2ee.medifamily.entities.User;
 import sgu.j2ee.medifamily.repositories.DoctorRepository;
 import sgu.j2ee.medifamily.repositories.UserRepository;
-import sgu.j2ee.medifamily.utils.JwtUtil;
+
 
 import java.time.LocalDate;
 
@@ -25,10 +27,8 @@ import java.time.LocalDate;
 @AllArgsConstructor
 public class UserDetailsServiceImpl implements UserDetailsService {
     private final UserRepository userRepository;
-    private final DoctorRepository doctorRepository;
-    private final PasswordEncoder passwordEncoder;
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
+ 
+    private final JwtService jwtUtil;
 
 
     @Override
@@ -43,39 +43,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     }
 
 
-    public User register(RegisterDTO registerDTO) {
-        var user = User.builder()
-                .password(passwordEncoder.encode(registerDTO.getPassword()))
-                .email(registerDTO.getEmail())
-                .dateOfBirth(registerDTO.getDateOfBirth())
-                .fullName(registerDTO.getFullName())
-                .username(registerDTO.getUsername())
-                .gender(registerDTO.getGender())
-                .build();
-        user = userRepository.save(user);
-        if (registerDTO.isDoctor()) {
-            var doctorInfo = registerDTO.getDoctor();
-            var doctor = Doctor.builder()
-                    .user(user)
-                    .bio(doctorInfo.getBio())
-                    .licenseNumber(doctorInfo.getLicenseNumber())
-                    .medicalFacility(doctorInfo.getMedicalFacility())
-                    .specialty(doctorInfo.getSpecialty())
-                    .isVerified(true)
-                    .build();
-            doctorRepository.save(doctor);
-
+    public User getCurrentUser() {
+        var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication == null) {
+            return null;
         }
-        return user;
-    }
-
-    public LoginResponseDTO login(String username, String password) {
-        authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
-        var userDetails = loadUserByUsername(username);
-        var token = jwtUtil.generateToken((User) userDetails);
-        return LoginResponseDTO.builder()
-                .token(TokenDTO.builder().token(token).build())
-                .user((User) userDetails)
-                .build();
+       var userIdentifier = jwtUtil.extractUsername(authentication.getCredentials().toString());
+        return userRepository.findFirstByUsername(userIdentifier).orElse(null);
     }
 }

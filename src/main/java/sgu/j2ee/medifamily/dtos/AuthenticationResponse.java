@@ -7,7 +7,7 @@ import java.time.LocalDateTime;
 
 @Data
 @Builder
-public class TokenDTO {
+public class AuthenticationResponse {
     private String token;
     private LocalDateTime expiresAt;
 }

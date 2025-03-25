@@ -7,7 +7,7 @@ import sgu.j2ee.medifamily.entities.User;
 
 @Data
 @Builder
-public class LoginResponseDTO {
-    private TokenDTO token;
+public class LoginResponse {
+    private AuthenticationResponse token;
     private User user;
 }
