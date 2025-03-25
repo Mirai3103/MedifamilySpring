@@ -5,7 +5,7 @@ import org.springframework.http.HttpStatus;
 import lombok.Getter;
 
 @Getter
-public abstract class BaseException extends RuntimeException {
+public  class BaseException extends RuntimeException {
     private final HttpStatus status;
     private final String errorCode;
 

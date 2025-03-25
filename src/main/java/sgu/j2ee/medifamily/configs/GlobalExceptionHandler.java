@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 import sgu.j2ee.medifamily.dtos.ErrorResponse;
 import sgu.j2ee.medifamily.exceptions.BaseException;
 
@@ -23,7 +25,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleGlobalException(Exception ex) {
-        ex.printStackTrace();
         log.error("Exception: {}", ex.getMessage());
 
         ErrorResponse errorResponse = ErrorResponse.builder()
@@ -35,6 +36,14 @@ public class GlobalExceptionHandler {
                 .build();
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse);
+    }
+    @ExceptionHandler(NoResourceFoundException.class) // trả về trang index.html khi không tìm thấy resource
+    public ModelAndView handleNotFoundException(Exception ex) {
+        log.warn("Exception: {}", ex.getMessage());
+
+        ModelAndView modelAndView = new ModelAndView();
+        modelAndView.setViewName("forward:/index.html");
+        return modelAndView;
     }
 
     @ExceptionHandler(BaseException.class)
