@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import lombok.RequiredArgsConstructor;
 import sgu.j2ee.medifamily.dtos.CreateFamilyRequest;
 import sgu.j2ee.medifamily.entities.Family;
+import sgu.j2ee.medifamily.exceptions.RequireLoginException;
 import sgu.j2ee.medifamily.services.FamilyService;
 
 
@@ -33,6 +34,8 @@ public class FamilyController {
 
     @PostMapping("")
     public ResponseEntity<Family> createFamily(@RequestBody CreateFamilyRequest family) {
+        var currentUserId =auditorAware.getCurrentAuditor().orElseThrow(RequireLoginException::new);
+        family.setCreatedBy(Long.parseLong(currentUserId));
         return ResponseEntity.ok(familyService.createFamily(family));
     }
 

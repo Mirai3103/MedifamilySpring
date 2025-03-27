@@ -1,5 +1,6 @@
 package sgu.j2ee.medifamily.dtos;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -21,15 +22,18 @@ public class CreateFamilyRequest {
 
 
     @Pattern(regexp = "^(\\+84|0)[3|5|7|8|9][0-9]{8}$", message = "Số điện thoại không hợp lệ")
+    @NotBlank
+    @NotNull
     private String phoneNumber;
 
 
     @Email(message = "Email không hợp lệ")
     @Size(max = 100, message = "Email không được vượt quá 100 ký tự")
+    @NotBlank
+    @NotNull
     private String email;
 
 
-    @Min(value = 1, message = "Người tạo gia đình không hợp lệ")
-    @NotNull(message = "Người tạo gia đình không được để trống")
+    @JsonIgnore
     private Long createdBy;
 }

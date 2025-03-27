@@ -22,13 +22,14 @@ public class FamilyMember {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "family_id", nullable = false)
     @NotNull(message = "Thông tin gia đình không được để trống")
     private Family family;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
+
     private User user;
 
     private String fullName;

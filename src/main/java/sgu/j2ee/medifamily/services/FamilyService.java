@@ -17,9 +17,10 @@ import sgu.j2ee.medifamily.repositories.UserRepository;
 @RequiredArgsConstructor
 public class FamilyService {
     private final FamilyRepository familyRepository;
-private final UserRepository userRepository;
-private final FamilyMemberRepository familyMemberRepository;
-    
+    private final UserRepository userRepository;
+    private final FamilyMemberRepository familyMemberRepository;
+
+
     public Family createFamily(CreateFamilyRequest family) {
         var user = userRepository.findById(family.getCreatedBy()).orElse(null);
         if (user == null) {
@@ -31,11 +32,14 @@ private final FamilyMemberRepository familyMemberRepository;
                 .email(family.getEmail())
                 .phoneNumber(family.getPhoneNumber())
                 .owner(user)
+                .isActive(true)
                 .build();
         newFamily = familyRepository.save(newFamily);
         FamilyMember owner = FamilyMember.builder()
                 .family(newFamily)
+                .relationship("Chủ hộ")
                 .user(user)
+                .isHasAccount(true)
                 .build();
         familyMemberRepository.save(owner);
 
@@ -43,7 +47,14 @@ private final FamilyMemberRepository familyMemberRepository;
     }
 
     public Family getFamilyById(Long id) {
-        return familyRepository.findById(id).orElse(null);
+        var family = familyRepository.findById(id).orElse(null);
+        if (family == null) {
+            return null;
+        }
+        var familyMembers = familyMemberRepository.findByFamilyId(id);
+        familyMembers.forEach((member) -> member.setFamily(null));
+        family.setFamilyMembers(familyMembers);
+        return family;
     }
 
     public Family updateFamily(Family family) {

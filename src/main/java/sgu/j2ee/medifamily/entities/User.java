@@ -41,6 +41,8 @@ public class User implements UserDetails {
 
     private String address;
 
+    private String avatarUrl;
+
     @CreatedDate
     private LocalDateTime createdAt;
     @LastModifiedDate

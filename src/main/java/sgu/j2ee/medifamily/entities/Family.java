@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -48,4 +49,7 @@ public class Family {
 
     @NotNull(message = "Trạng thái hoạt động không được để trống")
     private Boolean isActive;
+    
+    @Transient
+    public List<FamilyMember> familyMembers;
 }
