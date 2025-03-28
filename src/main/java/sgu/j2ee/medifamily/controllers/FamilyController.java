@@ -40,9 +40,8 @@ public class FamilyController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Family> updateFamily(@RequestBody Family family, @PathVariable String id) {
-        family.setId(Long.parseLong(id));
-        return ResponseEntity.ok(familyService.updateFamily(family));
+    public ResponseEntity<Family> updateFamily(@RequestBody CreateFamilyRequest family, @PathVariable String id) {
+        return ResponseEntity.ok(familyService.updateFamily(Long.parseLong(id),family));
     }
 
     @DeleteMapping("/{id}")

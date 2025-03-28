@@ -57,12 +57,17 @@ public class FamilyService {
         return family;
     }
 
-    public Family updateFamily(Family family) {
-        var existingFamily = familyRepository.findById(family.getId()).orElse(null);
+    public Family updateFamily(Long id, CreateFamilyRequest family) {
+        var existingFamily = familyRepository.findById(id).orElse(null);
         if (existingFamily == null) {
             return null;
         }
-        return familyRepository.save(family);
+        existingFamily.setFamilyName(family.getFamilyName());
+        existingFamily.setAddress(family.getAddress());
+        existingFamily.setEmail(family.getEmail());
+        existingFamily.setPhoneNumber(family.getPhoneNumber());
+        return familyRepository.save(existingFamily);
+
     }
 
     public void deleteFamily(Long id) {
