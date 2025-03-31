@@ -1,8 +1,9 @@
 package sgu.j2ee.medifamily.entities;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "notifications")
@@ -11,26 +12,27 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Notification {
-    public enum NotificationType {
-        INFO, WARNING, ERROR
-    }
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	public enum NotificationType {
+		INFO, WARNING, ERROR
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String title;
-    private String content;
-    private Boolean isRead;
-    private LocalDateTime readAt;
+	@ManyToOne
+	@JoinColumn(name = "user_id", nullable = false)
+	private User user;
 
-    @Enumerated(EnumType.STRING)
-    private NotificationType notificationType;
+	private String title;
+	private String content;
+	private Boolean isRead;
+	private LocalDateTime readAt;
 
-    private String referenceId;
-    private String referenceType;
-    private LocalDateTime createdAt;
+	@Enumerated(EnumType.STRING)
+	private NotificationType notificationType;
+
+	private String referenceId;
+	private String referenceType;
+	private LocalDateTime createdAt;
 }

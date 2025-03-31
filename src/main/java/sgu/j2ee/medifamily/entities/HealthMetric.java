@@ -1,9 +1,10 @@
 package sgu.j2ee.medifamily.entities;
 
-import jakarta.persistence.*;
-import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "health_metrics")
@@ -12,36 +13,30 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class HealthMetric {
-    public enum MetricType {
-        BLOOD_PRESSURE,
-        HEART_RATE,
-        BLOOD_SUGAR,
-        TEMPERATURE,
-        OXYGEN_SATURATION,
-        WEIGHT,
-        HEIGHT,
-        BMI,
-    }
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	public enum MetricType {
+		BLOOD_PRESSURE, HEART_RATE, BLOOD_SUGAR, TEMPERATURE, OXYGEN_SATURATION, WEIGHT, HEIGHT, BMI,
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private FamilyMember member;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private MetricType metricType;
+	@ManyToOne
+	@JoinColumn(name = "member_id", nullable = false)
+	private FamilyMember member;
 
-    private Double metricValue;
-    private String unit;
-    private LocalDate measurementDate;
-    private LocalDateTime measurementTime;
-    private String notes;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+	@Enumerated(EnumType.STRING)
+	private MetricType metricType;
 
-    @ManyToOne
-    @JoinColumn(name = "created_by", nullable = false)
-    private User createdBy;
+	private Double metricValue;
+	private String unit;
+	private LocalDate measurementDate;
+	private LocalDateTime measurementTime;
+	private String notes;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+
+	@ManyToOne
+	@JoinColumn(name = "created_by", nullable = false)
+	private User createdBy;
 }

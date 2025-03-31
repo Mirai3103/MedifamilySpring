@@ -1,7 +1,6 @@
 package sgu.j2ee.medifamily.dtos;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +9,9 @@ import lombok.Data;
 @Data
 public class ErrorResponse {
 
-    private LocalDateTime timestamp;
-    private int status;
-    private String error;
-    private String code;
-    private String message;
-
+	private LocalDateTime timestamp;
+	private int status;
+	private String error;
+	private String code;
+	private String message;
 }

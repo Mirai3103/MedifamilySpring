@@ -1,9 +1,10 @@
 package sgu.j2ee.medifamily.entities;
 
-import jakarta.persistence.*;
-import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "family_doctors")
@@ -12,30 +13,29 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class FamilyDoctor {
-    public enum Status {
-        PENDING,
-        ACCEPTED,
-        REJECTED
-    }
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	public enum Status {
+		PENDING, ACCEPTED, REJECTED
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "family_id", nullable = false)
-    private Family family;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "doctor_id", nullable = false)
-    private Doctor doctor;
+	@ManyToOne
+	@JoinColumn(name = "family_id", nullable = false)
+	private Family family;
 
-    private LocalDate startDate;
-    private LocalDate endDate;
+	@ManyToOne
+	@JoinColumn(name = "doctor_id", nullable = false)
+	private Doctor doctor;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+	private LocalDate startDate;
+	private LocalDate endDate;
 
-    private String notes;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+	@Enumerated(EnumType.STRING)
+	private Status status;
+
+	private String notes;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 }

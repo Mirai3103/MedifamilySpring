@@ -10,19 +10,20 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class SharePermission {
-    public enum PermissionType {
-        VIEW, EDIT
-    }
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	public enum PermissionType {
+		VIEW, EDIT
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "share_request_id", nullable = false)
-    private ShareRequest shareRequest;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @Enumerated(EnumType.STRING)
-    private PermissionType permissionType;
+	@ManyToOne
+	@JoinColumn(name = "share_request_id", nullable = false)
+	private ShareRequest shareRequest;
 
-    private Boolean isGranted;
+	@Enumerated(EnumType.STRING)
+	private PermissionType permissionType;
+
+	private Boolean isGranted;
 }

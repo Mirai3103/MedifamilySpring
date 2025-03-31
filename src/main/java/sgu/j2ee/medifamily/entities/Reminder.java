@@ -1,9 +1,10 @@
 package sgu.j2ee.medifamily.entities;
 
-import jakarta.persistence.*;
-import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "reminders")
@@ -12,45 +13,41 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class Reminder {
-    public enum ReminderType {
-        APPOINTMENT,
-        MEDICATION,
-        VACCINATION,
-        OTHER
-    }
+	public enum ReminderType {
+		APPOINTMENT, MEDICATION, VACCINATION, OTHER
+	}
 
-    public enum Priority {
-        LOW,
-        MEDIUM,
-        HIGH
-    }
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	public enum Priority {
+		LOW, MEDIUM, HIGH
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private FamilyMember member;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String title;
-    private String description;
-    private LocalDate reminderDate;
-    private LocalDateTime reminderTime;
+	@ManyToOne
+	@JoinColumn(name = "member_id", nullable = false)
+	private FamilyMember member;
 
-    @Enumerated(EnumType.STRING)
-    private ReminderType reminderType;
+	private String title;
+	private String description;
+	private LocalDate reminderDate;
+	private LocalDateTime reminderTime;
 
-    @Enumerated(EnumType.STRING)
-    private Priority priority;
+	@Enumerated(EnumType.STRING)
+	private ReminderType reminderType;
 
-    private Boolean isRecurring;
-    private String recurrencePattern;
-    private Boolean isCompleted;
-    private LocalDate completedAt;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+	@Enumerated(EnumType.STRING)
+	private Priority priority;
 
-    @ManyToOne
-    @JoinColumn(name = "created_by", nullable = false)
-    private User createdBy;
+	private Boolean isRecurring;
+	private String recurrencePattern;
+	private Boolean isCompleted;
+	private LocalDate completedAt;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+
+	@ManyToOne
+	@JoinColumn(name = "created_by", nullable = false)
+	private User createdBy;
 }

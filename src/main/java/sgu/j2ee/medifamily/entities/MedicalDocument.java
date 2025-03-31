@@ -1,9 +1,10 @@
 package sgu.j2ee.medifamily.entities;
 
-import jakarta.persistence.*;
-import lombok.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "medical_documents")
@@ -12,38 +13,36 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class MedicalDocument {
-    public enum DocumentType {
-        PRESCRIPTION,
-        REPORT,
-        CERTIFICATE,
-        OTHER
-    }
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	public enum DocumentType {
+		PRESCRIPTION, REPORT, CERTIFICATE, OTHER
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "member_id", nullable = false)
-    private FamilyMember member;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "medical_record_id")
-    private MedicalRecord medicalRecord;
+	@ManyToOne
+	@JoinColumn(name = "member_id", nullable = false)
+	private FamilyMember member;
 
-    private String title;
-    private String filePath;
-    private String fileType;
-    private Long fileSize;
+	@ManyToOne
+	@JoinColumn(name = "medical_record_id")
+	private MedicalRecord medicalRecord;
 
-    @Enumerated(EnumType.STRING)
-    private DocumentType documentType;
+	private String title;
+	private String filePath;
+	private String fileType;
+	private Long fileSize;
 
-    private LocalDate documentDate;
-    private String description;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+	@Enumerated(EnumType.STRING)
+	private DocumentType documentType;
 
-    @ManyToOne
-    @JoinColumn(name = "created_by", nullable = false)
-    private User createdBy;
+	private LocalDate documentDate;
+	private String description;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+
+	@ManyToOne
+	@JoinColumn(name = "created_by", nullable = false)
+	private User createdBy;
 }

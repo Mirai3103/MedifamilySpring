@@ -1,8 +1,9 @@
 package sgu.j2ee.medifamily.entities;
 
+import java.time.LocalDateTime;
+
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "transfer_requests")
@@ -11,41 +12,40 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @Builder
 public class TransferRequest {
-    public enum Status {
-        PENDING,
-        APPROVED,
-        REJECTED
-    }
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	public enum Status {
+		PENDING, APPROVED, REJECTED
+	}
 
-    @ManyToOne
-    @JoinColumn(name = "family_id", nullable = false)
-    private Family family;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    @ManyToOne
-    @JoinColumn(name = "source_doctor_id", nullable = false)
-    private Doctor sourceDoctor;
+	@ManyToOne
+	@JoinColumn(name = "family_id", nullable = false)
+	private Family family;
 
-    @ManyToOne
-    @JoinColumn(name = "target_doctor_id", nullable = false)
-    private Doctor targetDoctor;
+	@ManyToOne
+	@JoinColumn(name = "source_doctor_id", nullable = false)
+	private Doctor sourceDoctor;
 
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+	@ManyToOne
+	@JoinColumn(name = "target_doctor_id", nullable = false)
+	private Doctor targetDoctor;
 
-    @Enumerated(EnumType.STRING)
-    private Status status;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
 
-    private String reason;
-    private String notes;
+	@Enumerated(EnumType.STRING)
+	private Status status;
 
-    @ManyToOne
-    @JoinColumn(name = "created_by", nullable = false)
-    private User createdBy;
+	private String reason;
+	private String notes;
 
-    @ManyToOne
-    @JoinColumn(name = "approved_by")
-    private User approvedBy;
+	@ManyToOne
+	@JoinColumn(name = "created_by", nullable = false)
+	private User createdBy;
+
+	@ManyToOne
+	@JoinColumn(name = "approved_by")
+	private User approvedBy;
 }

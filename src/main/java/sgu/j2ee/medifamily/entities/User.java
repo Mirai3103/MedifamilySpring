@@ -1,22 +1,19 @@
 package sgu.j2ee.medifamily.entities;
 
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.Builder.Default;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Collection;
+import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.Builder.Default;
 import sgu.j2ee.medifamily.entities.enums.Gender;
-
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -25,59 +22,61 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String password;
-    @Column(unique = true)
-    private String email;
-    private String fullName;
-    private String phoneNumber;
-    private LocalDate dateOfBirth;
+	private String password;
 
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
+	@Column(unique = true)
+	private String email;
 
-    private String address;
+	private String fullName;
+	private String phoneNumber;
+	private LocalDate dateOfBirth;
 
-    private String avatarUrl;
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-    @Default
-    private Boolean isActive=true;
-    private LocalDateTime lastLogin;
+	private String address;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
+	private String avatarUrl;
 
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+	@CreatedDate
+	private LocalDateTime createdAt;
+	@LastModifiedDate
+	private LocalDateTime updatedAt;
+	@Default
+	private Boolean isActive = true;
+	private LocalDateTime lastLogin;
 
-    @Override
-    public boolean isAccountNonLocked() {
-        return true ;
-    }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of();
+	}
 
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
 
-    @Override
-    public boolean isEnabled() {
-        return true ;
-    }
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
 
-    @Override
-    public String getUsername() {
-        return this.id.toString();
-    }
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	@Override
+	public String getUsername() {
+		return this.id.toString();
+	}
 }
