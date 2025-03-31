@@ -31,6 +31,12 @@ public class FamilyMember {
 	@JoinColumn(name = "user_id")
 	private User user;
 
+	@ManyToOne
+	@JoinColumn(name = "health_profile_id")
+	private HealthProfile healthProfile;
+
+	private String avatarUrl;
+
 	private String fullName;
 
 	private LocalDate dateOfBirth;

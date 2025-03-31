@@ -24,7 +24,7 @@ public class FamilyController {
 		return ResponseEntity.ok(familyService.getFamilyById(Long.parseLong(id)));
 	}
 
-	@GetMapping("/me")
+	@GetMapping("/@me")
 	public ResponseEntity<List<Family>> getMyFamily() {
 		var currentUserId = auditorAware.getCurrentAuditor().orElseThrow();
 		return ResponseEntity.ok(familyService.getFamiliesByUserId(Long.parseLong(currentUserId)));

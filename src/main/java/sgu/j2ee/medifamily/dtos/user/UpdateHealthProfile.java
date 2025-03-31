@@ -1,19 +1,14 @@
-package sgu.j2ee.medifamily.entities;
+package sgu.j2ee.medifamily.dtos.user;
 
-import java.time.LocalDateTime;
+import jakarta.validation.constraints.DecimalMax;
+import jakarta.validation.constraints.DecimalMin;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+import lombok.Data;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
-
-@Entity
-@Table(name = "health_profiles")
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class HealthProfile {
-	@Id
+public class UpdateHealthProfile {
+
 	private Long id;
 
 	@Pattern(regexp = "^(A|B|AB|O)[+-]$", message = "Nhóm máu phải có định dạng hợp lệ (A+, B-, AB+, O-,...)")
@@ -35,7 +30,4 @@ public class HealthProfile {
 
 	@Size(max = 2000, message = "Ghi chú không được vượt quá 2000 ký tự")
 	private String notes;
-
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
 }

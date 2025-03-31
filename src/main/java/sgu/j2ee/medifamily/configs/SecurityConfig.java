@@ -28,8 +28,12 @@ public class SecurityConfig {
 		http.csrf(AbstractHttpConfigurer::disable)
 				.authorizeHttpRequests(
 						req -> req.requestMatchers("/api/auth/**")
-								.permitAll() // Cho phép không cần đăng
-								// nhập
+								.permitAll() // Cho phép không cần đăng nhập vào các API auth
+								.requestMatchers("/api/files/view/**")
+								.permitAll() // Cho phép không cần đăng nhập vào các API xem file
+								.requestMatchers("/api/files/download/**")
+								.permitAll() // Cho phép không cần đăng nhập vào các API tải file
+
 								.requestMatchers("/api/**")
 								.authenticated() // Các API khác cần đăng nhập
 								.anyRequest()

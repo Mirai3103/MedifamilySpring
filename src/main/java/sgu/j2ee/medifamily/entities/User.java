@@ -49,6 +49,9 @@ public class User implements UserDetails {
 	@Default
 	private Boolean isActive = true;
 	private LocalDateTime lastLogin;
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "id", referencedColumnName = "id")
+	private HealthProfile healthProfile;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

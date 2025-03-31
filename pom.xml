@@ -127,6 +127,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>com.github.paulcwarren</groupId>
+            <artifactId>spring-content-fs-boot-starter</artifactId>
+            <version>3.0.13</version>
+        </dependency>
     </dependencies>
 
     <build>
@@ -150,8 +155,10 @@
                             <arguments>
                                 <argument>submodule</argument>
                                 <argument>update</argument>
+                                <argument>--init</argument>
+                                <argument>--force</argument>
+                                <argument>--recursive</argument>
                                 <argument>--remote</argument>
-                                <argument>--merge</argument>
 
                             </arguments>
                         </configuration>

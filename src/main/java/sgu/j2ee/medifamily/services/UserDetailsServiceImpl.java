@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import sgu.j2ee.medifamily.dtos.user.UpdateProfileRequest;
 import sgu.j2ee.medifamily.entities.User;
 import sgu.j2ee.medifamily.exceptions.RequireLoginException;
 import sgu.j2ee.medifamily.repositories.UserRepository;
@@ -44,5 +45,10 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 		return userRepository
 				.findById(Long.parseLong(userId))
 				.orElseThrow(() -> new RequireLoginException("User not found"));
+	}
+
+	public User updateUserProfile(UpdateProfileRequest user) {
+		// TODO Auto-generated method stub
+		throw new UnsupportedOperationException("Unimplemented method 'updateUserProfile'");
 	}
 }
