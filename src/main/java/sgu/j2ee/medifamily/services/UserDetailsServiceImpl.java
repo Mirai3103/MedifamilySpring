@@ -20,6 +20,7 @@ import sgu.j2ee.medifamily.dtos.RegisterRequest;
 import sgu.j2ee.medifamily.dtos.AuthenticationResponse;
 import sgu.j2ee.medifamily.entities.Doctor;
 import sgu.j2ee.medifamily.entities.User;
+import sgu.j2ee.medifamily.exceptions.RequireLoginException;
 import sgu.j2ee.medifamily.repositories.DoctorRepository;
 import sgu.j2ee.medifamily.repositories.UserRepository;
 
@@ -49,7 +50,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     public User getCurrentUser() {
         log.info("Getting current user");
-        var userId = auditorAware.getCurrentAuditor().orElseThrow(() -> new RuntimeException("No user found"));
-        return userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new RuntimeException("User not found"));
+        var userId = auditorAware.getCurrentAuditor().orElseThrow(() -> new RequireLoginException("No user found"));
+        return userRepository.findById(Long.parseLong(userId)).orElseThrow(() -> new RequireLoginException("User not found"));
     }
 }

@@ -6,7 +6,7 @@ import org.springframework.data.domain.AuditorAware;
 import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
-import sgu.j2ee.medifamily.dtos.CreateFamilyRequest;
+import sgu.j2ee.medifamily.dtos.family.CreateFamilyRequest;
 import sgu.j2ee.medifamily.entities.Family;
 import sgu.j2ee.medifamily.entities.FamilyMember;
 import sgu.j2ee.medifamily.repositories.FamilyMemberRepository;

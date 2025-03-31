@@ -1,4 +1,4 @@
-package sgu.j2ee.medifamily.dtos;
+package sgu.j2ee.medifamily.dtos.family;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
