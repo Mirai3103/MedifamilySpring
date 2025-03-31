@@ -37,5 +37,6 @@ public class MedifamilyApplication {
             return new BCryptPasswordEncoder();
         }
 
+        
 
 }

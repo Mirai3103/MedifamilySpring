@@ -1,0 +1,43 @@
+package sgu.j2ee.medifamily.configs;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
+
+import lombok.extern.slf4j.Slf4j;
+
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
+@Component
+@Slf4j
+public class OpenApiJsonGenerator {
+
+    @Value("${server.port:8080}")
+    private String serverPort;
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void generateOpenApiJson() {
+        try {
+            //  if prod mode, skip generating openapi.json file
+            if (System.getProperty("spring.profiles.active") != null && System.getProperty("spring.profiles.active").equals("prod")) {
+                log.info("Skipping openapi.json generation in production mode.");
+                return;
+            }
+            log.info("Generating openapi.json file...");
+            
+            Thread.sleep(2000);
+            
+            RestTemplate restTemplate = new RestTemplate();
+            String apiUrl = "http://localhost:" + serverPort + "/v3/api-docs";
+            String openApiContent = restTemplate.getForObject(apiUrl, String.class);
+            Files.write(Paths.get("openapi.json"), 
+                        openApiContent.getBytes());
+            log.info("Successfully generated openapi.json file at the root directory.");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+}
