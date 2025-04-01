@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 import sgu.j2ee.medifamily.dtos.user.UpdateHealthProfile;
 import sgu.j2ee.medifamily.entities.HealthProfile;
-import sgu.j2ee.medifamily.exceptions.RequireLoginException;
+import sgu.j2ee.medifamily.exceptions.UnAuthorizedException;
 import sgu.j2ee.medifamily.services.HealthProfileService;
 
 @RestController
@@ -24,7 +24,7 @@ public class HealthProfileController {
 
 	@PutMapping("@me")
 	public ResponseEntity<HealthProfile> updateMyHealthProfile(@RequestBody UpdateHealthProfile healthProfile) {
-		var currentUserId = auditorAware.getCurrentAuditor().orElseThrow(() -> new RequireLoginException());
+		var currentUserId = auditorAware.getCurrentAuditor().orElseThrow(() -> new UnAuthorizedException());
 		healthProfile.setId(Long.parseLong(currentUserId));
 		return ResponseEntity.ok(healthProfileService.updateHealthProfile(healthProfile));
 	}
@@ -43,7 +43,7 @@ public class HealthProfileController {
 
 	@GetMapping("@me")
 	public ResponseEntity<HealthProfile> getMyHealthProfile() {
-		var currentUserId = auditorAware.getCurrentAuditor().orElseThrow(() -> new RequireLoginException());
+		var currentUserId = auditorAware.getCurrentAuditor().orElseThrow(() -> new UnAuthorizedException());
 		return ResponseEntity.ok(healthProfileService.getHealthProfileById(Long.parseLong(currentUserId)));
 	}
 

@@ -13,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootApplication
 @EnableFilesystemStores
+
 public class MedifamilyApplication {
 
 	public static void main(String[] args) {

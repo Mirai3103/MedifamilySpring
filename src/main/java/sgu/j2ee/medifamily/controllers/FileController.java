@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.util.UUID;
 
 import org.springframework.core.io.InputStreamResource;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -16,11 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.server.ResponseStatusException;
 
 import lombok.RequiredArgsConstructor;
 import sgu.j2ee.medifamily.entities.FileDocument;
-import sgu.j2ee.medifamily.repositories.FileRepository;
+import sgu.j2ee.medifamily.services.FileService;
 import sgu.j2ee.medifamily.utils.FileContentStore;
 
 @RestController
@@ -28,27 +26,19 @@ import sgu.j2ee.medifamily.utils.FileContentStore;
 @RequiredArgsConstructor
 public class FileController {
 
-	private final FileRepository fileRepository;
-
+	private final FileService fileService;
 	private final FileContentStore contentStore;
 
 	@PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 	public ResponseEntity<FileDocument> uploadFile(@RequestParam("file") MultipartFile file) throws IOException {
-		FileDocument document = new FileDocument();
-		document.setName(file.getOriginalFilename());
-		document.setContentMimeType(file.getContentType());
-		document.setContentLength(file.getSize());
-		FileDocument savedDoc = fileRepository.save(document);
 
-		contentStore.setContent(savedDoc, file.getInputStream());
-		return ResponseEntity.ok(fileRepository.save(savedDoc));
+		return ResponseEntity.ok(fileService.uploadFile(file));
 	}
 
 	@GetMapping("/view/{id}/{filename:.+}")
 	public ResponseEntity<InputStreamResource> viewFile(@PathVariable UUID id,
 			@PathVariable(required = false) String filename) {
-		FileDocument document = fileRepository.findById(id)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		FileDocument document = fileService.getFile(id);
 
 		InputStream stream = contentStore.getContent(document);
 
@@ -62,8 +52,7 @@ public class FileController {
 	@GetMapping("/download/{id}/{filename:.+}")
 	public ResponseEntity<InputStreamResource> downloadFile(@PathVariable UUID id,
 			@PathVariable(required = false) String filename) {
-		FileDocument document = fileRepository.findById(id)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
+		FileDocument document = fileService.getFile(id);
 
 		InputStream stream = contentStore.getContent(document);
 
@@ -78,11 +67,7 @@ public class FileController {
 	@DeleteMapping("/{id}/{filename:.+}")
 	public ResponseEntity<Void> deleteFile(@PathVariable UUID id,
 			@PathVariable(required = false) String filename) {
-		FileDocument document = fileRepository.findById(id)
-				.orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND));
-
-		contentStore.unsetContent(document);
-		fileRepository.delete(document);
+		fileService.deleteFile(id);
 		return ResponseEntity.noContent().build();
 	}
 }

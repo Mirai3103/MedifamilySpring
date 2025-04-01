@@ -12,15 +12,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
+@Builder
+@AllArgsConstructor
+
 public class FileDocument {
 
 	@Id
+	@Builder.Default
 	private UUID id = UUID.randomUUID();
 	private String name = "";
 	private Date created = new Date();
@@ -36,7 +42,18 @@ public class FileDocument {
 
 	@Transient
 	public String getServerPath() {
-
 		return id.toString() + "/" + this.name;
+	}
+
+	public static UUID extractId(String serverPath) {
+		String[] parts = serverPath.split("/");
+		if (parts.length > 0) {
+			try {
+				return UUID.fromString(parts[0]);
+			} catch (IllegalArgumentException e) {
+				return null;
+			}
+		}
+		return null;
 	}
 }

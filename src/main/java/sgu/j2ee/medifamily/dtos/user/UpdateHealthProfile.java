@@ -1,9 +1,6 @@
 package sgu.j2ee.medifamily.dtos.user;
 
-import jakarta.validation.constraints.DecimalMax;
-import jakarta.validation.constraints.DecimalMin;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 @Data
@@ -30,4 +27,6 @@ public class UpdateHealthProfile {
 
 	@Size(max = 2000, message = "Ghi chú không được vượt quá 2000 ký tự")
 	private String notes;
+	@NotBlank
+	private String healthInsuranceNumber;
 }

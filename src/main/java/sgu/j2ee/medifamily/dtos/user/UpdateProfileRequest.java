@@ -12,9 +12,6 @@ public class UpdateProfileRequest {
 	@NotNull(message = "ID không được để trống")
 	private Long id;
 
-	@Size(min = 6, message = "Mật khẩu phải có ít nhất 6 ký tự")
-	private String password;
-
 	@Email(message = "Email không hợp lệ")
 	@NotBlank(message = "Email không được để trống")
 	private String email;
@@ -35,6 +32,6 @@ public class UpdateProfileRequest {
 	@Size(max = 255, message = "Địa chỉ không được quá 255 ký tự")
 	private String address;
 
-	@NotBlank(message = "Avatar không được để trống")
-	private String avatarUrl;
+	private String bio;
+
 }

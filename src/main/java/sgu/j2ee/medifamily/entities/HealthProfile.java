@@ -2,6 +2,9 @@ package sgu.j2ee.medifamily.entities;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -28,14 +31,20 @@ public class HealthProfile {
 	private Double weight;
 
 	@Size(max = 1000, message = "Thông tin dị ứng không được vượt quá 1000 ký tự")
-	private String allergies;
+	private String allergies = "Không có ";
 
 	@Size(max = 1000, message = "Thông tin bệnh mãn tính không được vượt quá 1000 ký tự")
-	private String chronicDiseases;
+	private String chronicDiseases = "Không có ";
 
 	@Size(max = 2000, message = "Ghi chú không được vượt quá 2000 ký tự")
 	private String notes;
 
+	@Size(max = 20, message = "Số bảo hiểm y tế không được vượt quá 20 ký tự")
+	private String healthInsuranceNumber;
+
+	@CreatedDate
 	private LocalDateTime createdAt;
+
+	@LastModifiedDate
 	private LocalDateTime updatedAt;
 }
