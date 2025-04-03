@@ -49,7 +49,7 @@ public class FamilyMemberService {
 				.phoneNumber(memberProfile.getPhoneNumber())
 				.user(null) // Chưa có tài khoản
 				.dateOfBirth(memberProfile.getBirthDate()).build();
-
+		profileRepository.save(profile);
 		var member = FamilyMember.builder()
 				.family(family)
 				.relationship(familyMember.getRelationship())
