@@ -13,7 +13,8 @@ import org.springframework.web.bind.annotation.RestController;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import sgu.j2ee.medifamily.dtos.family.AddMemberToFamilyRequest;
-import sgu.j2ee.medifamily.entities.FamilyMember;
+import sgu.j2ee.medifamily.dtos.family.FamilyMemberDTO;
+import sgu.j2ee.medifamily.mappers.IFamilyMemberMapper;
 import sgu.j2ee.medifamily.services.FamilyMemberService;
 
 @RestController
@@ -21,18 +22,21 @@ import sgu.j2ee.medifamily.services.FamilyMemberService;
 @RequiredArgsConstructor
 public class FamilyMemberController {
 	private final FamilyMemberService familyMemberService;
+	private final IFamilyMemberMapper familyMemberMapper;
 
 	@GetMapping("")
-	public ResponseEntity<List<FamilyMember>> getMembersByFamilyId(
+	public ResponseEntity<List<FamilyMemberDTO>> getMembersByFamilyId(
 			@PathVariable(name = "id") Long familyId) {
-		return ResponseEntity.ok(familyMemberService.getMembersByFamilyId(familyId));
+		return ResponseEntity.ok(
+				familyMemberMapper.toDTOs(familyMemberService.getMembersByFamilyId(familyId)));
+
 	}
 
 	@PostMapping("")
-	public ResponseEntity<FamilyMember> addMemberToFamily(
+	public ResponseEntity<FamilyMemberDTO> addMemberToFamily(
 			@RequestBody @Valid AddMemberToFamilyRequest familyMember,
 			@PathVariable(name = "id") Long id) {
 		familyMember.setFamilyId(id);
-		return ResponseEntity.ok(familyMemberService.addMemberToFamily(familyMember));
+		return ResponseEntity.ok(familyMemberMapper.toDTO(familyMemberService.addMemberToFamily(familyMember)));
 	}
 }

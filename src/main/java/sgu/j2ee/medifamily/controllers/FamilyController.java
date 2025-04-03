@@ -8,8 +8,9 @@ import org.springframework.web.bind.annotation.*;
 
 import lombok.RequiredArgsConstructor;
 import sgu.j2ee.medifamily.dtos.family.CreateFamilyRequest;
-import sgu.j2ee.medifamily.entities.Family;
+import sgu.j2ee.medifamily.dtos.family.FamilyDTO;
 import sgu.j2ee.medifamily.exceptions.UnAuthorizedException;
+import sgu.j2ee.medifamily.mappers.IFamilyMapper;
 import sgu.j2ee.medifamily.services.FamilyService;
 
 @RestController
@@ -18,29 +19,35 @@ import sgu.j2ee.medifamily.services.FamilyService;
 public class FamilyController {
 	private final FamilyService familyService;
 	private final AuditorAware<String> auditorAware;
+	private final IFamilyMapper familyMapper;
 
 	@GetMapping("/{id}")
-	public ResponseEntity<Family> getFamily(@PathVariable String id) {
-		return ResponseEntity.ok(familyService.getFamilyById(Long.parseLong(id)));
+	public ResponseEntity<FamilyDTO> getFamily(@PathVariable String id) {
+		var family = familyService.getFamilyById(Long.parseLong(id));
+		family.getOwner().setFamilyMembers(null);
+		family.getOwner().setUser(null);
+		return ResponseEntity.ok(familyMapper.toDTO(family));
 	}
 
 	@GetMapping("/@me")
-	public ResponseEntity<List<Family>> getMyFamily() {
+	public ResponseEntity<List<FamilyDTO>> getMyFamily() {
 		var currentUserId = auditorAware.getCurrentAuditor().orElseThrow();
-		return ResponseEntity.ok(familyService.getFamiliesByUserId(Long.parseLong(currentUserId)));
+		var family = familyService.getFamiliesByUserId(Long.parseLong(currentUserId));
+		family.forEach((f) -> f.setOwner(null));
+		return ResponseEntity.ok(familyMapper.familiesToFamilyDTOs(family));
 	}
 
 	@PostMapping("")
-	public ResponseEntity<Family> createFamily(@RequestBody CreateFamilyRequest family) {
+	public ResponseEntity<FamilyDTO> createFamily(@RequestBody CreateFamilyRequest family) {
 		var currentUserId = auditorAware.getCurrentAuditor().orElseThrow(UnAuthorizedException::new);
 		family.setCreatedBy(Long.parseLong(currentUserId));
-		return ResponseEntity.ok(familyService.createFamily(family));
+		return ResponseEntity.ok(familyMapper.toDTO(familyService.createFamily(family)));
 	}
 
 	@PutMapping("/{id}")
-	public ResponseEntity<Family> updateFamily(
+	public ResponseEntity<FamilyDTO> updateFamily(
 			@RequestBody CreateFamilyRequest family, @PathVariable String id) {
-		return ResponseEntity.ok(familyService.updateFamily(Long.parseLong(id), family));
+		return ResponseEntity.ok(familyMapper.toDTO(familyService.updateFamily(Long.parseLong(id), family)));
 	}
 
 	@DeleteMapping("/{id}")

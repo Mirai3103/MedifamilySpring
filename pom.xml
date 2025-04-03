@@ -7,39 +7,43 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.4.3</version>
-        <relativePath/> <!-- lookup parent from repository -->
+        <relativePath /> <!-- lookup parent from repository -->
     </parent>
     <groupId>sgu.j2ee</groupId>
     <artifactId>medifamily</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Medifamily</name>
     <description>Medifamily</description>
-    <url/>
+    <url />
     <licenses>
-        <license/>
+        <license />
     </licenses>
     <developers>
-        <developer/>
+        <developer />
     </developers>
     <scm>
-        <connection/>
-        <developerConnection/>
-        <tag/>
-        <url/>
+        <connection />
+        <developerConnection />
+        <tag />
+        <url />
     </scm>
     <properties>
         <java.version>17</java.version>
+        <org.mapstruct.version>1.6.3</org.mapstruct.version>
+        <lombok.version>1.18.36</lombok.version>
+        <maven-compiler-plugin.version>3.11.0</maven-compiler-plugin.version>
     </properties>
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-        </dependency>
 
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct</artifactId>
+            <version>${org.mapstruct.version}</version>
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-rest</artifactId>
@@ -71,7 +75,6 @@
         <dependency>
             <groupId>org.hibernate.validator</groupId>
             <artifactId>hibernate-validator</artifactId>
-
         </dependency>
         <!-- https://mvnrepository.com/artifact/jakarta.el/jakarta.el-api -->
         <dependency>
@@ -125,7 +128,8 @@
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
-            <optional>true</optional>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -162,7 +166,6 @@
                 <artifactId>exec-maven-plugin</artifactId>
                 <version>3.5.0</version>
                 <executions>
-
                     <!-- Update git submodule -->
                     <execution>
                         <id>git-submodule-update</id>
@@ -180,7 +183,6 @@
                                 <argument>--force</argument>
                                 <argument>--recursive</argument>
                                 <argument>--remote</argument>
-
                             </arguments>
                         </configuration>
                     </execution>
@@ -212,19 +214,33 @@
                 </executions>
             </plugin>
 
-
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven-compiler-plugin.version}</version>
                 <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
                     <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
                         <path>
                             <groupId>org.projectlombok</groupId>
                             <artifactId>lombok</artifactId>
+                            <version>${lombok.version}</version>
+                        </path>
+                        <path>
+                            <groupId>org.projectlombok</groupId>
+                            <artifactId>lombok-mapstruct-binding</artifactId>
+                            <version>0.2.0</version>
                         </path>
                     </annotationProcessorPaths>
                 </configuration>
             </plugin>
+
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
@@ -238,7 +254,6 @@
                 </configuration>
             </plugin>
 
-
             <plugin>
                 <groupId>com.diffplug.spotless</groupId>
                 <artifactId>spotless-maven-plugin</artifactId>
@@ -246,7 +261,7 @@
                 <configuration>
                     <java>
                         <!-- Loại bỏ import không sử dụng -->
-                        <removeUnusedImports/>
+                        <removeUnusedImports />
 
                         <!-- Sắp xếp import -->
                         <importOrder>
@@ -281,5 +296,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
