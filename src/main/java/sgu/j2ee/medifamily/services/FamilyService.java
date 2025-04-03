@@ -8,19 +8,22 @@ import lombok.RequiredArgsConstructor;
 import sgu.j2ee.medifamily.dtos.family.CreateFamilyRequest;
 import sgu.j2ee.medifamily.entities.Family;
 import sgu.j2ee.medifamily.entities.FamilyMember;
+import sgu.j2ee.medifamily.exceptions.UnAuthorizedException;
 import sgu.j2ee.medifamily.repositories.FamilyMemberRepository;
 import sgu.j2ee.medifamily.repositories.FamilyRepository;
-import sgu.j2ee.medifamily.repositories.UserRepository;
+import sgu.j2ee.medifamily.repositories.ProfileRepository;
 
 @Service
 @RequiredArgsConstructor
 public class FamilyService {
 	private final FamilyRepository familyRepository;
-	private final UserRepository userRepository;
+	private final ProfileRepository profileRepository;
 	private final FamilyMemberRepository familyMemberRepository;
 
 	public Family createFamily(CreateFamilyRequest family) {
-		var user = userRepository.findById(family.getCreatedBy()).orElse(null);
+		var user = profileRepository
+				.findById(family.getCreatedBy())
+				.orElseThrow(() -> new UnAuthorizedException("Người dùng không tồn tại"));
 		if (user == null) {
 			return null;
 		}
@@ -36,8 +39,7 @@ public class FamilyService {
 		FamilyMember owner = FamilyMember.builder()
 				.family(newFamily)
 				.relationship("Chủ hộ")
-				.user(user)
-				.isHasAccount(true)
+				.profile(user)
 				.build();
 		familyMemberRepository.save(owner);
 

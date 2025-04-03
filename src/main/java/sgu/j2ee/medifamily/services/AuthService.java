@@ -10,8 +10,10 @@ import sgu.j2ee.medifamily.dtos.AuthenticationResponse;
 import sgu.j2ee.medifamily.dtos.LoginResponse;
 import sgu.j2ee.medifamily.dtos.RegisterRequest;
 import sgu.j2ee.medifamily.entities.Doctor;
+import sgu.j2ee.medifamily.entities.Profile;
 import sgu.j2ee.medifamily.entities.User;
 import sgu.j2ee.medifamily.repositories.DoctorRepository;
+import sgu.j2ee.medifamily.repositories.ProfileRepository;
 import sgu.j2ee.medifamily.repositories.UserRepository;
 
 @Service
@@ -23,16 +25,23 @@ public class AuthService {
 	private final DoctorRepository doctorRepository;
 	private final JwtService jwtUtil;
 	private final AuthenticationManager authenticationManager;
+	private final ProfileRepository profileRepository;
 
 	public User register(RegisterRequest registerDTO) {
 		var user = User.builder()
 				.password(passwordEncoder.encode(registerDTO.getPassword()))
 				.email(registerDTO.getEmail())
+
+				.build();
+		user = userRepository.save(user);
+		var profile = Profile.builder().email(registerDTO.getEmail())
 				.dateOfBirth(registerDTO.getDateOfBirth())
 				.fullName(registerDTO.getFullName())
 				.gender(registerDTO.getGender())
+				.user(user)
 				.build();
-		user = userRepository.save(user);
+		profile = profileRepository.save(profile);
+
 		if (registerDTO.isDoctor()) {
 			var doctorInfo = registerDTO.getDoctor();
 			var doctor = Doctor.builder()

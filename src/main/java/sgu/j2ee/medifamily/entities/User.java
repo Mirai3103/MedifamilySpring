@@ -1,6 +1,5 @@
 package sgu.j2ee.medifamily.entities;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -11,9 +10,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 import lombok.Builder.Default;
-import sgu.j2ee.medifamily.entities.enums.Gender;
 
 @Entity
 @Table(name = "users")
@@ -29,18 +28,9 @@ public class User implements UserDetails {
 	private String password;
 
 	@Column(unique = true)
+
+	@Email(message = "Email không hợp lệ")
 	private String email;
-
-	private String fullName;
-	private String phoneNumber;
-	private LocalDate dateOfBirth;
-
-	@Enumerated(EnumType.STRING)
-	private Gender gender;
-
-	private String address;
-
-	private String avatarUrl;
 
 	@CreatedDate
 	private LocalDateTime createdAt;
@@ -49,11 +39,8 @@ public class User implements UserDetails {
 	@Default
 	private Boolean isActive = true;
 	private LocalDateTime lastLogin;
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "id", referencedColumnName = "id")
-	private HealthProfile healthProfile;
-
-	private String bio;
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user", fetch = FetchType.EAGER)
+	private Profile profile;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

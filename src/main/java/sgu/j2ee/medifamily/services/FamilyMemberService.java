@@ -7,16 +7,17 @@ import org.springframework.stereotype.Service;
 import lombok.RequiredArgsConstructor;
 import sgu.j2ee.medifamily.dtos.family.AddMemberToFamilyRequest;
 import sgu.j2ee.medifamily.entities.FamilyMember;
+import sgu.j2ee.medifamily.entities.Profile;
 import sgu.j2ee.medifamily.exceptions.NotFoundException;
 import sgu.j2ee.medifamily.repositories.FamilyMemberRepository;
 import sgu.j2ee.medifamily.repositories.FamilyRepository;
-import sgu.j2ee.medifamily.repositories.UserRepository;
+import sgu.j2ee.medifamily.repositories.ProfileRepository;
 
 @RequiredArgsConstructor
 @Service
 public class FamilyMemberService {
 	private final FamilyMemberRepository familyMemberRepository;
-	private final UserRepository userRepository;
+	private final ProfileRepository profileRepository;
 	private final FamilyRepository familyRepository;
 
 	public List<FamilyMember> getMembersByFamilyId(Long familyId) {
@@ -29,30 +30,31 @@ public class FamilyMemberService {
 				.orElseThrow(() -> new NotFoundException("Gia đình không tồn tại"));
 
 		if (familyMember.isHasAccount()) {
-			var user = userRepository
-					.findById(familyMember.getAccountId())
+			var user = profileRepository
+					.findFirstByUserId(familyMember.getAccountId())
 					.orElseThrow(() -> new NotFoundException("Người dùng không tồn tại"));
 			var member = FamilyMember.builder()
 					.family(family)
-					.user(user)
-					.isHasAccount(true)
+					.profile(user)
 					.relationship(familyMember.getRelationship())
 					.build();
 			return familyMemberRepository.save(member);
 		}
 
 		var memberProfile = familyMember.getMemberProfile();
-		var member = FamilyMember.builder()
-				.family(family)
-				.relationship(familyMember.getRelationship())
+		Profile profile = Profile.builder()
 				.email(memberProfile.getEmail())
 				.fullName(memberProfile.getFullName())
 				.gender(memberProfile.getGender())
 				.phoneNumber(memberProfile.getPhoneNumber())
-				.dateOfBirth(memberProfile.getBirthDate())
+				.user(null) // Chưa có tài khoản
+				.dateOfBirth(memberProfile.getBirthDate()).build();
+
+		var member = FamilyMember.builder()
+				.family(family)
+				.relationship(familyMember.getRelationship())
+				.profile(profile)
 				.isActive(true)
-				.user(null)
-				.isHasAccount(false)
 				.build();
 		return familyMemberRepository.save(member);
 	}

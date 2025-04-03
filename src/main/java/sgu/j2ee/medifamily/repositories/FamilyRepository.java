@@ -10,6 +10,6 @@ import sgu.j2ee.medifamily.entities.Family;
 
 @RepositoryRestResource(collectionResourceRel = "familys", path = "familys")
 public interface FamilyRepository extends JpaRepository<Family, Long> {
-	@Query("SELECT f FROM Family f join FamilyMember fm on f.id = fm.family.id WHERE fm.user.id = ?1")
+	@Query("SELECT f FROM Family f join FamilyMember fm on f.id = fm.family.id WHERE fm.profile.user.id = ?1")
 	public List<Family> findByFamilyUserId(Long userId);
 }

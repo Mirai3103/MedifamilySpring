@@ -28,16 +28,23 @@ public class FileDocument {
 	@Id
 	@Builder.Default
 	private UUID id = UUID.randomUUID();
+	@Builder.Default
+
 	private String name = "";
+	@Builder.Default
+
 	private Date created = new Date();
 	private String summary;
 	@ContentId
 	private String contentId;
 	@ContentLength
 	private long contentLength;
+	@Builder.Default
+
 	private String contentMimeType = "text/plain";
 
 	@JsonIgnore
+	@Builder.Default
 	private LocalDateTime lastChecked = LocalDateTime.now();
 
 	@Transient

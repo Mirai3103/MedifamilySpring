@@ -31,10 +31,10 @@ public class Family {
 	@Size(max = 500, message = "Địa chỉ không được vượt quá 500 ký tự")
 	private String address;
 
-	@ManyToOne(cascade = CascadeType.ALL)
+	@ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JoinColumn(name = "owner_id", nullable = false)
 	@NotNull(message = "Chủ hộ không được để trống")
-	private User owner;
+	private Profile owner;
 
 	@Pattern(regexp = "^(\\+84|0)[3|5|7|8|9][0-9]{8}$", message = "Số điện thoại không hợp lệ")
 	private String phoneNumber;

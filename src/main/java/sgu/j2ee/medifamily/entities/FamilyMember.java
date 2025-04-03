@@ -1,6 +1,5 @@
 package sgu.j2ee.medifamily.entities;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 import org.springframework.data.annotation.CreatedDate;
@@ -9,7 +8,6 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.Builder.Default;
-import sgu.j2ee.medifamily.entities.enums.Gender;
 
 @Entity
 @Table(name = "family_members")
@@ -28,31 +26,12 @@ public class FamilyMember {
 	private Family family;
 
 	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
-	@JoinColumn(name = "user_id")
-	private User user;
-
-	@ManyToOne
-	@JoinColumn(name = "health_profile_id")
-	private HealthProfile healthProfile;
-
-	private String avatarUrl;
-
-	private String fullName;
-
-	private LocalDate dateOfBirth;
-
-	private Gender gender;
+	@JoinColumn(name = "profile_id", nullable = false)
+	private Profile profile;
 
 	@NotBlank(message = "Quan hệ với chủ hộ không được để trống")
 	@Size(max = 50, message = "Quan hệ với chủ hộ không được vượt quá 50 ký tự")
 	private String relationship;
-
-	private String phoneNumber;
-
-	private String email;
-
-	private boolean isHasAccount;
-
 	@CreatedDate
 	private LocalDateTime createdAt;
 	@Default
