@@ -2,6 +2,8 @@ package sgu.j2ee.medifamily.entities;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedDate;
 
 import jakarta.persistence.*;
@@ -20,16 +22,18 @@ public class FamilyMember {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE)
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "family_id", nullable = false)
 	@NotNull(message = "Thông tin gia đình không được để trống")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Family family;
 
 	@Column (name = "family_id", insertable = false, updatable = false)
 	private Long familyId;
 
-	@ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
 	@JoinColumn(name = "profile_id", nullable = false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Profile profile;
 
 	@Column (name = "profile_id", insertable = false, updatable = false)

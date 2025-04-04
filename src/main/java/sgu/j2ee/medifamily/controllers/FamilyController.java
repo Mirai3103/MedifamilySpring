@@ -33,7 +33,6 @@ public class FamilyController {
 	public ResponseEntity<List<FamilyDTO>> getMyFamily() {
 		var currentUserId = auditorAware.getCurrentAuditor().orElseThrow();
 		var family = familyService.getFamiliesByUserId(Long.parseLong(currentUserId));
-		family.forEach((f) -> f.setOwner(null));
 		return ResponseEntity.ok(familyMapper.familiesToFamilyDTOs(family));
 	}
 

@@ -12,6 +12,7 @@ import sgu.j2ee.medifamily.dtos.RegisterRequest;
 import sgu.j2ee.medifamily.entities.Doctor;
 import sgu.j2ee.medifamily.entities.Profile;
 import sgu.j2ee.medifamily.entities.User;
+import sgu.j2ee.medifamily.mappers.IUserMapper;
 import sgu.j2ee.medifamily.repositories.DoctorRepository;
 import sgu.j2ee.medifamily.repositories.ProfileRepository;
 import sgu.j2ee.medifamily.repositories.UserRepository;
@@ -26,6 +27,7 @@ public class AuthService {
 	private final JwtService jwtUtil;
 	private final AuthenticationManager authenticationManager;
 	private final ProfileRepository profileRepository;
+	private final IUserMapper userMapper;
 
 	public User register(RegisterRequest registerDTO) {
 		var user = User.builder()
@@ -63,7 +65,7 @@ public class AuthService {
 		var token = jwtUtil.generateToken((User) userDetails);
 		return LoginResponse.builder()
 				.token(AuthenticationResponse.builder().token(token).build())
-				.user((User) userDetails)
+				.user(userMapper.toDTO((User) userDetails))
 				.build();
 	}
 }

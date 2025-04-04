@@ -21,9 +21,11 @@ public class FamilyService {
 	private final FamilyMemberRepository familyMemberRepository;
 
 	public Family createFamily(CreateFamilyRequest family) {
+		System.out.println(family);
 		var user = profileRepository
-				.findById(family.getCreatedBy())
+				.findFirstByUserId(family.getCreatedBy())
 				.orElseThrow(() -> new UnAuthorizedException("Người dùng không tồn tại"));
+
 		if (user == null) {
 			return null;
 		}
