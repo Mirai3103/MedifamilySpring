@@ -5,10 +5,10 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import jakarta.persistence.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
 import jakarta.validation.constraints.Pattern;
@@ -26,60 +26,60 @@ import sgu.j2ee.medifamily.entities.enums.Gender;
 @AllArgsConstructor
 @Builder
 public class Profile {
-    @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
-    private Long id;
-    // health profile
-    @Pattern(regexp = "^(A|B|AB|O)[+-]$", message = "Nhóm máu phải có định dạng hợp lệ (A+, B-, AB+, O-,...)")
-    private String bloodType;
+	@Id
+	@GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+	private Long id;
+	// health profile
+	@Pattern(regexp = "^(A|B|AB|O)[+-]$", message = "Nhóm máu phải có định dạng hợp lệ (A+, B-, AB+, O-,...)")
+	private String bloodType;
 
-    @DecimalMin(value = "0.0", message = "Chiều cao phải là số dương")
-    @DecimalMax(value = "300.0", message = "Chiều cao không được vượt quá 300cm")
-    private Double height;
+	@DecimalMin(value = "0.0", message = "Chiều cao phải là số dương")
+	@DecimalMax(value = "300.0", message = "Chiều cao không được vượt quá 300cm")
+	private Double height;
 
-    @DecimalMin(value = "0.0", message = "Cân nặng phải là số dương")
-    @DecimalMax(value = "500.0", message = "Cân nặng không được vượt quá 500kg")
-    private Double weight;
+	@DecimalMin(value = "0.0", message = "Cân nặng phải là số dương")
+	@DecimalMax(value = "500.0", message = "Cân nặng không được vượt quá 500kg")
+	private Double weight;
 
-    @Size(max = 1000, message = "Thông tin dị ứng không được vượt quá 1000 ký tự")
-    @Builder.Default
-    private String allergies = "Không có ";
+	@Size(max = 1000, message = "Thông tin dị ứng không được vượt quá 1000 ký tự")
+	@Builder.Default
+	private String allergies = "Không có ";
 
-    @Size(max = 1000, message = "Thông tin bệnh mãn tính không được vượt quá 1000 ký tự")
-    @Builder.Default
-    private String chronicDiseases = "Không có ";
+	@Size(max = 1000, message = "Thông tin bệnh mãn tính không được vượt quá 1000 ký tự")
+	@Builder.Default
+	private String chronicDiseases = "Không có ";
 
-    @Size(max = 2000, message = "Ghi chú không được vượt quá 2000 ký tự")
-    private String notes;
+	@Size(max = 2000, message = "Ghi chú không được vượt quá 2000 ký tự")
+	private String notes;
 
-    @Size(max = 20, message = "Số bảo hiểm y tế không được vượt quá 20 ký tự")
-    private String healthInsuranceNumber;
+	@Size(max = 20, message = "Số bảo hiểm y tế không được vượt quá 20 ký tự")
+	private String healthInsuranceNumber;
 
-    // person profile
-    private String fullName;
-    private String phoneNumber;
-    private LocalDate dateOfBirth;
-    @Enumerated(EnumType.STRING)
-    private Gender gender;
-    private String email;
-    private String address;
-    private String avatarUrl;
-    private String bio;
+	// person profile
+	private String fullName;
+	private String phoneNumber;
+	private LocalDate dateOfBirth;
+	@Enumerated(EnumType.STRING)
+	private Gender gender;
+	private String email;
+	private String address;
+	private String avatarUrl;
+	private String bio;
 
-    @OneToOne(fetch = jakarta.persistence.FetchType.LAZY, optional = true)
-    @JoinColumn(name = "user_id", nullable = true)
-    private User user;
+	@OneToOne(fetch = jakarta.persistence.FetchType.LAZY, optional = true)
+	@JoinColumn(name = "user_id", nullable = true)
+	private User user;
 
-    @Column(name = "user_id", insertable = false, updatable = false)
-    private Long userId;
+	@Column(name = "user_id", insertable = false, updatable = false)
+	private Long userId;
 
-    @OneToMany(mappedBy = "profile", fetch = jakarta.persistence.FetchType.LAZY)
-    @Builder.Default
-    private List<FamilyMember> familyMembers = new ArrayList<>();
+	@OneToMany(mappedBy = "profile", fetch = jakarta.persistence.FetchType.LAZY)
+	@Builder.Default
+	private List<FamilyMember> familyMembers = new ArrayList<>();
 
-    @CreatedDate
-    private LocalDateTime createdAt;
+	@CreatedDate
+	private LocalDateTime createdAt;
 
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
+	@LastModifiedDate
+	private LocalDateTime updatedAt;
 }

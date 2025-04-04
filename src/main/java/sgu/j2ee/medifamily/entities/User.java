@@ -21,34 +21,34 @@ import lombok.Builder.Default;
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String password;
+	private String password;
 
-    @Column(unique = true)
+	@Column(unique = true)
 
-    @Email(message = "Email không hợp lệ")
-    private String email;
+	@Email(message = "Email không hợp lệ")
+	private String email;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-    @Default
-    private Boolean isActive = true;
-    private LocalDateTime lastLogin;
-    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
-    private Profile profile;
+	@CreatedDate
+	private LocalDateTime createdAt;
+	@LastModifiedDate
+	private LocalDateTime updatedAt;
+	@Default
+	private Boolean isActive = true;
+	private LocalDateTime lastLogin;
+	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+	private Profile profile;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of();
+	}
 
-    @Override
-    public String getUsername() {
-        return this.id.toString();
-    }
+	@Override
+	public String getUsername() {
+		return this.id.toString();
+	}
 }

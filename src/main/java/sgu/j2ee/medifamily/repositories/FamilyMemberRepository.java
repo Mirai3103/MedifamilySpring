@@ -10,8 +10,9 @@ import sgu.j2ee.medifamily.entities.FamilyMember;
 
 @RepositoryRestResource(collectionResourceRel = "familymembers", path = "familymembers")
 public interface FamilyMemberRepository extends JpaRepository<FamilyMember, Long> {
-    List<FamilyMember> findByFamilyId(Long familyId);
+	List<FamilyMember> findByFamilyId(Long familyId);
 
-    void deleteByFamilyIdAndProfileId(Long familyId, Long profileId);
-    Optional<FamilyMember> findByFamilyIdAndProfileId(Long familyId, Long profileId);
+	void deleteByFamilyIdAndProfileId(Long familyId, Long profileId);
+
+	Optional<FamilyMember> findByFamilyIdAndProfileId(Long familyId, Long profileId);
 }

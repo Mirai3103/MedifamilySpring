@@ -28,7 +28,7 @@ public class FamilyMember {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Family family;
 
-	@Column (name = "family_id", insertable = false, updatable = false)
+	@Column(name = "family_id", insertable = false, updatable = false)
 	private Long familyId;
 
 	@JoinColumn(name = "profile_id", nullable = false)
@@ -36,7 +36,7 @@ public class FamilyMember {
 	@OnDelete(action = OnDeleteAction.CASCADE)
 	private Profile profile;
 
-	@Column (name = "profile_id", insertable = false, updatable = false)
+	@Column(name = "profile_id", insertable = false, updatable = false)
 	private Long profileId;
 
 	@NotBlank(message = "Quan hệ với chủ hộ không được để trống")
