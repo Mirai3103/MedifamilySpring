@@ -44,7 +44,7 @@ public class FamilyMemberController {
 	}
 
 	@GetMapping("{memberId}")
-public ResponseEntity<FamilyMemberDTO> getFamilyMemberById(@PathVariable(name = "id") Long id,
+	public ResponseEntity<FamilyMemberDTO> getFamilyMemberById(@PathVariable(name = "id") Long id,
 			@PathVariable(name = "memberId") Long memberId) {
 		return ResponseEntity.ok(familyMemberMapper.toDTO(familyMemberService.getFamilyMemberById(id, memberId)));
 	}

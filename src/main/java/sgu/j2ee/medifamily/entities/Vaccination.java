@@ -2,10 +2,11 @@ package sgu.j2ee.medifamily.entities;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.*;
-import lombok.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
 @Table(name = "vaccinations")
@@ -24,7 +25,6 @@ public class Vaccination {
 	private Profile profile;
 	@Column(name = "profile_id", insertable = false, updatable = false)
 	private Long profileId;
-
 
 	private String vaccineName;
 	private LocalDateTime vaccinationDate;
