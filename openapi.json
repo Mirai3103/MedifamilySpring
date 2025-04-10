@@ -1684,10 +1684,39 @@
         }
       }
     },
-    "/api/auth/familymembers/search/findByFamilyId" : {
+    "/api/auth/familymembers/search/deleteByFamilyIdAndProfileId" : {
       "get" : {
         "tags" : [ "family-member-search-controller" ],
         "operationId" : "executeSearch-familymember-get",
+        "parameters" : [ {
+          "name" : "familyId",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "profileId",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      }
+    },
+    "/api/auth/familymembers/search/findByFamilyId" : {
+      "get" : {
+        "tags" : [ "family-member-search-controller" ],
+        "operationId" : "executeSearch-familymember-get_1",
         "parameters" : [ {
           "name" : "familyId",
           "in" : "query",
@@ -1703,6 +1732,42 @@
               "application/hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/CollectionModelEntityModelFamilyMember"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      }
+    },
+    "/api/auth/familymembers/search/findByFamilyIdAndProfileId" : {
+      "get" : {
+        "tags" : [ "family-member-search-controller" ],
+        "operationId" : "executeSearch-familymember-get_2",
+        "parameters" : [ {
+          "name" : "familyId",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "profileId",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
                 }
               }
             }
@@ -2077,10 +2142,10 @@
         }
       }
     },
-    "/api/auth/familymembers/{id}/healthProfile" : {
+    "/api/auth/familymembers/{id}/profile" : {
       "get" : {
         "tags" : [ "family-member-property-reference-controller" ],
-        "description" : "get-healthprofile-by-familymember-Id",
+        "description" : "get-profile-by-familymember-Id",
         "operationId" : "followPropertyReference-familymember-get_2",
         "parameters" : [ {
           "name" : "id",
@@ -2096,7 +2161,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               },
               "text/uri-list" : {
@@ -2113,7 +2178,7 @@
       },
       "put" : {
         "tags" : [ "family-member-property-reference-controller" ],
-        "description" : "update-healthprofile-by-familymember-Id",
+        "description" : "update-profile-by-familymember-Id",
         "operationId" : "createPropertyReference-familymember-put_1",
         "parameters" : [ {
           "name" : "id",
@@ -2149,7 +2214,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -2159,7 +2224,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -2171,7 +2236,7 @@
       },
       "delete" : {
         "tags" : [ "family-member-property-reference-controller" ],
-        "description" : "delete-healthprofile-by-familymember-Id",
+        "description" : "delete-profile-by-familymember-Id",
         "operationId" : "deletePropertyReference-familymember-delete_1",
         "parameters" : [ {
           "name" : "id",
@@ -2192,7 +2257,7 @@
       },
       "patch" : {
         "tags" : [ "family-member-property-reference-controller" ],
-        "description" : "patch-healthprofile-by-familymember-Id",
+        "description" : "patch-profile-by-familymember-Id",
         "operationId" : "createPropertyReference-familymember-patch_1",
         "parameters" : [ {
           "name" : "id",
@@ -2228,7 +2293,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -2239,10 +2304,10 @@
         }
       }
     },
-    "/api/auth/familymembers/{id}/healthProfile/{propertyId}" : {
+    "/api/auth/familymembers/{id}/profile/{propertyId}" : {
       "get" : {
         "tags" : [ "family-member-property-reference-controller" ],
-        "description" : "get-healthprofile-by-familymember-Id",
+        "description" : "get-profile-by-familymember-Id",
         "operationId" : "followPropertyReference-familymember-get_3",
         "parameters" : [ {
           "name" : "id",
@@ -2265,7 +2330,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -2277,235 +2342,8 @@
       },
       "delete" : {
         "tags" : [ "family-member-property-reference-controller" ],
-        "description" : "delete-healthprofile-by-familymember-Id",
+        "description" : "delete-profile-by-familymember-Id",
         "operationId" : "deletePropertyReferenceId-familymember-delete_1",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "propertyId",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "204" : {
-            "description" : "No Content"
-          },
-          "404" : {
-            "description" : "Not Found"
-          }
-        }
-      }
-    },
-    "/api/auth/familymembers/{id}/user" : {
-      "get" : {
-        "tags" : [ "family-member-property-reference-controller" ],
-        "description" : "get-user-by-familymember-Id",
-        "operationId" : "followPropertyReference-familymember-get_4",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelUser"
-                }
-              },
-              "text/uri-list" : {
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not Found"
-          }
-        }
-      },
-      "put" : {
-        "tags" : [ "family-member-property-reference-controller" ],
-        "description" : "update-user-by-familymember-Id",
-        "operationId" : "createPropertyReference-familymember-put_2",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list" : {
-              "schema" : {
-                "type" : "string"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelUser"
-                }
-              }
-            }
-          },
-          "201" : {
-            "description" : "Created",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelUser"
-                }
-              }
-            }
-          },
-          "204" : {
-            "description" : "No Content"
-          }
-        }
-      },
-      "delete" : {
-        "tags" : [ "family-member-property-reference-controller" ],
-        "description" : "delete-user-by-familymember-Id",
-        "operationId" : "deletePropertyReference-familymember-delete_2",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "204" : {
-            "description" : "No Content"
-          },
-          "404" : {
-            "description" : "Not Found"
-          }
-        }
-      },
-      "patch" : {
-        "tags" : [ "family-member-property-reference-controller" ],
-        "description" : "patch-user-by-familymember-Id",
-        "operationId" : "createPropertyReference-familymember-patch_2",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "application/x-spring-data-compact+json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/CollectionModelObject"
-              }
-            },
-            "text/uri-list" : {
-              "schema" : {
-                "type" : "string"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelUser"
-                }
-              }
-            }
-          },
-          "204" : {
-            "description" : "No Content"
-          }
-        }
-      }
-    },
-    "/api/auth/familymembers/{id}/user/{propertyId}" : {
-      "get" : {
-        "tags" : [ "family-member-property-reference-controller" ],
-        "description" : "get-user-by-familymember-Id",
-        "operationId" : "followPropertyReference-familymember-get_5",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "propertyId",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelUser"
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not Found"
-          }
-        }
-      },
-      "delete" : {
-        "tags" : [ "family-member-property-reference-controller" ],
-        "description" : "delete-user-by-familymember-Id",
-        "operationId" : "deletePropertyReferenceId-familymember-delete_2",
         "parameters" : [ {
           "name" : "id",
           "in" : "path",
@@ -2788,7 +2626,7 @@
     "/api/auth/familys/{id}/owner" : {
       "get" : {
         "tags" : [ "family-property-reference-controller" ],
-        "description" : "get-user-by-family-Id",
+        "description" : "get-profile-by-family-Id",
         "operationId" : "followPropertyReference-family-get",
         "parameters" : [ {
           "name" : "id",
@@ -2804,7 +2642,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelUser"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               },
               "text/uri-list" : {
@@ -2821,7 +2659,7 @@
       },
       "put" : {
         "tags" : [ "family-property-reference-controller" ],
-        "description" : "update-user-by-family-Id",
+        "description" : "update-profile-by-family-Id",
         "operationId" : "createPropertyReference-family-put",
         "parameters" : [ {
           "name" : "id",
@@ -2857,7 +2695,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelUser"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -2867,7 +2705,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelUser"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -2879,7 +2717,7 @@
       },
       "delete" : {
         "tags" : [ "family-property-reference-controller" ],
-        "description" : "delete-user-by-family-Id",
+        "description" : "delete-profile-by-family-Id",
         "operationId" : "deletePropertyReference-family-delete",
         "parameters" : [ {
           "name" : "id",
@@ -2900,7 +2738,7 @@
       },
       "patch" : {
         "tags" : [ "family-property-reference-controller" ],
-        "description" : "patch-user-by-family-Id",
+        "description" : "patch-profile-by-family-Id",
         "operationId" : "createPropertyReference-family-patch",
         "parameters" : [ {
           "name" : "id",
@@ -2936,7 +2774,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelUser"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -2950,7 +2788,7 @@
     "/api/auth/familys/{id}/owner/{propertyId}" : {
       "get" : {
         "tags" : [ "family-property-reference-controller" ],
-        "description" : "get-user-by-family-Id",
+        "description" : "get-profile-by-family-Id",
         "operationId" : "followPropertyReference-family-get_1",
         "parameters" : [ {
           "name" : "id",
@@ -2973,7 +2811,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelUser"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -2985,7 +2823,7 @@
       },
       "delete" : {
         "tags" : [ "family-property-reference-controller" ],
-        "description" : "delete-user-by-family-Id",
+        "description" : "delete-profile-by-family-Id",
         "operationId" : "deletePropertyReferenceId-family-delete",
         "parameters" : [ {
           "name" : "id",
@@ -3689,10 +3527,10 @@
         }
       }
     },
-    "/api/auth/healthmetrics/{id}/member" : {
+    "/api/auth/healthmetrics/{id}/profile" : {
       "get" : {
         "tags" : [ "health-metric-property-reference-controller" ],
-        "description" : "get-familymember-by-healthmetric-Id",
+        "description" : "get-profile-by-healthmetric-Id",
         "operationId" : "followPropertyReference-healthmetric-get_2",
         "parameters" : [ {
           "name" : "id",
@@ -3708,7 +3546,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               },
               "text/uri-list" : {
@@ -3725,7 +3563,7 @@
       },
       "put" : {
         "tags" : [ "health-metric-property-reference-controller" ],
-        "description" : "update-familymember-by-healthmetric-Id",
+        "description" : "update-profile-by-healthmetric-Id",
         "operationId" : "createPropertyReference-healthmetric-put_1",
         "parameters" : [ {
           "name" : "id",
@@ -3761,7 +3599,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -3771,7 +3609,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -3783,7 +3621,7 @@
       },
       "delete" : {
         "tags" : [ "health-metric-property-reference-controller" ],
-        "description" : "delete-familymember-by-healthmetric-Id",
+        "description" : "delete-profile-by-healthmetric-Id",
         "operationId" : "deletePropertyReference-healthmetric-delete_1",
         "parameters" : [ {
           "name" : "id",
@@ -3804,7 +3642,7 @@
       },
       "patch" : {
         "tags" : [ "health-metric-property-reference-controller" ],
-        "description" : "patch-familymember-by-healthmetric-Id",
+        "description" : "patch-profile-by-healthmetric-Id",
         "operationId" : "createPropertyReference-healthmetric-patch_1",
         "parameters" : [ {
           "name" : "id",
@@ -3840,7 +3678,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -3851,10 +3689,10 @@
         }
       }
     },
-    "/api/auth/healthmetrics/{id}/member/{propertyId}" : {
+    "/api/auth/healthmetrics/{id}/profile/{propertyId}" : {
       "get" : {
         "tags" : [ "health-metric-property-reference-controller" ],
-        "description" : "get-familymember-by-healthmetric-Id",
+        "description" : "get-profile-by-healthmetric-Id",
         "operationId" : "followPropertyReference-healthmetric-get_3",
         "parameters" : [ {
           "name" : "id",
@@ -3877,7 +3715,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -3889,7 +3727,7 @@
       },
       "delete" : {
         "tags" : [ "health-metric-property-reference-controller" ],
-        "description" : "delete-familymember-by-healthmetric-Id",
+        "description" : "delete-profile-by-healthmetric-Id",
         "operationId" : "deletePropertyReferenceId-healthmetric-delete_1",
         "parameters" : [ {
           "name" : "id",
@@ -3912,231 +3750,6 @@
           },
           "404" : {
             "description" : "Not Found"
-          }
-        }
-      }
-    },
-    "/api/auth/healthprofiles" : {
-      "get" : {
-        "tags" : [ "health-profile-entity-controller" ],
-        "description" : "get-healthprofile",
-        "operationId" : "getCollectionResource-healthprofile-get",
-        "parameters" : [ {
-          "name" : "page",
-          "in" : "query",
-          "description" : "Zero-based page index (0..N)",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "default" : 0,
-            "minimum" : 0
-          }
-        }, {
-          "name" : "size",
-          "in" : "query",
-          "description" : "The size of the page to be returned",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "default" : 20,
-            "minimum" : 1
-          }
-        }, {
-          "name" : "sort",
-          "in" : "query",
-          "description" : "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/PagedModelEntityModelHealthProfile"
-                }
-              },
-              "application/x-spring-data-compact+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/PagedModelEntityModelHealthProfile"
-                }
-              },
-              "text/uri-list" : {
-                "schema" : {
-                  "type" : "string"
-                }
-              }
-            }
-          }
-        }
-      },
-      "post" : {
-        "tags" : [ "health-profile-entity-controller" ],
-        "description" : "create-healthprofile",
-        "operationId" : "postCollectionResource-healthprofile-post",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/HealthProfileRequestBody"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "201" : {
-            "description" : "Created",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/auth/healthprofiles/{id}" : {
-      "get" : {
-        "tags" : [ "health-profile-entity-controller" ],
-        "description" : "get-healthprofile",
-        "operationId" : "getItemResource-healthprofile-get",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
-                }
-              }
-            }
-          },
-          "404" : {
-            "description" : "Not Found"
-          }
-        }
-      },
-      "put" : {
-        "tags" : [ "health-profile-entity-controller" ],
-        "description" : "update-healthprofile",
-        "operationId" : "putItemResource-healthprofile-put",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/HealthProfileRequestBody"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
-                }
-              }
-            }
-          },
-          "201" : {
-            "description" : "Created",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
-                }
-              }
-            }
-          },
-          "204" : {
-            "description" : "No Content"
-          }
-        }
-      },
-      "delete" : {
-        "tags" : [ "health-profile-entity-controller" ],
-        "description" : "delete-healthprofile",
-        "operationId" : "deleteItemResource-healthprofile-delete",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "204" : {
-            "description" : "No Content"
-          },
-          "404" : {
-            "description" : "Not Found"
-          }
-        }
-      },
-      "patch" : {
-        "tags" : [ "health-profile-entity-controller" ],
-        "description" : "patch-healthprofile",
-        "operationId" : "patchItemResource-healthprofile-patch",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/HealthProfileRequestBody"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
-                }
-              }
-            }
-          },
-          "204" : {
-            "description" : "No Content"
           }
         }
       }
@@ -4820,10 +4433,10 @@
         }
       }
     },
-    "/api/auth/medicaldocuments/{id}/member" : {
+    "/api/auth/medicaldocuments/{id}/profile" : {
       "get" : {
         "tags" : [ "medical-document-property-reference-controller" ],
-        "description" : "get-familymember-by-medicaldocument-Id",
+        "description" : "get-profile-by-medicaldocument-Id",
         "operationId" : "followPropertyReference-medicaldocument-get_4",
         "parameters" : [ {
           "name" : "id",
@@ -4839,7 +4452,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               },
               "text/uri-list" : {
@@ -4856,7 +4469,7 @@
       },
       "put" : {
         "tags" : [ "medical-document-property-reference-controller" ],
-        "description" : "update-familymember-by-medicaldocument-Id",
+        "description" : "update-profile-by-medicaldocument-Id",
         "operationId" : "createPropertyReference-medicaldocument-put_2",
         "parameters" : [ {
           "name" : "id",
@@ -4892,7 +4505,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -4902,7 +4515,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -4914,7 +4527,7 @@
       },
       "delete" : {
         "tags" : [ "medical-document-property-reference-controller" ],
-        "description" : "delete-familymember-by-medicaldocument-Id",
+        "description" : "delete-profile-by-medicaldocument-Id",
         "operationId" : "deletePropertyReference-medicaldocument-delete_2",
         "parameters" : [ {
           "name" : "id",
@@ -4935,7 +4548,7 @@
       },
       "patch" : {
         "tags" : [ "medical-document-property-reference-controller" ],
-        "description" : "patch-familymember-by-medicaldocument-Id",
+        "description" : "patch-profile-by-medicaldocument-Id",
         "operationId" : "createPropertyReference-medicaldocument-patch_2",
         "parameters" : [ {
           "name" : "id",
@@ -4971,7 +4584,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -4982,10 +4595,10 @@
         }
       }
     },
-    "/api/auth/medicaldocuments/{id}/member/{propertyId}" : {
+    "/api/auth/medicaldocuments/{id}/profile/{propertyId}" : {
       "get" : {
         "tags" : [ "medical-document-property-reference-controller" ],
-        "description" : "get-familymember-by-medicaldocument-Id",
+        "description" : "get-profile-by-medicaldocument-Id",
         "operationId" : "followPropertyReference-medicaldocument-get_5",
         "parameters" : [ {
           "name" : "id",
@@ -5008,7 +4621,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -5020,7 +4633,7 @@
       },
       "delete" : {
         "tags" : [ "medical-document-property-reference-controller" ],
-        "description" : "delete-familymember-by-medicaldocument-Id",
+        "description" : "delete-profile-by-medicaldocument-Id",
         "operationId" : "deletePropertyReferenceId-medicaldocument-delete_2",
         "parameters" : [ {
           "name" : "id",
@@ -5131,6 +4744,35 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/auth/medicalrecords/search/findAllByProfileId" : {
+      "get" : {
+        "tags" : [ "medical-record-search-controller" ],
+        "operationId" : "executeSearch-medicalrecord-get",
+        "parameters" : [ {
+          "name" : "profileId",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CollectionModelEntityModelMedicalRecord"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found"
           }
         }
       }
@@ -5726,10 +5368,10 @@
         }
       }
     },
-    "/api/auth/medicalrecords/{id}/member" : {
+    "/api/auth/medicalrecords/{id}/profile" : {
       "get" : {
         "tags" : [ "medical-record-property-reference-controller" ],
-        "description" : "get-familymember-by-medicalrecord-Id",
+        "description" : "get-profile-by-medicalrecord-Id",
         "operationId" : "followPropertyReference-medicalrecord-get_4",
         "parameters" : [ {
           "name" : "id",
@@ -5745,7 +5387,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               },
               "text/uri-list" : {
@@ -5762,7 +5404,7 @@
       },
       "put" : {
         "tags" : [ "medical-record-property-reference-controller" ],
-        "description" : "update-familymember-by-medicalrecord-Id",
+        "description" : "update-profile-by-medicalrecord-Id",
         "operationId" : "createPropertyReference-medicalrecord-put_2",
         "parameters" : [ {
           "name" : "id",
@@ -5798,7 +5440,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -5808,7 +5450,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -5820,7 +5462,7 @@
       },
       "delete" : {
         "tags" : [ "medical-record-property-reference-controller" ],
-        "description" : "delete-familymember-by-medicalrecord-Id",
+        "description" : "delete-profile-by-medicalrecord-Id",
         "operationId" : "deletePropertyReference-medicalrecord-delete_2",
         "parameters" : [ {
           "name" : "id",
@@ -5841,7 +5483,7 @@
       },
       "patch" : {
         "tags" : [ "medical-record-property-reference-controller" ],
-        "description" : "patch-familymember-by-medicalrecord-Id",
+        "description" : "patch-profile-by-medicalrecord-Id",
         "operationId" : "createPropertyReference-medicalrecord-patch_2",
         "parameters" : [ {
           "name" : "id",
@@ -5877,7 +5519,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -5888,10 +5530,10 @@
         }
       }
     },
-    "/api/auth/medicalrecords/{id}/member/{propertyId}" : {
+    "/api/auth/medicalrecords/{id}/profile/{propertyId}" : {
       "get" : {
         "tags" : [ "medical-record-property-reference-controller" ],
-        "description" : "get-familymember-by-medicalrecord-Id",
+        "description" : "get-profile-by-medicalrecord-Id",
         "operationId" : "followPropertyReference-medicalrecord-get_5",
         "parameters" : [ {
           "name" : "id",
@@ -5914,7 +5556,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -5926,7 +5568,7 @@
       },
       "delete" : {
         "tags" : [ "medical-record-property-reference-controller" ],
-        "description" : "delete-familymember-by-medicalrecord-Id",
+        "description" : "delete-profile-by-medicalrecord-Id",
         "operationId" : "deletePropertyReferenceId-medicalrecord-delete_2",
         "parameters" : [ {
           "name" : "id",
@@ -7750,7 +7392,7 @@
         }
       }
     },
-    "/api/auth/profile/healthprofiles" : {
+    "/api/auth/profile/medicaldocuments" : {
       "get" : {
         "tags" : [ "profile-controller" ],
         "operationId" : "descriptor_7",
@@ -7778,7 +7420,7 @@
         }
       }
     },
-    "/api/auth/profile/medicaldocuments" : {
+    "/api/auth/profile/medicalrecords" : {
       "get" : {
         "tags" : [ "profile-controller" ],
         "operationId" : "descriptor_8",
@@ -7806,7 +7448,7 @@
         }
       }
     },
-    "/api/auth/profile/medicalrecords" : {
+    "/api/auth/profile/notifications" : {
       "get" : {
         "tags" : [ "profile-controller" ],
         "operationId" : "descriptor_9",
@@ -7834,7 +7476,7 @@
         }
       }
     },
-    "/api/auth/profile/notifications" : {
+    "/api/auth/profile/prescriptionitems" : {
       "get" : {
         "tags" : [ "profile-controller" ],
         "operationId" : "descriptor_10",
@@ -7862,7 +7504,7 @@
         }
       }
     },
-    "/api/auth/profile/prescriptionitems" : {
+    "/api/auth/profile/prescriptions" : {
       "get" : {
         "tags" : [ "profile-controller" ],
         "operationId" : "descriptor_11",
@@ -7890,7 +7532,7 @@
         }
       }
     },
-    "/api/auth/profile/prescriptions" : {
+    "/api/auth/profile/profiles" : {
       "get" : {
         "tags" : [ "profile-controller" ],
         "operationId" : "descriptor_12",
@@ -8138,6 +7780,714 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/auth/profiles" : {
+      "get" : {
+        "tags" : [ "profile-entity-controller" ],
+        "description" : "get-profile",
+        "operationId" : "getCollectionResource-profile-get",
+        "parameters" : [ {
+          "name" : "page",
+          "in" : "query",
+          "description" : "Zero-based page index (0..N)",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "default" : 0,
+            "minimum" : 0
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "description" : "The size of the page to be returned",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "default" : 20,
+            "minimum" : 1
+          }
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PagedModelEntityModelProfile"
+                }
+              },
+              "application/x-spring-data-compact+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PagedModelEntityModelProfile"
+                }
+              },
+              "text/uri-list" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "profile-entity-controller" ],
+        "description" : "create-profile",
+        "operationId" : "postCollectionResource-profile-post",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ProfileRequestBody"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "201" : {
+            "description" : "Created",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EntityModelProfile"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/auth/profiles/search/findFirstByUserId" : {
+      "get" : {
+        "tags" : [ "profile-search-controller" ],
+        "operationId" : "executeSearch-profile-get",
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "query",
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EntityModelProfile"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      }
+    },
+    "/api/auth/profiles/{id}" : {
+      "get" : {
+        "tags" : [ "profile-entity-controller" ],
+        "description" : "get-profile",
+        "operationId" : "getItemResource-profile-get",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EntityModelProfile"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "profile-entity-controller" ],
+        "description" : "update-profile",
+        "operationId" : "putItemResource-profile-put",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ProfileRequestBody"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EntityModelProfile"
+                }
+              }
+            }
+          },
+          "201" : {
+            "description" : "Created",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EntityModelProfile"
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No Content"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "profile-entity-controller" ],
+        "description" : "delete-profile",
+        "operationId" : "deleteItemResource-profile-delete",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "profile-entity-controller" ],
+        "description" : "patch-profile",
+        "operationId" : "patchItemResource-profile-patch",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ProfileRequestBody"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EntityModelProfile"
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No Content"
+          }
+        }
+      }
+    },
+    "/api/auth/profiles/{id}/familyMembers" : {
+      "get" : {
+        "tags" : [ "profile-property-reference-controller" ],
+        "description" : "get-familymember-by-profile-Id",
+        "operationId" : "followPropertyReference-profile-get",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CollectionModelFamilyMember"
+                }
+              },
+              "text/uri-list" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "profile-property-reference-controller" ],
+        "description" : "update-familymember-by-profile-Id",
+        "operationId" : "createPropertyReference-profile-put",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list" : {
+              "schema" : {
+                "type" : "string"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CollectionModelFamilyMember"
+                }
+              }
+            }
+          },
+          "201" : {
+            "description" : "Created",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CollectionModelFamilyMember"
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No Content"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "profile-property-reference-controller" ],
+        "description" : "delete-familymember-by-profile-Id",
+        "operationId" : "deletePropertyReference-profile-delete",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "profile-property-reference-controller" ],
+        "description" : "patch-familymember-by-profile-Id",
+        "operationId" : "createPropertyReference-profile-patch",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list" : {
+              "schema" : {
+                "type" : "string"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CollectionModelFamilyMember"
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No Content"
+          }
+        }
+      }
+    },
+    "/api/auth/profiles/{id}/familyMembers/{propertyId}" : {
+      "get" : {
+        "tags" : [ "profile-property-reference-controller" ],
+        "description" : "get-familymember-by-profile-Id",
+        "operationId" : "followPropertyReference-profile-get_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "propertyId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/CollectionModelFamilyMember"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "profile-property-reference-controller" ],
+        "description" : "delete-familymember-by-profile-Id",
+        "operationId" : "deletePropertyReferenceId-profile-delete",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "propertyId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      }
+    },
+    "/api/auth/profiles/{id}/user" : {
+      "get" : {
+        "tags" : [ "profile-property-reference-controller" ],
+        "description" : "get-user-by-profile-Id",
+        "operationId" : "followPropertyReference-profile-get_2",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EntityModelUser"
+                }
+              },
+              "text/uri-list" : {
+                "schema" : {
+                  "type" : "string"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      },
+      "put" : {
+        "tags" : [ "profile-property-reference-controller" ],
+        "description" : "update-user-by-profile-Id",
+        "operationId" : "createPropertyReference-profile-put_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list" : {
+              "schema" : {
+                "type" : "string"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "201" : {
+            "description" : "Created",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No Content"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "profile-property-reference-controller" ],
+        "description" : "delete-user-by-profile-Id",
+        "operationId" : "deletePropertyReference-profile-delete_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "profile-property-reference-controller" ],
+        "description" : "patch-user-by-profile-Id",
+        "operationId" : "createPropertyReference-profile-patch_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "application/x-spring-data-compact+json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/CollectionModelObject"
+              }
+            },
+            "text/uri-list" : {
+              "schema" : {
+                "type" : "string"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "204" : {
+            "description" : "No Content"
+          }
+        }
+      }
+    },
+    "/api/auth/profiles/{id}/user/{propertyId}" : {
+      "get" : {
+        "tags" : [ "profile-property-reference-controller" ],
+        "description" : "get-user-by-profile-Id",
+        "operationId" : "followPropertyReference-profile-get_3",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "propertyId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/EntityModelUser"
+                }
+              }
+            }
+          },
+          "404" : {
+            "description" : "Not Found"
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "profile-property-reference-controller" ],
+        "description" : "delete-user-by-profile-Id",
+        "operationId" : "deletePropertyReferenceId-profile-delete_1",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "propertyId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "204" : {
+            "description" : "No Content"
+          },
+          "404" : {
+            "description" : "Not Found"
           }
         }
       }
@@ -13150,10 +13500,10 @@
         }
       }
     },
-    "/api/auth/users/{id}/healthProfile" : {
+    "/api/auth/users/{id}/profile" : {
       "get" : {
         "tags" : [ "user-property-reference-controller" ],
-        "description" : "get-healthprofile-by-user-Id",
+        "description" : "get-profile-by-user-Id",
         "operationId" : "followPropertyReference-user-get",
         "parameters" : [ {
           "name" : "id",
@@ -13169,7 +13519,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               },
               "text/uri-list" : {
@@ -13186,7 +13536,7 @@
       },
       "put" : {
         "tags" : [ "user-property-reference-controller" ],
-        "description" : "update-healthprofile-by-user-Id",
+        "description" : "update-profile-by-user-Id",
         "operationId" : "createPropertyReference-user-put",
         "parameters" : [ {
           "name" : "id",
@@ -13222,7 +13572,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -13232,7 +13582,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -13244,7 +13594,7 @@
       },
       "delete" : {
         "tags" : [ "user-property-reference-controller" ],
-        "description" : "delete-healthprofile-by-user-Id",
+        "description" : "delete-profile-by-user-Id",
         "operationId" : "deletePropertyReference-user-delete",
         "parameters" : [ {
           "name" : "id",
@@ -13265,7 +13615,7 @@
       },
       "patch" : {
         "tags" : [ "user-property-reference-controller" ],
-        "description" : "patch-healthprofile-by-user-Id",
+        "description" : "patch-profile-by-user-Id",
         "operationId" : "createPropertyReference-user-patch",
         "parameters" : [ {
           "name" : "id",
@@ -13301,7 +13651,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -13312,10 +13662,10 @@
         }
       }
     },
-    "/api/auth/users/{id}/healthProfile/{propertyId}" : {
+    "/api/auth/users/{id}/profile/{propertyId}" : {
       "get" : {
         "tags" : [ "user-property-reference-controller" ],
-        "description" : "get-healthprofile-by-user-Id",
+        "description" : "get-profile-by-user-Id",
         "operationId" : "followPropertyReference-user-get_1",
         "parameters" : [ {
           "name" : "id",
@@ -13338,7 +13688,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -13350,7 +13700,7 @@
       },
       "delete" : {
         "tags" : [ "user-property-reference-controller" ],
-        "description" : "delete-healthprofile-by-user-Id",
+        "description" : "delete-profile-by-user-Id",
         "operationId" : "deletePropertyReferenceId-user-delete",
         "parameters" : [ {
           "name" : "id",
@@ -13829,10 +14179,10 @@
         }
       }
     },
-    "/api/auth/vaccinations/{id}/member" : {
+    "/api/auth/vaccinations/{id}/profile" : {
       "get" : {
         "tags" : [ "vaccination-property-reference-controller" ],
-        "description" : "get-familymember-by-vaccination-Id",
+        "description" : "get-profile-by-vaccination-Id",
         "operationId" : "followPropertyReference-vaccination-get_2",
         "parameters" : [ {
           "name" : "id",
@@ -13848,7 +14198,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               },
               "text/uri-list" : {
@@ -13865,7 +14215,7 @@
       },
       "put" : {
         "tags" : [ "vaccination-property-reference-controller" ],
-        "description" : "update-familymember-by-vaccination-Id",
+        "description" : "update-profile-by-vaccination-Id",
         "operationId" : "createPropertyReference-vaccination-put_1",
         "parameters" : [ {
           "name" : "id",
@@ -13901,7 +14251,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -13911,7 +14261,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -13923,7 +14273,7 @@
       },
       "delete" : {
         "tags" : [ "vaccination-property-reference-controller" ],
-        "description" : "delete-familymember-by-vaccination-Id",
+        "description" : "delete-profile-by-vaccination-Id",
         "operationId" : "deletePropertyReference-vaccination-delete_1",
         "parameters" : [ {
           "name" : "id",
@@ -13944,7 +14294,7 @@
       },
       "patch" : {
         "tags" : [ "vaccination-property-reference-controller" ],
-        "description" : "patch-familymember-by-vaccination-Id",
+        "description" : "patch-profile-by-vaccination-Id",
         "operationId" : "createPropertyReference-vaccination-patch_1",
         "parameters" : [ {
           "name" : "id",
@@ -13980,7 +14330,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -13991,10 +14341,10 @@
         }
       }
     },
-    "/api/auth/vaccinations/{id}/member/{propertyId}" : {
+    "/api/auth/vaccinations/{id}/profile/{propertyId}" : {
       "get" : {
         "tags" : [ "vaccination-property-reference-controller" ],
-        "description" : "get-familymember-by-vaccination-Id",
+        "description" : "get-profile-by-vaccination-Id",
         "operationId" : "followPropertyReference-vaccination-get_3",
         "parameters" : [ {
           "name" : "id",
@@ -14017,7 +14367,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                  "$ref" : "#/components/schemas/EntityModelProfile"
                 }
               }
             }
@@ -14029,7 +14379,7 @@
       },
       "delete" : {
         "tags" : [ "vaccination-property-reference-controller" ],
-        "description" : "delete-familymember-by-vaccination-Id",
+        "description" : "delete-profile-by-vaccination-Id",
         "operationId" : "deletePropertyReferenceId-vaccination-delete_1",
         "parameters" : [ {
           "name" : "id",
@@ -14056,76 +14406,9 @@
         }
       }
     },
-    "/api/user/@me" : {
-      "get" : {
-        "tags" : [ "user-controller" ],
-        "operationId" : "me",
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/User"
-                }
-              }
-            }
-          }
-        }
-      },
+    "/api/profiles/{id}/health" : {
       "put" : {
-        "tags" : [ "user-controller" ],
-        "operationId" : "updateMe",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/UpdateProfileRequest"
-              }
-            }
-          }
-        },
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/User"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/health-profile/{id}" : {
-      "get" : {
-        "tags" : [ "health-profile-controller" ],
-        "operationId" : "getHealthProfile",
-        "parameters" : [ {
-          "name" : "id",
-          "in" : "path",
-          "required" : true,
-          "schema" : {
-            "type" : "string"
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/HealthProfile"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "tags" : [ "health-profile-controller" ],
+        "tags" : [ "profile-controller" ],
         "operationId" : "updateHealthProfile",
         "parameters" : [ {
           "name" : "id",
@@ -14142,8 +14425,7 @@
                 "$ref" : "#/components/schemas/UpdateHealthProfile"
               }
             }
-          },
-          "required" : true
+          }
         },
         "responses" : {
           "200" : {
@@ -14151,51 +14433,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/HealthProfile"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/health-profile/@me" : {
-      "get" : {
-        "tags" : [ "health-profile-controller" ],
-        "operationId" : "getMyHealthProfile",
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/HealthProfile"
-                }
-              }
-            }
-          }
-        }
-      },
-      "put" : {
-        "tags" : [ "health-profile-controller" ],
-        "operationId" : "updateMyHealthProfile",
-        "requestBody" : {
-          "content" : {
-            "application/json" : {
-              "schema" : {
-                "$ref" : "#/components/schemas/UpdateHealthProfile"
-              }
-            }
-          },
-          "required" : true
-        },
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/hal+json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/HealthProfile"
+                  "$ref" : "#/components/schemas/ProfileDTO"
                 }
               }
             }
@@ -14212,7 +14450,8 @@
           "in" : "path",
           "required" : true,
           "schema" : {
-            "type" : "string"
+            "type" : "integer",
+            "format" : "int64"
           }
         } ],
         "responses" : {
@@ -14221,7 +14460,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Family"
+                  "$ref" : "#/components/schemas/FamilyDTO"
                 }
               }
             }
@@ -14255,7 +14494,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Family"
+                  "$ref" : "#/components/schemas/FamilyDTO"
                 }
               }
             }
@@ -14334,7 +14573,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Family"
+                  "$ref" : "#/components/schemas/FamilyDTO"
                 }
               }
             }
@@ -14363,7 +14602,7 @@
                 "schema" : {
                   "type" : "array",
                   "items" : {
-                    "$ref" : "#/components/schemas/FamilyMember"
+                    "$ref" : "#/components/schemas/FamilyMemberDTO"
                   }
                 }
               }
@@ -14399,7 +14638,7 @@
             "content" : {
               "application/hal+json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/FamilyMember"
+                  "$ref" : "#/components/schemas/FamilyMemberDTO"
                 }
               }
             }
@@ -14460,6 +14699,194 @@
               "application/hal+json" : {
                 "schema" : {
                   "$ref" : "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles/@me" : {
+      "get" : {
+        "tags" : [ "profile-controller" ],
+        "operationId" : "me",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "patch" : {
+        "tags" : [ "profile-controller" ],
+        "operationId" : "updateMe",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UpdateProfileRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProfileDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles/@me/password" : {
+      "patch" : {
+        "tags" : [ "profile-controller" ],
+        "operationId" : "updateMyPassword",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UpdatePasswordRequest"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/UserDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles/@me/health" : {
+      "patch" : {
+        "tags" : [ "profile-controller" ],
+        "operationId" : "updateMyHealthProfile",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/UpdateHealthProfile"
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProfileDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles/@me/avatar" : {
+      "patch" : {
+        "tags" : [ "profile-controller" ],
+        "operationId" : "updateMyAvatar",
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "file" : {
+                    "type" : "string",
+                    "format" : "binary"
+                  }
+                },
+                "required" : [ "file" ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProfileDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/profiles/{id}" : {
+      "get" : {
+        "tags" : [ "profile-controller" ],
+        "operationId" : "getProfileById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProfileDTO"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/medical-records/profile/{profileId}" : {
+      "get" : {
+        "tags" : [ "medical-record-controller" ],
+        "operationId" : "getAllMedicalRecords",
+        "parameters" : [ {
+          "name" : "profileId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/MedicalRecordDto"
+                  }
                 }
               }
             }
@@ -14537,6 +14964,67 @@
         }
       }
     },
+    "/api/family/{id}/members/{memberId}" : {
+      "get" : {
+        "tags" : [ "family-member-controller" ],
+        "operationId" : "getFamilyMemberById",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "memberId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/hal+json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/FamilyMemberDTO"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "family-member-controller" ],
+        "operationId" : "deleteMemberFromFamily",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "memberId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
     "/api/family/@me" : {
       "get" : {
         "tags" : [ "family-controller" ],
@@ -14549,7 +15037,7 @@
                 "schema" : {
                   "type" : "array",
                   "items" : {
-                    "$ref" : "#/components/schemas/Family"
+                    "$ref" : "#/components/schemas/FamilyDTO"
                   }
                 }
               }
@@ -14662,43 +15150,34 @@
           }
         }
       },
-      "EntityModelVaccination" : {
+      "EntityModelFamilyMember" : {
         "type" : "object",
         "properties" : {
-          "vaccineName" : {
-            "type" : "string"
+          "familyId" : {
+            "type" : "integer",
+            "format" : "int64"
           },
-          "vaccinationDate" : {
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "relationship" : {
             "type" : "string",
-            "format" : "date-time"
-          },
-          "dose" : {
-            "type" : "string"
-          },
-          "batchNumber" : {
-            "type" : "string"
-          },
-          "location" : {
-            "type" : "string"
-          },
-          "reactions" : {
-            "type" : "string"
-          },
-          "notes" : {
-            "type" : "string"
+            "maxLength" : 50,
+            "minLength" : 0
           },
           "createdAt" : {
             "type" : "string",
             "format" : "date-time"
           },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
+          "isActive" : {
+            "type" : "boolean"
           },
           "_links" : {
             "$ref" : "#/components/schemas/Links"
           }
-        }
+        },
+        "required" : [ "family", "relationship" ]
       },
       "Family" : {
         "type" : "object",
@@ -14718,7 +15197,11 @@
             "minLength" : 0
           },
           "owner" : {
-            "$ref" : "#/components/schemas/User"
+            "$ref" : "#/components/schemas/Profile"
+          },
+          "ownerId" : {
+            "type" : "integer",
+            "format" : "int64"
           },
           "phoneNumber" : {
             "type" : "string",
@@ -14759,45 +15242,27 @@
           "family" : {
             "$ref" : "#/components/schemas/Family"
           },
-          "user" : {
-            "$ref" : "#/components/schemas/User"
+          "familyId" : {
+            "type" : "integer",
+            "format" : "int64"
           },
-          "healthProfile" : {
-            "$ref" : "#/components/schemas/HealthProfile"
+          "profile" : {
+            "$ref" : "#/components/schemas/Profile"
           },
-          "avatarUrl" : {
-            "type" : "string"
-          },
-          "fullName" : {
-            "type" : "string"
-          },
-          "dateOfBirth" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "gender" : {
-            "type" : "string",
-            "enum" : [ "FEMALE", "MALE" ]
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
           },
           "relationship" : {
             "type" : "string",
             "maxLength" : 50,
             "minLength" : 0
           },
-          "phoneNumber" : {
-            "type" : "string"
-          },
-          "email" : {
-            "type" : "string"
-          },
           "createdAt" : {
             "type" : "string",
             "format" : "date-time"
           },
           "isActive" : {
-            "type" : "boolean"
-          },
-          "hasAccount" : {
             "type" : "boolean"
           }
         },
@@ -14811,7 +15276,50 @@
           }
         }
       },
-      "HealthProfile" : {
+      "PageMetadata" : {
+        "type" : "object",
+        "properties" : {
+          "size" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "totalElements" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "totalPages" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "number" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "PagedModelEntityModelFamilyMember" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "familymembers" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "Profile" : {
         "type" : "object",
         "properties" : {
           "id" : {
@@ -14849,6 +15357,50 @@
             "maxLength" : 2000,
             "minLength" : 0
           },
+          "healthInsuranceNumber" : {
+            "type" : "string",
+            "maxLength" : 20,
+            "minLength" : 0
+          },
+          "fullName" : {
+            "type" : "string"
+          },
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "dateOfBirth" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "gender" : {
+            "type" : "string",
+            "enum" : [ "FEMALE", "MALE" ]
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "address" : {
+            "type" : "string"
+          },
+          "avatarUrl" : {
+            "type" : "string"
+          },
+          "bio" : {
+            "type" : "string"
+          },
+          "user" : {
+            "$ref" : "#/components/schemas/User"
+          },
+          "userId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "familyMembers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FamilyMember"
+            }
+          },
           "createdAt" : {
             "type" : "string",
             "format" : "date-time"
@@ -14856,49 +15408,6 @@
           "updatedAt" : {
             "type" : "string",
             "format" : "date-time"
-          }
-        }
-      },
-      "PageMetadata" : {
-        "type" : "object",
-        "properties" : {
-          "size" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "totalElements" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "totalPages" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "number" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        }
-      },
-      "PagedModelEntityModelVaccination" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "vaccinations" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelVaccination"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
           }
         }
       },
@@ -14915,26 +15424,6 @@
           "email" : {
             "type" : "string"
           },
-          "fullName" : {
-            "type" : "string"
-          },
-          "phoneNumber" : {
-            "type" : "string"
-          },
-          "dateOfBirth" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "gender" : {
-            "type" : "string",
-            "enum" : [ "FEMALE", "MALE" ]
-          },
-          "address" : {
-            "type" : "string"
-          },
-          "avatarUrl" : {
-            "type" : "string"
-          },
           "createdAt" : {
             "type" : "string",
             "format" : "date-time"
@@ -14950,14 +15439,8 @@
             "type" : "string",
             "format" : "date-time"
           },
-          "healthProfile" : {
-            "$ref" : "#/components/schemas/HealthProfile"
-          },
-          "enabled" : {
-            "type" : "boolean"
-          },
-          "username" : {
-            "type" : "string"
+          "profile" : {
+            "$ref" : "#/components/schemas/Profile"
           },
           "authorities" : {
             "type" : "array",
@@ -14965,195 +15448,20 @@
               "$ref" : "#/components/schemas/GrantedAuthority"
             }
           },
-          "accountNonExpired" : {
-            "type" : "boolean"
-          },
-          "credentialsNonExpired" : {
-            "type" : "boolean"
-          },
-          "accountNonLocked" : {
-            "type" : "boolean"
-          }
-        }
-      },
-      "EntityModelFamilyMember" : {
-        "type" : "object",
-        "properties" : {
-          "avatarUrl" : {
+          "username" : {
             "type" : "string"
-          },
-          "fullName" : {
-            "type" : "string"
-          },
-          "dateOfBirth" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "gender" : {
-            "type" : "string",
-            "enum" : [ "FEMALE", "MALE" ]
-          },
-          "relationship" : {
-            "type" : "string",
-            "maxLength" : 50,
-            "minLength" : 0
-          },
-          "phoneNumber" : {
-            "type" : "string"
-          },
-          "email" : {
-            "type" : "string"
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "isActive" : {
-            "type" : "boolean"
-          },
-          "hasAccount" : {
-            "type" : "boolean"
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        },
-        "required" : [ "family", "relationship" ]
-      },
-      "CollectionModelObject" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "objects" : {
-                "type" : "array",
-                "items" : {
-                  "type" : "object"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelUser" : {
-        "type" : "object",
-        "properties" : {
-          "password" : {
-            "type" : "string"
-          },
-          "email" : {
-            "type" : "string"
-          },
-          "fullName" : {
-            "type" : "string"
-          },
-          "phoneNumber" : {
-            "type" : "string"
-          },
-          "dateOfBirth" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "gender" : {
-            "type" : "string",
-            "enum" : [ "FEMALE", "MALE" ]
-          },
-          "address" : {
-            "type" : "string"
-          },
-          "avatarUrl" : {
-            "type" : "string"
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "isActive" : {
-            "type" : "boolean"
-          },
-          "lastLogin" : {
-            "type" : "string",
-            "format" : "date-time"
           },
           "enabled" : {
             "type" : "boolean"
           },
-          "username" : {
-            "type" : "string"
-          },
-          "authorities" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/GrantedAuthority"
-            }
+          "credentialsNonExpired" : {
+            "type" : "boolean"
           },
           "accountNonExpired" : {
             "type" : "boolean"
           },
-          "credentialsNonExpired" : {
-            "type" : "boolean"
-          },
           "accountNonLocked" : {
             "type" : "boolean"
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelTransferRequest" : {
-        "type" : "object",
-        "properties" : {
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "status" : {
-            "type" : "string",
-            "enum" : [ "PENDING", "APPROVED", "REJECTED" ]
-          },
-          "reason" : {
-            "type" : "string"
-          },
-          "notes" : {
-            "type" : "string"
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "PagedModelEntityModelTransferRequest" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "transferrequests" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelTransferRequest"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
           }
         }
       },
@@ -15169,6 +15477,10 @@
             "type" : "string",
             "maxLength" : 500,
             "minLength" : 0
+          },
+          "ownerId" : {
+            "type" : "integer",
+            "format" : "int64"
           },
           "phoneNumber" : {
             "type" : "string",
@@ -15201,6 +15513,179 @@
           }
         },
         "required" : [ "address", "familyName", "isActive", "owner" ]
+      },
+      "CollectionModelObject" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "objects" : {
+                "type" : "array",
+                "items" : {
+                  "type" : "object"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelProfile" : {
+        "type" : "object",
+        "properties" : {
+          "bloodType" : {
+            "type" : "string",
+            "pattern" : "^(A|B|AB|O)[+-]$"
+          },
+          "height" : {
+            "type" : "number",
+            "format" : "double",
+            "maximum" : 300.0,
+            "minimum" : 0.0
+          },
+          "weight" : {
+            "type" : "number",
+            "format" : "double",
+            "maximum" : 500.0,
+            "minimum" : 0.0
+          },
+          "allergies" : {
+            "type" : "string",
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "chronicDiseases" : {
+            "type" : "string",
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "notes" : {
+            "type" : "string",
+            "maxLength" : 2000,
+            "minLength" : 0
+          },
+          "healthInsuranceNumber" : {
+            "type" : "string",
+            "maxLength" : 20,
+            "minLength" : 0
+          },
+          "fullName" : {
+            "type" : "string"
+          },
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "dateOfBirth" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "gender" : {
+            "type" : "string",
+            "enum" : [ "FEMALE", "MALE" ]
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "address" : {
+            "type" : "string"
+          },
+          "avatarUrl" : {
+            "type" : "string"
+          },
+          "bio" : {
+            "type" : "string"
+          },
+          "userId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "CollectionModelEntityModelFamilyMember" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "familymembers" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelFamilyDoctor" : {
+        "type" : "object",
+        "properties" : {
+          "startDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "endDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "PENDING", "ACCEPTED", "REJECTED" ]
+          },
+          "notes" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "PagedModelEntityModelFamilyDoctor" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "familydoctors" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelFamilyDoctor"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
       },
       "EntityModelDoctor" : {
         "type" : "object",
@@ -15241,39 +15726,36 @@
         },
         "required" : [ "isVerified", "licenseNumber", "medicalFacility", "specialty", "user" ]
       },
-      "EntityModelHealthProfile" : {
+      "PagedModelEntityModelProfile" : {
         "type" : "object",
         "properties" : {
-          "bloodType" : {
-            "type" : "string",
-            "pattern" : "^(A|B|AB|O)[+-]$"
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "profiles" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelProfile"
+                }
+              }
+            }
           },
-          "height" : {
-            "type" : "number",
-            "format" : "double",
-            "maximum" : 300.0,
-            "minimum" : 0.0
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
           },
-          "weight" : {
-            "type" : "number",
-            "format" : "double",
-            "maximum" : 500.0,
-            "minimum" : 0.0
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "EntityModelUser" : {
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string"
           },
-          "allergies" : {
-            "type" : "string",
-            "maxLength" : 1000,
-            "minLength" : 0
-          },
-          "chronicDiseases" : {
-            "type" : "string",
-            "maxLength" : 1000,
-            "minLength" : 0
-          },
-          "notes" : {
-            "type" : "string",
-            "maxLength" : 2000,
-            "minLength" : 0
+          "email" : {
+            "type" : "string"
           },
           "createdAt" : {
             "type" : "string",
@@ -15283,135 +15765,68 @@
             "type" : "string",
             "format" : "date-time"
           },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "PagedModelEntityModelHealthProfile" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "healthprofiles" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelHealthProfile"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "PagedModelEntityModelFamily" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "familys" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelFamily"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "CollectionModelEntityModelFamily" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "familys" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelFamily"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "EntityModelReminder" : {
-        "type" : "object",
-        "properties" : {
-          "title" : {
-            "type" : "string"
-          },
-          "description" : {
-            "type" : "string"
-          },
-          "reminderDate" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "reminderTime" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "reminderType" : {
-            "type" : "string",
-            "enum" : [ "APPOINTMENT", "MEDICATION", "VACCINATION", "OTHER" ]
-          },
-          "priority" : {
-            "type" : "string",
-            "enum" : [ "LOW", "MEDIUM", "HIGH" ]
-          },
-          "isRecurring" : {
+          "isActive" : {
             "type" : "boolean"
           },
-          "recurrencePattern" : {
+          "lastLogin" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "authorities" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/GrantedAuthority"
+            }
+          },
+          "username" : {
             "type" : "string"
           },
-          "isCompleted" : {
+          "enabled" : {
             "type" : "boolean"
           },
-          "completedAt" : {
-            "type" : "string",
-            "format" : "date"
+          "credentialsNonExpired" : {
+            "type" : "boolean"
           },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
+          "accountNonExpired" : {
+            "type" : "boolean"
           },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
+          "accountNonLocked" : {
+            "type" : "boolean"
           },
           "_links" : {
             "$ref" : "#/components/schemas/Links"
           }
         }
       },
-      "PagedModelEntityModelReminder" : {
+      "CollectionModelFamilyMember" : {
         "type" : "object",
         "properties" : {
           "_embedded" : {
             "type" : "object",
             "properties" : {
-              "reminders" : {
+              "familymembers" : {
                 "type" : "array",
                 "items" : {
-                  "$ref" : "#/components/schemas/EntityModelReminder"
+                  "$ref" : "#/components/schemas/FamilyMemberResponse"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "PagedModelEntityModelUser" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "users" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelUser"
                 }
               }
             }
@@ -15423,158 +15838,14 @@
             "$ref" : "#/components/schemas/PageMetadata"
           }
         }
-      },
-      "EntityModelNotification" : {
-        "type" : "object",
-        "properties" : {
-          "title" : {
-            "type" : "string"
-          },
-          "content" : {
-            "type" : "string"
-          },
-          "isRead" : {
-            "type" : "boolean"
-          },
-          "readAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "notificationType" : {
-            "type" : "string",
-            "enum" : [ "INFO", "WARNING", "ERROR" ]
-          },
-          "referenceId" : {
-            "type" : "string"
-          },
-          "referenceType" : {
-            "type" : "string"
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "PagedModelEntityModelNotification" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "notifications" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelNotification"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "EntityModelPrescription" : {
-        "type" : "object",
-        "properties" : {
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "PagedModelEntityModelPrescription" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "prescriptions" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelPrescription"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "EntityModelMedicalRecord" : {
-        "type" : "object",
-        "properties" : {
-          "visitDate" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "medicalFacility" : {
-            "type" : "string",
-            "maxLength" : 200,
-            "minLength" : 2
-          },
-          "doctorName" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "minLength" : 2
-          },
-          "diagnosis" : {
-            "type" : "string",
-            "maxLength" : 500,
-            "minLength" : 2
-          },
-          "treatment" : {
-            "type" : "string",
-            "maxLength" : 1000,
-            "minLength" : 0
-          },
-          "notes" : {
-            "type" : "string",
-            "maxLength" : 2000,
-            "minLength" : 0
-          },
-          "isFollowup" : {
-            "type" : "boolean"
-          },
-          "followupDate" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        },
-        "required" : [ "createdBy", "diagnosis", "medicalFacility", "member", "visitDate" ]
       },
       "EntityModelHealthMetric" : {
         "type" : "object",
         "properties" : {
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
           "metricType" : {
             "type" : "string",
             "enum" : [ "BLOOD_PRESSURE", "HEART_RATE", "BLOOD_SUGAR", "TEMPERATURE", "OXYGEN_SATURATION", "WEIGHT", "HEIGHT", "BMI" ]
@@ -15629,6 +15900,47 @@
           },
           "page" : {
             "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "PagedModelEntityModelFamily" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "familys" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelFamily"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "CollectionModelEntityModelFamily" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "familys" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelFamily"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
           }
         }
       },
@@ -15711,30 +16023,107 @@
           }
         }
       },
-      "EntityModelActivityLog" : {
+      "EntityModelVaccination" : {
         "type" : "object",
         "properties" : {
-          "timestamp" : {
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "vaccineName" : {
+            "type" : "string"
+          },
+          "vaccinationDate" : {
             "type" : "string",
             "format" : "date-time"
           },
-          "actionType" : {
-            "type" : "string",
-            "enum" : [ "CREATE", "UPDATE", "DELETE" ]
-          },
-          "entityType" : {
+          "dose" : {
             "type" : "string"
           },
-          "entityId" : {
+          "batchNumber" : {
+            "type" : "string"
+          },
+          "location" : {
+            "type" : "string"
+          },
+          "reactions" : {
+            "type" : "string"
+          },
+          "notes" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "PagedModelEntityModelVaccination" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "vaccinations" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelVaccination"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "EntityModelUserRole" : {
+        "type" : "object",
+        "properties" : {
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "PagedModelEntityModelUserRole" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "userroles" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelUserRole"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "EntityModelRole" : {
+        "type" : "object",
+        "properties" : {
+          "name" : {
             "type" : "string"
           },
           "description" : {
-            "type" : "string"
-          },
-          "ipAddress" : {
-            "type" : "string"
-          },
-          "userAgent" : {
             "type" : "string"
           },
           "_links" : {
@@ -15742,16 +16131,16 @@
           }
         }
       },
-      "PagedModelEntityModelActivityLog" : {
+      "PagedModelEntityModelRole" : {
         "type" : "object",
         "properties" : {
           "_embedded" : {
             "type" : "object",
             "properties" : {
-              "activitylogs" : {
+              "roles" : {
                 "type" : "array",
                 "items" : {
-                  "$ref" : "#/components/schemas/EntityModelActivityLog"
+                  "$ref" : "#/components/schemas/EntityModelRole"
                 }
               }
             }
@@ -15767,6 +16156,10 @@
       "EntityModelMedicalDocument" : {
         "type" : "object",
         "properties" : {
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
           "title" : {
             "type" : "string"
           },
@@ -15826,68 +16219,74 @@
           }
         }
       },
-      "PagedModelEntityModelMedicalRecord" : {
+      "EntityModelMedicalRecord" : {
         "type" : "object",
         "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "medicalrecords" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelMedicalRecord"
-                }
-              }
+          "title" : {
+            "type" : "string"
+          },
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "visitDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "medicalFacility" : {
+            "type" : "string",
+            "maxLength" : 200,
+            "minLength" : 2
+          },
+          "doctorName" : {
+            "type" : "string",
+            "maxLength" : 100,
+            "minLength" : 2
+          },
+          "diagnosis" : {
+            "type" : "string",
+            "maxLength" : 500,
+            "minLength" : 2
+          },
+          "treatment" : {
+            "type" : "string",
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "notes" : {
+            "type" : "string",
+            "maxLength" : 2000,
+            "minLength" : 0
+          },
+          "isFollowup" : {
+            "type" : "boolean"
+          },
+          "followupDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "attachments" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
             }
           },
           "_links" : {
             "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
           }
-        }
-      },
-      "PagedModelEntityModelFamilyMember" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "familymembers" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "CollectionModelEntityModelFamilyMember" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "familymembers" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyMember"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
+        },
+        "required" : [ "createdBy", "diagnosis", "medicalFacility", "visitDate" ]
       },
       "EntityModelShareRequest" : {
         "type" : "object",
@@ -15941,218 +16340,47 @@
           }
         }
       },
-      "PagedModelEntityModelUser" : {
+      "EntityModelActivityLog" : {
         "type" : "object",
         "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "users" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelUser"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "PagedModelEntityModelDoctor" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "doctors" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelDoctor"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "EntityModelPrescriptionItem" : {
-        "type" : "object",
-        "properties" : {
-          "medicationName" : {
+          "timestamp" : {
             "type" : "string",
-            "maxLength" : 200,
-            "minLength" : 2
+            "format" : "date-time"
           },
-          "dosage" : {
+          "actionType" : {
             "type" : "string",
-            "maxLength" : 100,
-            "minLength" : 1
+            "enum" : [ "CREATE", "UPDATE", "DELETE" ]
           },
-          "frequency" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "minLength" : 1
-          },
-          "duration" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "minLength" : 0
-          },
-          "instructions" : {
-            "type" : "string",
-            "maxLength" : 500,
-            "minLength" : 0
-          },
-          "notes" : {
-            "type" : "string",
-            "maxLength" : 1000,
-            "minLength" : 0
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        },
-        "required" : [ "dosage", "frequency", "medicationName", "prescription" ]
-      },
-      "PagedModelEntityModelPrescriptionItem" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "prescriptionitems" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelPrescriptionItem"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "EntityModelFamilyDoctor" : {
-        "type" : "object",
-        "properties" : {
-          "startDate" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "endDate" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "status" : {
-            "type" : "string",
-            "enum" : [ "PENDING", "ACCEPTED", "REJECTED" ]
-          },
-          "notes" : {
+          "entityType" : {
             "type" : "string"
           },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "PagedModelEntityModelFamilyDoctor" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "familydoctors" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelFamilyDoctor"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "EntityModelRole" : {
-        "type" : "object",
-        "properties" : {
-          "name" : {
+          "entityId" : {
             "type" : "string"
           },
           "description" : {
             "type" : "string"
           },
+          "ipAddress" : {
+            "type" : "string"
+          },
+          "userAgent" : {
+            "type" : "string"
+          },
           "_links" : {
             "$ref" : "#/components/schemas/Links"
           }
         }
       },
-      "PagedModelEntityModelRole" : {
+      "PagedModelEntityModelActivityLog" : {
         "type" : "object",
         "properties" : {
           "_embedded" : {
             "type" : "object",
             "properties" : {
-              "roles" : {
+              "activitylogs" : {
                 "type" : "array",
                 "items" : {
-                  "$ref" : "#/components/schemas/EntityModelRole"
-                }
-              }
-            }
-          },
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "EntityModelUserRole" : {
-        "type" : "object",
-        "properties" : {
-          "_links" : {
-            "$ref" : "#/components/schemas/Links"
-          }
-        }
-      },
-      "PagedModelEntityModelUserRole" : {
-        "type" : "object",
-        "properties" : {
-          "_embedded" : {
-            "type" : "object",
-            "properties" : {
-              "userroles" : {
-                "type" : "array",
-                "items" : {
-                  "$ref" : "#/components/schemas/EntityModelUserRole"
+                  "$ref" : "#/components/schemas/EntityModelActivityLog"
                 }
               }
             }
@@ -16202,6 +16430,350 @@
           }
         }
       },
+      "PagedModelEntityModelDoctor" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "doctors" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelDoctor"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "EntityModelPrescription" : {
+        "type" : "object",
+        "properties" : {
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "PagedModelEntityModelPrescription" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "prescriptions" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelPrescription"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "PagedModelEntityModelMedicalRecord" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "medicalrecords" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelMedicalRecord"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "CollectionModelEntityModelMedicalRecord" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "medicalrecords" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelMedicalRecord"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "EntityModelNotification" : {
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string"
+          },
+          "content" : {
+            "type" : "string"
+          },
+          "isRead" : {
+            "type" : "boolean"
+          },
+          "readAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "notificationType" : {
+            "type" : "string",
+            "enum" : [ "INFO", "WARNING", "ERROR" ]
+          },
+          "referenceId" : {
+            "type" : "string"
+          },
+          "referenceType" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "PagedModelEntityModelNotification" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "notifications" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelNotification"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "EntityModelReminder" : {
+        "type" : "object",
+        "properties" : {
+          "title" : {
+            "type" : "string"
+          },
+          "description" : {
+            "type" : "string"
+          },
+          "reminderDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "reminderTime" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "reminderType" : {
+            "type" : "string",
+            "enum" : [ "APPOINTMENT", "MEDICATION", "VACCINATION", "OTHER" ]
+          },
+          "priority" : {
+            "type" : "string",
+            "enum" : [ "LOW", "MEDIUM", "HIGH" ]
+          },
+          "isRecurring" : {
+            "type" : "boolean"
+          },
+          "recurrencePattern" : {
+            "type" : "string"
+          },
+          "isCompleted" : {
+            "type" : "boolean"
+          },
+          "completedAt" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "PagedModelEntityModelReminder" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "reminders" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelReminder"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "EntityModelTransferRequest" : {
+        "type" : "object",
+        "properties" : {
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "PENDING", "APPROVED", "REJECTED" ]
+          },
+          "reason" : {
+            "type" : "string"
+          },
+          "notes" : {
+            "type" : "string"
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        }
+      },
+      "PagedModelEntityModelTransferRequest" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "transferrequests" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelTransferRequest"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "EntityModelPrescriptionItem" : {
+        "type" : "object",
+        "properties" : {
+          "medicationName" : {
+            "type" : "string",
+            "maxLength" : 200,
+            "minLength" : 2
+          },
+          "dosage" : {
+            "type" : "string",
+            "maxLength" : 100,
+            "minLength" : 1
+          },
+          "frequency" : {
+            "type" : "string",
+            "maxLength" : 100,
+            "minLength" : 1
+          },
+          "durationInDays" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 1
+          },
+          "startUseDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "instructions" : {
+            "type" : "string",
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "notes" : {
+            "type" : "string",
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          }
+        },
+        "required" : [ "dosage", "frequency", "medicationName", "prescription", "startUseDate" ]
+      },
+      "PagedModelEntityModelPrescriptionItem" : {
+        "type" : "object",
+        "properties" : {
+          "_embedded" : {
+            "type" : "object",
+            "properties" : {
+              "prescriptionitems" : {
+                "type" : "array",
+                "items" : {
+                  "$ref" : "#/components/schemas/EntityModelPrescriptionItem"
+                }
+              }
+            }
+          },
+          "_links" : {
+            "$ref" : "#/components/schemas/Links"
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
       "ActivityLogRequestBody" : {
         "type" : "object",
         "properties" : {
@@ -16237,7 +16809,96 @@
           }
         }
       },
-      "HealthProfileRequestBody" : {
+      "FamilyRequestBody" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "familyName" : {
+            "type" : "string",
+            "maxLength" : 255,
+            "minLength" : 3
+          },
+          "address" : {
+            "type" : "string",
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "owner" : {
+            "type" : "string"
+          },
+          "ownerId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "pattern" : "^(\\+84|0)[3|5|7|8|9][0-9]{8}$"
+          },
+          "email" : {
+            "type" : "string",
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "isActive" : {
+            "type" : "boolean"
+          },
+          "familyMembers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FamilyMember"
+            }
+          }
+        },
+        "required" : [ "address", "familyName", "isActive", "owner" ]
+      },
+      "FamilyMemberRequestBody" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "family" : {
+            "type" : "string"
+          },
+          "familyId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "profile" : {
+            "type" : "string"
+          },
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "relationship" : {
+            "type" : "string",
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "isActive" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "family", "relationship" ]
+      },
+      "ProfileRequestBody" : {
         "type" : "object",
         "properties" : {
           "id" : {
@@ -16275,6 +16936,50 @@
             "maxLength" : 2000,
             "minLength" : 0
           },
+          "healthInsuranceNumber" : {
+            "type" : "string",
+            "maxLength" : 20,
+            "minLength" : 0
+          },
+          "fullName" : {
+            "type" : "string"
+          },
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "dateOfBirth" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "gender" : {
+            "type" : "string",
+            "enum" : [ "FEMALE", "MALE" ]
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "address" : {
+            "type" : "string"
+          },
+          "avatarUrl" : {
+            "type" : "string"
+          },
+          "bio" : {
+            "type" : "string"
+          },
+          "user" : {
+            "type" : "string"
+          },
+          "userId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "familyMembers" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
           "createdAt" : {
             "type" : "string",
             "format" : "date-time"
@@ -16298,26 +17003,6 @@
           "email" : {
             "type" : "string"
           },
-          "fullName" : {
-            "type" : "string"
-          },
-          "phoneNumber" : {
-            "type" : "string"
-          },
-          "dateOfBirth" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "gender" : {
-            "type" : "string",
-            "enum" : [ "FEMALE", "MALE" ]
-          },
-          "address" : {
-            "type" : "string"
-          },
-          "avatarUrl" : {
-            "type" : "string"
-          },
           "createdAt" : {
             "type" : "string",
             "format" : "date-time"
@@ -16333,13 +17018,7 @@
             "type" : "string",
             "format" : "date-time"
           },
-          "healthProfile" : {
-            "type" : "string"
-          },
-          "enabled" : {
-            "type" : "boolean"
-          },
-          "username" : {
+          "profile" : {
             "type" : "string"
           },
           "authorities" : {
@@ -16348,10 +17027,16 @@
               "$ref" : "#/components/schemas/GrantedAuthority"
             }
           },
-          "accountNonExpired" : {
+          "username" : {
+            "type" : "string"
+          },
+          "enabled" : {
             "type" : "boolean"
           },
           "credentialsNonExpired" : {
+            "type" : "boolean"
+          },
+          "accountNonExpired" : {
             "type" : "boolean"
           },
           "accountNonLocked" : {
@@ -16402,55 +17087,6 @@
         },
         "required" : [ "isVerified", "licenseNumber", "medicalFacility", "specialty", "user" ]
       },
-      "FamilyRequestBody" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "familyName" : {
-            "type" : "string",
-            "maxLength" : 255,
-            "minLength" : 3
-          },
-          "address" : {
-            "type" : "string",
-            "maxLength" : 500,
-            "minLength" : 0
-          },
-          "owner" : {
-            "type" : "string"
-          },
-          "phoneNumber" : {
-            "type" : "string",
-            "pattern" : "^(\\+84|0)[3|5|7|8|9][0-9]{8}$"
-          },
-          "email" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "minLength" : 0
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "isActive" : {
-            "type" : "boolean"
-          },
-          "familyMembers" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/FamilyMember"
-            }
-          }
-        },
-        "required" : [ "address", "familyName", "isActive", "owner" ]
-      },
       "FamilyDoctorRequestBody" : {
         "type" : "object",
         "properties" : {
@@ -16489,60 +17125,6 @@
           }
         }
       },
-      "FamilyMemberRequestBody" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "family" : {
-            "type" : "string"
-          },
-          "user" : {
-            "type" : "string"
-          },
-          "healthProfile" : {
-            "type" : "string"
-          },
-          "avatarUrl" : {
-            "type" : "string"
-          },
-          "fullName" : {
-            "type" : "string"
-          },
-          "dateOfBirth" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "gender" : {
-            "type" : "string",
-            "enum" : [ "FEMALE", "MALE" ]
-          },
-          "relationship" : {
-            "type" : "string",
-            "maxLength" : 50,
-            "minLength" : 0
-          },
-          "phoneNumber" : {
-            "type" : "string"
-          },
-          "email" : {
-            "type" : "string"
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "isActive" : {
-            "type" : "boolean"
-          },
-          "hasAccount" : {
-            "type" : "boolean"
-          }
-        },
-        "required" : [ "family", "relationship" ]
-      },
       "FileDocumentRequestBody" : {
         "type" : "object",
         "properties" : {
@@ -16579,8 +17161,12 @@
             "type" : "integer",
             "format" : "int64"
           },
-          "member" : {
+          "profile" : {
             "type" : "string"
+          },
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
           },
           "metricType" : {
             "type" : "string",
@@ -16624,8 +17210,12 @@
             "type" : "integer",
             "format" : "int64"
           },
-          "member" : {
+          "profile" : {
             "type" : "string"
+          },
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
           },
           "medicalRecord" : {
             "type" : "string"
@@ -16674,8 +17264,15 @@
             "type" : "integer",
             "format" : "int64"
           },
-          "member" : {
+          "title" : {
             "type" : "string"
+          },
+          "profile" : {
+            "type" : "string"
+          },
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
           },
           "visitDate" : {
             "type" : "string",
@@ -16726,9 +17323,18 @@
           },
           "createdBy" : {
             "type" : "string"
+          },
+          "type" : {
+            "type" : "string"
+          },
+          "attachments" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
           }
         },
-        "required" : [ "createdBy", "diagnosis", "medicalFacility", "member", "visitDate" ]
+        "required" : [ "createdBy", "diagnosis", "medicalFacility", "visitDate" ]
       },
       "NotificationRequestBody" : {
         "type" : "object",
@@ -16817,10 +17423,14 @@
             "maxLength" : 100,
             "minLength" : 1
           },
-          "duration" : {
+          "durationInDays" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 1
+          },
+          "startUseDate" : {
             "type" : "string",
-            "maxLength" : 100,
-            "minLength" : 0
+            "format" : "date"
           },
           "instructions" : {
             "type" : "string",
@@ -16833,7 +17443,33 @@
             "minLength" : 0
           }
         },
-        "required" : [ "dosage", "frequency", "medicationName", "prescription" ]
+        "required" : [ "dosage", "frequency", "medicationName", "prescription", "startUseDate" ]
+      },
+      "FamilyMemberResponse" : {
+        "type" : "object",
+        "properties" : {
+          "familyId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "relationship" : {
+            "type" : "string",
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "isActive" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "family", "relationship" ]
       },
       "ReminderRequestBody" : {
         "type" : "object",
@@ -17037,8 +17673,12 @@
             "type" : "integer",
             "format" : "int64"
           },
-          "member" : {
+          "profile" : {
             "type" : "string"
+          },
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
           },
           "vaccineName" : {
             "type" : "string"
@@ -17074,49 +17714,6 @@
             "type" : "string"
           }
         }
-      },
-      "UpdateProfileRequest" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "password" : {
-            "type" : "string",
-            "maxLength" : 2147483647,
-            "minLength" : 6
-          },
-          "email" : {
-            "type" : "string"
-          },
-          "fullName" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "minLength" : 0
-          },
-          "phoneNumber" : {
-            "type" : "string",
-            "pattern" : "^\\d{10,15}$"
-          },
-          "dateOfBirth" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "gender" : {
-            "type" : "string",
-            "enum" : [ "FEMALE", "MALE" ]
-          },
-          "address" : {
-            "type" : "string",
-            "maxLength" : 255,
-            "minLength" : 0
-          },
-          "avatarUrl" : {
-            "type" : "string"
-          }
-        },
-        "required" : [ "avatarUrl", "email", "fullName", "gender", "id" ]
       },
       "UpdateHealthProfile" : {
         "type" : "object",
@@ -17155,6 +17752,80 @@
             "type" : "string",
             "maxLength" : 2000,
             "minLength" : 0
+          },
+          "healthInsuranceNumber" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "healthInsuranceNumber" ]
+      },
+      "ProfileDTO" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "bloodType" : {
+            "type" : "string"
+          },
+          "height" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "weight" : {
+            "type" : "number",
+            "format" : "double"
+          },
+          "allergies" : {
+            "type" : "string"
+          },
+          "chronicDiseases" : {
+            "type" : "string"
+          },
+          "notes" : {
+            "type" : "string"
+          },
+          "healthInsuranceNumber" : {
+            "type" : "string"
+          },
+          "fullName" : {
+            "type" : "string"
+          },
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "dateOfBirth" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "gender" : {
+            "type" : "string",
+            "enum" : [ "FEMALE", "MALE" ]
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "address" : {
+            "type" : "string"
+          },
+          "avatarUrl" : {
+            "type" : "string"
+          },
+          "bio" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "userId" : {
+            "type" : "integer",
+            "format" : "int64"
           }
         }
       },
@@ -17182,6 +17853,81 @@
           }
         },
         "required" : [ "address", "email", "familyName", "phoneNumber" ]
+      },
+      "FamilyDTO" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "familyName" : {
+            "type" : "string"
+          },
+          "address" : {
+            "type" : "string"
+          },
+          "owner" : {
+            "$ref" : "#/components/schemas/ProfileDTO"
+          },
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "isActive" : {
+            "type" : "boolean"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "familyMembers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FamilyMemberDTO"
+            }
+          },
+          "ownerId" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
+      },
+      "FamilyMemberDTO" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "profile" : {
+            "$ref" : "#/components/schemas/ProfileDTO"
+          },
+          "relationship" : {
+            "type" : "string"
+          },
+          "isActive" : {
+            "type" : "boolean"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "familyId" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }
       },
       "AddMemberToFamilyRequest" : {
         "type" : "object",
@@ -17324,7 +18070,181 @@
             "$ref" : "#/components/schemas/AuthenticationResponse"
           },
           "user" : {
-            "$ref" : "#/components/schemas/User"
+            "$ref" : "#/components/schemas/UserDTO"
+          }
+        }
+      },
+      "UserDTO" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "isActive" : {
+            "type" : "boolean"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "lastLogin" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "profile" : {
+            "$ref" : "#/components/schemas/ProfileDTO"
+          }
+        }
+      },
+      "UpdateProfileRequest" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "fullName" : {
+            "type" : "string",
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "pattern" : "^\\d{10,15}$"
+          },
+          "dateOfBirth" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "gender" : {
+            "type" : "string",
+            "enum" : [ "FEMALE", "MALE" ]
+          },
+          "address" : {
+            "type" : "string",
+            "maxLength" : 255,
+            "minLength" : 0
+          },
+          "bio" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "email", "fullName", "gender", "id" ]
+      },
+      "UpdatePasswordRequest" : {
+        "type" : "object",
+        "properties" : {
+          "oldPassword" : {
+            "type" : "string"
+          },
+          "newPassword" : {
+            "type" : "string",
+            "maxLength" : 100,
+            "minLength" : 8,
+            "pattern" : "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"
+          }
+        },
+        "required" : [ "newPassword", "oldPassword" ]
+      },
+      "DoctorDTO" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "specialty" : {
+            "type" : "string"
+          },
+          "licenseNumber" : {
+            "type" : "string"
+          },
+          "medicalFacility" : {
+            "type" : "string"
+          },
+          "bio" : {
+            "type" : "string"
+          },
+          "isVerified" : {
+            "type" : "boolean"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "MedicalRecordDto" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "profile" : {
+            "$ref" : "#/components/schemas/ProfileDTO"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "visitDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "medicalFacility" : {
+            "type" : "string"
+          },
+          "doctorName" : {
+            "type" : "string"
+          },
+          "doctor" : {
+            "$ref" : "#/components/schemas/DoctorDTO"
+          },
+          "diagnosis" : {
+            "type" : "string"
+          },
+          "treatment" : {
+            "type" : "string"
+          },
+          "notes" : {
+            "type" : "string"
+          },
+          "isFollowup" : {
+            "type" : "boolean"
+          },
+          "followupDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "createdBy" : {
+            "$ref" : "#/components/schemas/UserDTO"
           }
         }
       },
