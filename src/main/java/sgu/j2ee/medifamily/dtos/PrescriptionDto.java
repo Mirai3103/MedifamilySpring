@@ -2,6 +2,7 @@ package sgu.j2ee.medifamily.dtos;
 
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -22,4 +23,5 @@ public class PrescriptionDto implements Serializable {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	private UserDTO createdBy;
+	private List<PrescriptionItemDto> prescriptionItems = List.of();
 }

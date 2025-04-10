@@ -17,12 +17,12 @@ import sgu.j2ee.medifamily.services.MediaRecordService;
 @RequestMapping("/api/medical-records")
 @RequiredArgsConstructor
 public class MedicalRecordController {
-    private final MediaRecordService mediaRecordService;
-    private final IMediaRecordMapper mediaRecordMapper;
+	private final MediaRecordService mediaRecordService;
+	private final IMediaRecordMapper mediaRecordMapper;
 
-    @GetMapping("profile/{profileId}")
-    public ResponseEntity<List<MedicalRecordDto>> getAllMedicalRecords(@PathVariable Long profileId) {
-        return ResponseEntity.ok(
-                mediaRecordMapper.toDTO(mediaRecordService.getAllMedicalRecordsByProfileId(profileId)));
-    }
+	@GetMapping("profile/{profileId}")
+	public ResponseEntity<List<MedicalRecordDto>> getAllMedicalRecords(@PathVariable Long profileId) {
+		return ResponseEntity.ok(
+				mediaRecordMapper.toDTO(mediaRecordService.getAllMedicalRecordsByProfileId(profileId)));
+	}
 }

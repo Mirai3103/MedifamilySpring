@@ -17,7 +17,7 @@ public class Prescription {
 	private Long id;
 
 	@ManyToOne
-	@JoinColumn(name = "medical_record_id", nullable = false)
+	@JoinColumn(name = "medical_record_id", nullable = true)
 	private MedicalRecord medicalRecord;
 
 	private LocalDateTime createdAt;

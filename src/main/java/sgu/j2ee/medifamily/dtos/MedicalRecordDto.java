@@ -23,22 +23,22 @@ import sgu.j2ee.medifamily.dtos.user.UserDTO;
 @Builder
 @Accessors(chain = true)
 public class MedicalRecordDto implements Serializable {
-    private Long id;
-    private ProfileDTO profile;
-    private String title;
-    private Long profileId;
+	private Long id;
+	private ProfileDTO profile;
+	private String title;
+	private Long profileId;
 
-    private LocalDate visitDate;
+	private LocalDate visitDate;
 
-    private String medicalFacility;
-    private String doctorName;
-    private DoctorDTO doctor;
-    private String diagnosis;
-    private String treatment;
-    private String notes;
-    private Boolean isFollowup;
-    private LocalDate followupDate;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private UserDTO createdBy;
+	private String medicalFacility;
+	private String doctorName;
+	private DoctorDTO doctor;
+	private String diagnosis;
+	private String treatment;
+	private String notes;
+	private Boolean isFollowup;
+	private LocalDate followupDate;
+	private LocalDateTime createdAt;
+	private LocalDateTime updatedAt;
+	private UserDTO createdBy;
 }

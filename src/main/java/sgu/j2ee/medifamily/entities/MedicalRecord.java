@@ -2,10 +2,13 @@ package sgu.j2ee.medifamily.entities;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.Type;
 
+import io.hypersistence.utils.hibernate.type.array.StringArrayType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
@@ -16,6 +19,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+
 public class MedicalRecord {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -70,4 +74,9 @@ public class MedicalRecord {
 	private User createdBy;
 
 	private String type;
+
+	@Type(value = StringArrayType.class)
+	@Column(columnDefinition = "jsonb")
+	@Builder.Default
+	private List<String> attachments = List.of();
 }

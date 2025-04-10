@@ -21,9 +21,9 @@ public class FamilyController {
 	private final AuditorAware<String> auditorAware;
 	private final IFamilyMapper familyMapper;
 
-	@GetMapping("/{id}")
-	public ResponseEntity<FamilyDTO> getFamily(@PathVariable String id) {
-		var family = familyService.getFamilyById(Long.parseLong(id));
+	@GetMapping(path = "/{id:[0-9]+}")
+	public ResponseEntity<FamilyDTO> getFamily(@PathVariable Long id) {
+		var family = familyService.getFamilyById(id);
 		family.getOwner().setFamilyMembers(null);
 		family.getOwner().setUser(null);
 		return ResponseEntity.ok(familyMapper.toDTO(family));
