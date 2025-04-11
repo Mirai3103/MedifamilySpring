@@ -9,11 +9,13 @@ import org.springframework.data.annotation.CreatedBy;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "medical_documents")
 @Data
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @Builder
 public class MedicalDocument {

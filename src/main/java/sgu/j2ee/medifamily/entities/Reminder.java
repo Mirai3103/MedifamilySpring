@@ -7,12 +7,14 @@ import org.springframework.data.annotation.CreatedBy;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "reminders")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 public class Reminder {
 	public enum ReminderType {

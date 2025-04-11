@@ -10,11 +10,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import lombok.Builder.Default;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "family_members")
 @Data
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @Builder
 public class FamilyMember {

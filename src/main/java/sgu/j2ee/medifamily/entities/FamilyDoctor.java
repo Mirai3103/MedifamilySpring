@@ -5,12 +5,14 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "family_doctors")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 public class FamilyDoctor {
 	public enum Status {

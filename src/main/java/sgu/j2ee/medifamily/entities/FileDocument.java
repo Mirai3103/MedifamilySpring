@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.UUID;
 
+import jakarta.persistence.EntityListeners;
 import org.springframework.content.commons.annotations.ContentId;
 import org.springframework.content.commons.annotations.ContentLength;
 
@@ -16,11 +17,13 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Data
 @NoArgsConstructor
 @Builder
+@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 
 public class FileDocument {

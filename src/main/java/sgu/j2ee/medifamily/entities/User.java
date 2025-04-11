@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -18,6 +19,7 @@ import lombok.Builder.Default;
 @Table(name = "users")
 @Data
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {

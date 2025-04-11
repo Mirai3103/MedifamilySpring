@@ -9,12 +9,14 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "prescriptions")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 public class Prescription {
 	@Id

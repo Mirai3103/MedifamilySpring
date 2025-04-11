@@ -27,7 +27,7 @@ public class PrescriptionController {
 	}
 
 	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deletePrescription(Long id) {
+	public ResponseEntity<Void> deletePrescription(@PathVariable Long id) {
 		prescriptionService.deletePrescription(id);
 		return ResponseEntity.noContent().build();
 	}

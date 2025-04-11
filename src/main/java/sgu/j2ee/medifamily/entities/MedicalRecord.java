@@ -2,8 +2,10 @@ package sgu.j2ee.medifamily.entities;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
@@ -13,6 +15,9 @@ import io.hypersistence.utils.hibernate.type.array.StringArrayType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "medical_records")
@@ -20,7 +25,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-
+@EntityListeners(AuditingEntityListener.class)
 public class MedicalRecord {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -66,15 +71,17 @@ public class MedicalRecord {
 	@Future(message = "Ngày tái khám phải là ngày trong tương lai")
 	private LocalDate followupDate;
 
+	@CreatedDate
 	private LocalDateTime createdAt;
+	@LastModifiedDate
 	private LocalDateTime updatedAt;
 
 	@CreatedBy
 	private String createdBy;
 	private String type;
 
-	@Type(value = StringArrayType.class)
+	@Type(JsonBinaryType.class)
 	@Column(columnDefinition = "jsonb")
 	@Builder.Default
-	private List<String> attachments = List.of();
+	private List<String> attachments = new ArrayList<>();
 }

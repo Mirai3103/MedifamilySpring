@@ -3,6 +3,8 @@ package sgu.j2ee.medifamily.dtos;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -40,4 +42,6 @@ public class MedicalRecordDto implements Serializable {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 	private String createdBy;
+	private List<String> attachments = new ArrayList<>();
+
 }

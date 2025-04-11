@@ -6,12 +6,14 @@ import org.springframework.data.annotation.CreatedBy;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "share_requests")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 public class ShareRequest {
 	public enum Status {

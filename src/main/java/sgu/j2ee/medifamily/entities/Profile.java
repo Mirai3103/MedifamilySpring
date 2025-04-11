@@ -17,6 +17,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import sgu.j2ee.medifamily.entities.enums.Gender;
 
 @Entity
@@ -24,6 +25,7 @@ import sgu.j2ee.medifamily.entities.enums.Gender;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Builder
 public class Profile {
 	@Id
