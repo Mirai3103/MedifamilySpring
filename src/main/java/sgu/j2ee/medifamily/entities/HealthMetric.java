@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.CreatedBy;
 
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,7 +43,6 @@ public class HealthMetric {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
-	@ManyToOne
-	@JoinColumn(name = "created_by", nullable = false)
-	private User createdBy;
+	@CreatedBy
+	private String createdBy;
 }

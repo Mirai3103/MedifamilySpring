@@ -12,7 +12,6 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import sgu.j2ee.medifamily.dtos.user.DoctorDTO;
 import sgu.j2ee.medifamily.dtos.user.ProfileDTO;
-import sgu.j2ee.medifamily.dtos.user.UserDTO;
 
 /**
  * DTO for {@link sgu.j2ee.medifamily.entities.MedicalRecord}
@@ -40,5 +39,5 @@ public class MedicalRecordDto implements Serializable {
 	private LocalDate followupDate;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
-	private UserDTO createdBy;
+	private String createdBy;
 }

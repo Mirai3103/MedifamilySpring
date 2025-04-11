@@ -2,6 +2,8 @@ package sgu.j2ee.medifamily.entities;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedBy;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,9 +44,8 @@ public class ShareRequest {
 	private String reason;
 	private LocalDateTime updatedAt;
 
-	@ManyToOne
-	@JoinColumn(name = "created_by", nullable = false)
-	private User createdBy;
+	@CreatedBy
+	private String createdBy;
 
 	@ManyToOne
 	@JoinColumn(name = "approved_by")

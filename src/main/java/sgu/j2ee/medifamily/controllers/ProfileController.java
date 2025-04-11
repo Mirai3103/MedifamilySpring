@@ -1,6 +1,7 @@
 package sgu.j2ee.medifamily.controllers;
 
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.MediaType;
@@ -11,10 +12,13 @@ import org.springframework.web.multipart.MultipartFile;
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import sgu.j2ee.medifamily.dtos.PrescriptionDto;
 import sgu.j2ee.medifamily.dtos.user.*;
 import sgu.j2ee.medifamily.exceptions.UnAuthorizedException;
+import sgu.j2ee.medifamily.mappers.IPrescriptionMapper;
 import sgu.j2ee.medifamily.mappers.IProfileMapper;
 import sgu.j2ee.medifamily.mappers.IUserMapper;
+import sgu.j2ee.medifamily.services.PrescriptionService;
 import sgu.j2ee.medifamily.services.ProfileService;
 import sgu.j2ee.medifamily.services.UserDetailsServiceImpl;
 
@@ -28,6 +32,8 @@ public class ProfileController {
 	private final AuditorAware<String> auditorAware;
 	private final IUserMapper userMapper;
 	private final IProfileMapper profileMapper;
+	private final IPrescriptionMapper prescriptionMapper;
+	private final PrescriptionService prescriptionService;
 
 	@GetMapping("/@me")
 	public ResponseEntity<UserDTO> me() {
@@ -68,6 +74,12 @@ public class ProfileController {
 			@PathVariable String id) {
 		healthProfile.setId(Long.parseLong(id));
 		return ResponseEntity.ok(profileMapper.toDTO(profileService.updateHealthProfile(healthProfile)));
+	}
+
+	@GetMapping("/{id}/prescriptions")
+	public ResponseEntity<List<PrescriptionDto>> getPrescriptionByProfileId(@PathVariable Long id) {
+		var prescription = prescriptionService.findAllByProfileId(id);
+		return ResponseEntity.ok(prescriptionMapper.toDto(prescription));
 	}
 
 }

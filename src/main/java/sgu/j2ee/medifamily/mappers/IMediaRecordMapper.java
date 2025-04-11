@@ -18,4 +18,6 @@ public interface IMediaRecordMapper {
 
 	List<MedicalRecordDto> toDTO(List<MedicalRecord> medicalRecords);
 
+	MedicalRecord toEntity(MedicalRecordDto medicalRecordDto);
+
 }

@@ -9,7 +9,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.Accessors;
 import sgu.j2ee.medifamily.dtos.user.ProfileDTO;
-import sgu.j2ee.medifamily.dtos.user.UserDTO;
 import sgu.j2ee.medifamily.entities.MedicalDocument;
 
 /**
@@ -33,5 +32,5 @@ public class MedicalDocumentDto implements Serializable {
 	private String description;
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
-	private UserDTO createdBy;
+	private String createdBy;
 }

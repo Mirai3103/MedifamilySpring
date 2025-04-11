@@ -7,6 +7,7 @@ import java.util.List;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
+import org.springframework.data.annotation.CreatedBy;
 
 import io.hypersistence.utils.hibernate.type.array.StringArrayType;
 import jakarta.persistence.*;
@@ -68,11 +69,8 @@ public class MedicalRecord {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
-	@ManyToOne
-	@JoinColumn(name = "created_by", nullable = false)
-	@NotNull(message = "Người tạo hồ sơ không được để trống")
-	private User createdBy;
-
+	@CreatedBy
+	private String createdBy;
 	private String type;
 
 	@Type(value = StringArrayType.class)

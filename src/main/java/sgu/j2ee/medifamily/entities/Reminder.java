@@ -3,6 +3,8 @@ package sgu.j2ee.medifamily.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedBy;
+
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -47,7 +49,6 @@ public class Reminder {
 	private LocalDateTime createdAt;
 	private LocalDateTime updatedAt;
 
-	@ManyToOne
-	@JoinColumn(name = "created_by", nullable = false)
-	private User createdBy;
+	@CreatedBy
+	private String createdBy;
 }

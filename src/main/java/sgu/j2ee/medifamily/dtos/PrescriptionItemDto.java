@@ -19,6 +19,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class PrescriptionItemDto implements Serializable {
 	private Long id;
+	@NotNull(message = "Thông tin đơn thuốc không được để trống")
+	private Long prescriptionId;
 	@Size(message = "Tên thuốc phải có từ 2 đến 200 ký tự", min = 2, max = 200)
 	@NotBlank(message = "Tên thuốc không được để trống")
 	private String medicationName;

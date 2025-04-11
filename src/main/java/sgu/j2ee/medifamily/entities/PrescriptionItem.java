@@ -2,9 +2,6 @@ package sgu.j2ee.medifamily.entities;
 
 import java.time.LocalDate;
 
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
-
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
@@ -23,11 +20,9 @@ public class PrescriptionItem {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "prescription_id", nullable = false)
+	@Column(name = "prescription_id", nullable = false)
 	@NotNull(message = "Thông tin đơn thuốc không được để trống")
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Prescription prescription;
+	private Long prescriptionId;
 
 	@NotBlank(message = "Tên thuốc không được để trống")
 	@Size(min = 2, max = 200, message = "Tên thuốc phải có từ 2 đến 200 ký tự")
