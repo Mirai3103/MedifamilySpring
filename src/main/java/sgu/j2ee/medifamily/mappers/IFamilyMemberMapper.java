@@ -2,7 +2,10 @@ package sgu.j2ee.medifamily.mappers;
 
 import java.util.List;
 
+import org.mapstruct.BeanMapping;
 import org.mapstruct.Mapper;
+import org.mapstruct.MappingTarget;
+import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.factory.Mappers;
 import org.springframework.context.annotation.Primary;
 
@@ -20,4 +23,7 @@ public interface IFamilyMemberMapper {
 	List<FamilyMemberDTO> toDTOs(List<FamilyMember> familyMembers);
 
 	FamilyMember familyMemberDTOToFamilyMember(FamilyMemberDTO familyMemberDTO);
+
+	@BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+	FamilyMember partialUpdate(FamilyMemberDTO familyMemberDTO, @MappingTarget FamilyMember familyMember);
 }

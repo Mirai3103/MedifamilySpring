@@ -3,9 +3,10 @@ package sgu.j2ee.medifamily.entities;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "family_doctors")
@@ -23,13 +24,16 @@ public class FamilyDoctor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "family_id", nullable = false)
 	private Family family;
-
-	@ManyToOne
+	@Column(name = "family_id", insertable = false, updatable = false)
+	private Long familyId;
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "doctor_id", nullable = false)
 	private Doctor doctor;
+	@Column(name = "doctor_id", insertable = false, updatable = false)
+	private Long doctorId;
 
 	private LocalDate startDate;
 	private LocalDate endDate;

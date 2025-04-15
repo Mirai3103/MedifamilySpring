@@ -1,6 +1,7 @@
 package sgu.j2ee.medifamily.services;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
@@ -30,6 +31,19 @@ public class FileService {
 
 		contentStore.setContent(document, file.getInputStream());
 		return fileRepository.save(document);
+	}
+
+	public List<FileDocument> uploadFile(List<MultipartFile> files) throws IOException {
+		List<FileDocument> documents = files.stream()
+				.map(file -> {
+					try {
+						return uploadFile(file);
+					} catch (IOException e) {
+						throw new RuntimeException(e);
+					}
+				})
+				.toList();
+		return documents;
 	}
 
 	public FileDocument getFile(UUID id) {

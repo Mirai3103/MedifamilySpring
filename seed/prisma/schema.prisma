@@ -1,0 +1,338 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model activity_logs {
+  id          BigInt    @id @default(autoincrement())
+  action_type String?   @db.VarChar(255)
+  description String?   @db.VarChar(255)
+  entity_id   String?   @db.VarChar(255)
+  entity_type String?   @db.VarChar(255)
+  ip_address  String?   @db.VarChar(255)
+  timestamp   DateTime? @db.Timestamp(6)
+  user_agent  String?   @db.VarChar(255)
+  user_id     BigInt
+  users       users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk5bm1lt4f4eevt8lv2517soakd")
+}
+
+model doctors {
+  id                                                            BigInt              @id @default(autoincrement())
+  bio                                                           String?             @db.VarChar(1000)
+  created_at                                                    DateTime?           @db.Timestamp(6)
+  is_verified                                                   Boolean
+  license_number                                                String              @db.VarChar(255)
+  medical_facility                                              String              @db.VarChar(200)
+  specialty                                                     String              @db.VarChar(100)
+  updated_at                                                    DateTime?           @db.Timestamp(6)
+  user_id                                                       BigInt              @unique(map: "ukt1f6cueqyjwx5ghew9ar1exe3")
+  users                                                         users               @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fke9pf5qtxxkdyrwibaevo9frtk")
+  family_doctors                                                family_doctors[]
+  medical_records                                               medical_records[]
+  transfer_requests_transfer_requests_target_doctor_idTodoctors transfer_requests[] @relation("transfer_requests_target_doctor_idTodoctors")
+  transfer_requests_transfer_requests_source_doctor_idTodoctors transfer_requests[] @relation("transfer_requests_source_doctor_idTodoctors")
+}
+
+model families {
+  id                BigInt              @id @default(autoincrement())
+  address           String              @db.VarChar(500)
+  created_at        DateTime?           @db.Timestamp(6)
+  email             String?             @db.VarChar(100)
+  family_name       String              @db.VarChar(255)
+  is_active         Boolean
+  owner_id          BigInt?
+  phone_number      String?             @db.VarChar(255)
+  updated_at        DateTime?           @db.Timestamp(6)
+  profiles          profiles?           @relation(fields: [owner_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fktr8fhfbr4svjc54p2m36rnen0")
+  family_doctors    family_doctors[]
+  family_members    family_members[]
+  share_profiles    share_profiles[]
+  transfer_requests transfer_requests[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model family_doctors {
+  id         BigInt    @id @default(autoincrement())
+  created_at DateTime? @db.Timestamp(6)
+  end_date   DateTime? @db.Date
+  notes      String?   @db.VarChar(255)
+  start_date DateTime? @db.Date
+  status     String?   @db.VarChar(255)
+  updated_at DateTime? @db.Timestamp(6)
+  doctor_id  BigInt
+  family_id  BigInt
+  families   families  @relation(fields: [family_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk1ft2s8cme3rr45ext69vcg63f")
+  doctors    doctors   @relation(fields: [doctor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk3eudq6cm0620fvns3aey19930")
+}
+
+model family_members {
+  id             BigInt           @id @default(autoincrement())
+  created_at     DateTime?        @db.Timestamp(6)
+  family_id      BigInt?
+  is_active      Boolean?
+  profile_id     BigInt?
+  relationship   String           @db.VarChar(50)
+  families       families?        @relation(fields: [family_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fkeynpxqr1l03689buyid3e1d8l")
+  profiles       profiles?        @relation(fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fkpmvsx6rorvvveqnfdiaiu1qgv")
+  reminders      reminders[]
+  share_profiles share_profiles[]
+}
+
+model file_document {
+  id                String    @id @db.Uuid
+  content_id        String?   @db.VarChar(255)
+  content_length    BigInt
+  content_mime_type String?   @db.VarChar(255)
+  created           DateTime? @db.Timestamp(6)
+  last_checked      DateTime? @db.Timestamp(6)
+  name              String?   @db.VarChar(255)
+  summary           String?   @db.VarChar(255)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model health_metrics {
+  id               BigInt    @id @default(autoincrement())
+  created_at       DateTime? @db.Timestamp(6)
+  created_by       String?   @db.VarChar(255)
+  measurement_date DateTime? @db.Date
+  measurement_time DateTime? @db.Timestamp(6)
+  metric_type      String?   @db.VarChar(255)
+  metric_value     Float?
+  notes            String?   @db.VarChar(255)
+  profile_id       BigInt?
+  unit             String?   @db.VarChar(255)
+  updated_at       DateTime? @db.Timestamp(6)
+  profiles         profiles? @relation(fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fkk1yyl4aircuul6fr66c6jc6or")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model medical_documents {
+  id                BigInt           @id @default(autoincrement())
+  created_at        DateTime?        @db.Timestamp(6)
+  created_by        String?          @db.VarChar(255)
+  description       String?          @db.VarChar(255)
+  document_date     DateTime?        @db.Date
+  document_type     String?          @db.VarChar(255)
+  file_path         String?          @db.VarChar(255)
+  file_size         BigInt?
+  file_type         String?          @db.VarChar(255)
+  profile_id        BigInt?
+  title             String?          @db.VarChar(255)
+  updated_at        DateTime?        @db.Timestamp(6)
+  medical_record_id BigInt?
+  medical_records   medical_records? @relation(fields: [medical_record_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk2uvfn3m1961dc7sp8ij8bymxn")
+  profiles          profiles?        @relation(fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk9tg2j3vbqb8lfq2x56kvomjso")
+}
+
+model medical_records {
+  id                BigInt              @id @default(autoincrement())
+  attachments       Json?
+  created_at        DateTime?           @db.Timestamp(6)
+  created_by        String?             @db.VarChar(255)
+  diagnosis         String              @db.VarChar(500)
+  doctor_name       String?             @db.VarChar(100)
+  followup_date     DateTime?           @db.Date
+  is_followup       Boolean?
+  medical_facility  String              @db.VarChar(200)
+  notes             String?             @db.VarChar(2000)
+  profile_id        BigInt?
+  title             String?             @db.VarChar(255)
+  treatment         String?             @db.VarChar(1000)
+  type              String?             @db.VarChar(255)
+  updated_at        DateTime?           @db.Timestamp(6)
+  visit_date        DateTime            @db.Date
+  doctor_id         BigInt?
+  medical_documents medical_documents[]
+  profiles          profiles?           @relation(fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk8bxel6ukewudck4bx8qw22nfl")
+  doctors           doctors?            @relation(fields: [doctor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fktny13k9v4o58styd47st3s2l5")
+  prescriptions     prescriptions[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model notifications {
+  id                BigInt    @id @default(autoincrement())
+  content           String?   @db.VarChar(255)
+  created_at        DateTime? @db.Timestamp(6)
+  is_read           Boolean?
+  notification_type String?   @db.VarChar(255)
+  read_at           DateTime? @db.Timestamp(6)
+  reference_id      String?   @db.VarChar(255)
+  reference_type    String?   @db.VarChar(255)
+  title             String?   @db.VarChar(255)
+  user_id           BigInt
+  users             users     @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk9y21adhxn0ayjhfocscqox7bh")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model prescription_items {
+  id               BigInt        @id @default(autoincrement())
+  dosage           String        @db.VarChar(100)
+  duration_in_days Int?
+  frequency        String        @db.VarChar(100)
+  instructions     String?       @db.VarChar(500)
+  medication_name  String        @db.VarChar(200)
+  notes            String?       @db.VarChar(1000)
+  prescription_id  BigInt
+  start_use_date   DateTime      @db.Date
+  prescriptions    prescriptions @relation(fields: [prescription_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk6uh7tdy2lv6sx34u1365acqsf")
+}
+
+model prescriptions {
+  id                 BigInt               @id @default(autoincrement())
+  created_at         DateTime?            @db.Timestamp(6)
+  created_by         String?              @db.VarChar(255)
+  medical_record_id  BigInt?
+  updated_at         DateTime?            @db.Timestamp(6)
+  prescription_items prescription_items[]
+  medical_records    medical_records?     @relation(fields: [medical_record_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fkpchnmvlttcajjovopclelmdjh")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model profiles {
+  id                      BigInt              @id @default(autoincrement())
+  address                 String?             @db.VarChar(255)
+  allergies               String?             @db.VarChar(1000)
+  avatar_url              String?             @db.VarChar(255)
+  bio                     String?             @db.VarChar(255)
+  blood_type              String?             @db.VarChar(255)
+  chronic_diseases        String?             @db.VarChar(1000)
+  created_at              DateTime?           @db.Timestamp(6)
+  date_of_birth           DateTime?           @db.Date
+  email                   String?             @db.VarChar(255)
+  full_name               String?             @db.VarChar(255)
+  gender                  String?             @db.VarChar(255)
+  health_insurance_number String?             @db.VarChar(20)
+  height                  Float?
+  notes                   String?             @db.VarChar(2000)
+  phone_number            String?             @db.VarChar(255)
+  updated_at              DateTime?           @db.Timestamp(6)
+  user_id                 BigInt?
+  weight                  Float?
+  families                families[]
+  family_members          family_members[]
+  health_metrics          health_metrics[]
+  medical_documents       medical_documents[]
+  medical_records         medical_records[]
+  users                   users?              @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk410q61iev7klncmpqfuo85ivh")
+  vaccinations            vaccinations[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model reminders {
+  id                 BigInt         @id @default(autoincrement())
+  completed_at       DateTime?      @db.Date
+  created_at         DateTime?      @db.Timestamp(6)
+  created_by         String?        @db.VarChar(255)
+  description        String?        @db.VarChar(255)
+  is_completed       Boolean?
+  is_recurring       Boolean?
+  priority           String?        @db.VarChar(255)
+  recurrence_pattern String?        @db.VarChar(255)
+  reminder_date      DateTime?      @db.Date
+  reminder_time      DateTime?      @db.Timestamp(6)
+  reminder_type      String?        @db.VarChar(255)
+  title              String?        @db.VarChar(255)
+  updated_at         DateTime?      @db.Timestamp(6)
+  member_id          BigInt
+  family_members     family_members @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fkfu9o2hpqss89ejhjd15cn0qtd")
+}
+
+model roles {
+  id          Int          @id @default(autoincrement())
+  description String?      @db.VarChar(255)
+  name        String?      @db.VarChar(255)
+  user_roles  user_roles[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model share_permissions {
+  id               BigInt          @id @default(autoincrement())
+  permission_types Json?
+  resource_type    String?         @db.VarChar(255)
+  share_profile_id String?         @db.Uuid
+  share_profiles   share_profiles? @relation(fields: [share_profile_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk6oc32uswuf63gyi74h184hcac")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model share_profiles {
+  id                String              @id @db.Uuid
+  created_at        DateTime?           @db.Timestamp(6)
+  created_by        String?             @db.VarChar(255)
+  expires_at        DateTime?           @db.Timestamp(6)
+  invited_emails    Json?
+  member_id         BigInt?
+  reason            String?             @db.VarChar(255)
+  share_token       String?             @db.VarChar(255)
+  share_type        String?             @db.VarChar(255)
+  updated_at        DateTime?           @db.Timestamp(6)
+  family_id         BigInt
+  share_permissions share_permissions[]
+  family_members    family_members?     @relation(fields: [member_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk46512d7uqkc10vljohlkh85sd")
+  families          families            @relation(fields: [family_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fkrrkl800vr6jj1q8ttqmso8xpr")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model transfer_requests {
+  id                                                  BigInt    @id @default(autoincrement())
+  created_at                                          DateTime? @db.Timestamp(6)
+  created_by                                          String?   @db.VarChar(255)
+  notes                                               String?   @db.VarChar(255)
+  reason                                              String?   @db.VarChar(255)
+  status                                              String?   @db.VarChar(255)
+  updated_at                                          DateTime? @db.Timestamp(6)
+  approved_by                                         BigInt?
+  family_id                                           BigInt
+  source_doctor_id                                    BigInt
+  target_doctor_id                                    BigInt
+  families                                            families  @relation(fields: [family_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk17ljtaraw66p9pc5dobyvgbrc")
+  doctors_transfer_requests_target_doctor_idTodoctors doctors   @relation("transfer_requests_target_doctor_idTodoctors", fields: [target_doctor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fk74v9p2kvov4f5n8nvd4uw6c0i")
+  doctors_transfer_requests_source_doctor_idTodoctors doctors   @relation("transfer_requests_source_doctor_idTodoctors", fields: [source_doctor_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fkejesab7ndber01k4ayc0rdc3j")
+  users                                               users?    @relation(fields: [approved_by], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fkr9lol8x40lsy5g7pgot27rc9i")
+}
+
+model user_roles {
+  id      BigInt @id @default(autoincrement())
+  role_id Int
+  user_id BigInt
+  roles   roles  @relation(fields: [role_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fkh8ciramu9cc9q3qcqiv4ue8a6")
+  users   users  @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "fkhfh9dx7w3ubf1co1vdev94g3f")
+}
+
+model users {
+  id                BigInt              @id @default(autoincrement())
+  created_at        DateTime?           @db.Timestamp(6)
+  email             String?             @unique(map: "uk6dotkott2kjsp8vw4d0m25fb7") @db.VarChar(255)
+  is_active         Boolean?
+  last_login        DateTime?           @db.Timestamp(6)
+  password          String?             @db.VarChar(255)
+  updated_at        DateTime?           @db.Timestamp(6)
+  activity_logs     activity_logs[]
+  doctors           doctors?
+  notifications     notifications[]
+  profiles          profiles[]
+  transfer_requests transfer_requests[]
+  user_roles        user_roles[]
+}
+
+model vaccinations {
+  id               BigInt    @id @default(autoincrement())
+  batch_number     String?   @db.VarChar(255)
+  created_at       DateTime? @db.Timestamp(6)
+  created_by       String?   @db.VarChar(255)
+  dose             String?   @db.VarChar(255)
+  location         String?   @db.VarChar(255)
+  notes            String?   @db.VarChar(255)
+  profile_id       BigInt?
+  reactions        String?   @db.VarChar(255)
+  updated_at       DateTime? @db.Timestamp(6)
+  vaccination_date DateTime? @db.Timestamp(6)
+  vaccine_name     String?   @db.VarChar(255)
+  profiles         profiles? @relation(fields: [profile_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "fk50rj4d5i5p8jv9r79vigix8dh")
+}

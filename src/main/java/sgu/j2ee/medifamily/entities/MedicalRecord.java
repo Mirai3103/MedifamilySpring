@@ -5,19 +5,18 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedBy;
-
-import io.hypersistence.utils.hibernate.type.array.StringArrayType;
-import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import lombok.*;
 
 @Entity
 @Table(name = "medical_records")
@@ -42,7 +41,8 @@ public class MedicalRecord {
 	private Long profileId;
 
 	@NotNull(message = "Ngày khám không được để trống")
-	@PastOrPresent(message = "Ngày khám phải là ngày hiện tại hoặc trong quá khứ")
+	// @PastOrPresent(message = "Ngày khám phải là ngày hiện tại hoặc trong quá
+	// khứ")
 	private LocalDate visitDate;
 
 	@NotBlank(message = "Cơ sở y tế không được để trống")

@@ -17,22 +17,22 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableJpaAuditing(auditorAwareRef = "applicationAuditAware")
 public class MedifamilyApplication {
 
-    public static void main(String[] args) {
-        SpringApplication.run(MedifamilyApplication.class, args);
-        System.out.println("Server is running at http://localhost:8080/swagger-ui/index.html#/");
-    }
+	public static void main(String[] args) {
+		SpringApplication.run(MedifamilyApplication.class, args);
+		System.out.println("Server is running at http://localhost:8080/swagger-ui/index.html#/");
+	}
 
-    @Bean
-    public AuthenticationManager authManager(UserDetailsService userDetailsService) {
-        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
-        return new ProviderManager(provider);
-    }
+	@Bean
+	public AuthenticationManager authManager(UserDetailsService userDetailsService) {
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+		provider.setUserDetailsService(userDetailsService);
+		provider.setPasswordEncoder(passwordEncoder());
+		return new ProviderManager(provider);
+	}
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
 }

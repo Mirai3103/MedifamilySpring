@@ -1,6 +1,5 @@
 package sgu.j2ee.medifamily.mappers;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.mapstruct.Mapper;

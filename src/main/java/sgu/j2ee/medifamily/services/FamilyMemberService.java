@@ -76,7 +76,7 @@ public class FamilyMemberService {
 
 	public FamilyMember getFamilyMemberById(Long id, Long memberId) {
 
-		return familyMemberRepository.findByFamilyIdAndProfileId(id, memberId)
+		return familyMemberRepository.findByFamilyIdAndId(id, memberId)
 				.orElseThrow(() -> new NotFoundException("Không tìm thấy thành viên gia đình"));
 	}
 }

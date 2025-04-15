@@ -2,13 +2,14 @@ package sgu.j2ee.medifamily.entities;
 
 import java.time.LocalDate;
 
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Table(name = "prescription_items")
@@ -27,15 +28,15 @@ public class PrescriptionItem {
 	private Long prescriptionId;
 
 	@NotBlank(message = "Tên thuốc không được để trống")
-	@Size(min = 2, max = 200, message = "Tên thuốc phải có từ 2 đến 200 ký tự")
+	@Size(min = 2, max = 250, message = "Tên thuốc phải có từ 2 đến 250 ký tự")
 	private String medicationName;
 
 	@NotBlank(message = "Liều dùng không được để trống")
-	@Size(min = 1, max = 100, message = "Liều dùng phải có từ 1 đến 100 ký tự")
+	@Size(min = 1, max = 250, message = "Liều dùng phải có từ 1 đến 250 ký tự")
 	private String dosage;
 
 	@NotBlank(message = "Tần suất sử dụng không được để trống")
-	@Size(min = 1, max = 100, message = "Tần suất sử dụng phải có từ 1 đến 100 ký tự")
+	@Size(min = 1, max = 250, message = "Tần suất sử dụng phải có từ 1 đến 250 ký tự")
 	private String frequency;
 
 	@Min(value = 1, message = "Số lượng phải lớn hơn hoặc bằng 1")

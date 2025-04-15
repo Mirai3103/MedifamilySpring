@@ -16,14 +16,15 @@ public class PrescriptionService {
 	private final PrescriptionRepository prescriptionRepository;
 	private final PrescriptionItemRepository prescriptionItemRepository;
 	private final MediaRecordService mediaRecordService;
+
 	// todo: crud methods for prescription
 
 	public List<Prescription> findAllByProfileId(Long profileId) {
 		return prescriptionRepository.findAllByMedicalRecordProfileId(profileId);
 	}
 
-	public List<Prescription> findAllByMedicalRecordId(Long medicalRecordId) {
-		return prescriptionRepository.findAllByMedicalRecordId(medicalRecordId);
+	public Prescription findAllByMedicalRecordId(Long medicalRecordId) {
+		return prescriptionRepository.findFirstByMedicalRecordId(medicalRecordId);
 	}
 
 	public Prescription findById(Long id) {
