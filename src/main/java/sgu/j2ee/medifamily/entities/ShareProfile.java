@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedBy;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
@@ -34,6 +34,8 @@ public class ShareProfile {
 	@ManyToOne
 	@JoinColumn(name = "family_id", nullable = false)
 	private Family family;
+	@Column(name = "family_id", insertable = false, updatable = false)
+	private Long familyId;
 
 	@ManyToOne
 	@JoinColumn(name = "member_id", nullable = true)
@@ -63,7 +65,7 @@ public class ShareProfile {
 	private ShareType shareType;
 
 	private String reason;
-	@LastModifiedBy
+	@LastModifiedDate
 	private LocalDateTime updatedAt;
 
 	@CreatedBy

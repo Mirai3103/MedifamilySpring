@@ -127,15 +127,24 @@
       }
     },
     "/api/share-profile" : {
-      "post" : {
+      "get" : {
         "tags" : [ "share-profile-controller" ],
-        "operationId" : "createShareProfile",
+        "operationId" : "getAllShareProfiles",
         "parameters" : [ {
-          "name" : "shareProfile",
+          "name" : "familyId",
           "in" : "query",
-          "required" : true,
+          "required" : false,
           "schema" : {
-            "$ref" : "#/components/schemas/ShareProfileDto"
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "memberId",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
           }
         } ],
         "responses" : {
@@ -144,7 +153,36 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/ShareProfile"
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/ShareProfileDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post" : {
+        "tags" : [ "share-profile-controller" ],
+        "operationId" : "createShareProfile",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ShareProfileDto"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ShareProfileDto"
                 }
               }
             }
@@ -605,6 +643,24 @@
                 }
               }
             }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "share-profile-controller" ],
+        "operationId" : "deleteShareProfile",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string",
+            "format" : "uuid"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
           }
         }
       }
@@ -1246,6 +1302,10 @@
             "$ref" : "#/components/schemas/FamilyDTO",
             "readOnly" : true
           },
+          "familyId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
           "member" : {
             "$ref" : "#/components/schemas/FamilyMemberDTO",
             "readOnly" : true
@@ -1267,11 +1327,13 @@
             }
           },
           "shareToken" : {
-            "type" : "string"
+            "type" : "string",
+            "readOnly" : true
           },
           "createdAt" : {
             "type" : "string",
-            "format" : "date-time"
+            "format" : "date-time",
+            "readOnly" : true
           },
           "expiresAt" : {
             "type" : "string",
@@ -1286,339 +1348,12 @@
           },
           "updatedAt" : {
             "type" : "string",
-            "format" : "date-time"
+            "format" : "date-time",
+            "readOnly" : true
           },
           "createdBy" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Family" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "familyName" : {
             "type" : "string",
-            "maxLength" : 255,
-            "minLength" : 3
-          },
-          "address" : {
-            "type" : "string",
-            "maxLength" : 500,
-            "minLength" : 0
-          },
-          "owner" : {
-            "$ref" : "#/components/schemas/Profile"
-          },
-          "ownerId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "phoneNumber" : {
-            "type" : "string",
-            "pattern" : "^(\\+84|0)[3|5|7|8|9][0-9]{8}$"
-          },
-          "email" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "minLength" : 0
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "isActive" : {
-            "type" : "boolean"
-          },
-          "familyMembers" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/FamilyMember"
-            }
-          }
-        },
-        "required" : [ "address", "familyName", "isActive", "owner" ]
-      },
-      "FamilyMember" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "family" : {
-            "$ref" : "#/components/schemas/Family"
-          },
-          "familyId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "profile" : {
-            "$ref" : "#/components/schemas/Profile"
-          },
-          "profileId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "relationship" : {
-            "type" : "string",
-            "maxLength" : 50,
-            "minLength" : 0
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "isActive" : {
-            "type" : "boolean"
-          }
-        },
-        "required" : [ "family", "relationship" ]
-      },
-      "GrantedAuthority" : {
-        "type" : "object",
-        "properties" : {
-          "authority" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Profile" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "bloodType" : {
-            "type" : "string",
-            "pattern" : "^(A|B|AB|O)[+-]$"
-          },
-          "height" : {
-            "type" : "number",
-            "format" : "double",
-            "maximum" : 300.0,
-            "minimum" : 0.0
-          },
-          "weight" : {
-            "type" : "number",
-            "format" : "double",
-            "maximum" : 500.0,
-            "minimum" : 0.0
-          },
-          "allergies" : {
-            "type" : "string",
-            "maxLength" : 1000,
-            "minLength" : 0
-          },
-          "chronicDiseases" : {
-            "type" : "string",
-            "maxLength" : 1000,
-            "minLength" : 0
-          },
-          "notes" : {
-            "type" : "string",
-            "maxLength" : 2000,
-            "minLength" : 0
-          },
-          "healthInsuranceNumber" : {
-            "type" : "string",
-            "maxLength" : 20,
-            "minLength" : 0
-          },
-          "fullName" : {
-            "type" : "string"
-          },
-          "phoneNumber" : {
-            "type" : "string"
-          },
-          "dateOfBirth" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "gender" : {
-            "type" : "string",
-            "enum" : [ "FEMALE", "MALE" ]
-          },
-          "email" : {
-            "type" : "string"
-          },
-          "address" : {
-            "type" : "string"
-          },
-          "avatarUrl" : {
-            "type" : "string"
-          },
-          "bio" : {
-            "type" : "string"
-          },
-          "user" : {
-            "$ref" : "#/components/schemas/User"
-          },
-          "userId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "familyMembers" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/FamilyMember"
-            }
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          }
-        }
-      },
-      "SharePermission" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "shareRequest" : {
-            "$ref" : "#/components/schemas/ShareProfile"
-          },
-          "shareRequestId" : {
-            "type" : "string",
-            "format" : "uuid"
-          },
-          "permissionTypes" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string",
-              "enum" : [ "VIEW", "EDIT", "CREATE" ]
-            }
-          },
-          "resourceType" : {
-            "type" : "string",
-            "enum" : [ "PROFILE", "VACCINATION", "MEDICAL_RECORD", "FILE_DOCUMENT", "PRESCRIPTION" ]
-          }
-        }
-      },
-      "ShareProfile" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "string",
-            "format" : "uuid"
-          },
-          "family" : {
-            "$ref" : "#/components/schemas/Family"
-          },
-          "member" : {
-            "$ref" : "#/components/schemas/FamilyMember"
-          },
-          "memberId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "sharePermissions" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/SharePermission"
-            }
-          },
-          "invitedEmails" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "shareToken" : {
-            "type" : "string"
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "expiresAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "shareType" : {
-            "type" : "string",
-            "enum" : [ "AnyOneWithLink", "OnlyInvitedPeople" ]
-          },
-          "reason" : {
-            "type" : "string"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "createdBy" : {
-            "type" : "string"
-          },
-          "shareAll" : {
-            "type" : "boolean"
-          }
-        }
-      },
-      "User" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "password" : {
-            "type" : "string"
-          },
-          "email" : {
-            "type" : "string"
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "isActive" : {
-            "type" : "boolean"
-          },
-          "lastLogin" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "profile" : {
-            "$ref" : "#/components/schemas/Profile"
-          },
-          "username" : {
-            "type" : "string"
-          },
-          "authorities" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/GrantedAuthority"
-            }
-          },
-          "enabled" : {
-            "type" : "boolean"
-          },
-          "accountNonLocked" : {
-            "type" : "boolean"
-          },
-          "credentialsNonExpired" : {
-            "type" : "boolean"
-          },
-          "accountNonExpired" : {
-            "type" : "boolean"
+            "readOnly" : true
           }
         }
       },

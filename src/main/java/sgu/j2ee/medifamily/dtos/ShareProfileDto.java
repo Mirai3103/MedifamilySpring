@@ -21,16 +21,21 @@ public class ShareProfileDto implements Serializable {
 	private UUID id = UUID.randomUUID();
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private FamilyDTO family;
+	private Long familyId;
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private FamilyMemberDTO member;
 	private Long memberId;
 	private List<SharePermissionDto> sharePermissions;
 	private List<String> invitedEmails = new ArrayList<>();
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String shareToken;
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime createdAt;
 	private LocalDateTime expiresAt;
 	private ShareProfile.ShareType shareType;
 	private String reason;
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime updatedAt;
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private String createdBy;
 }
