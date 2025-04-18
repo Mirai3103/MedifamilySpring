@@ -32,8 +32,9 @@ public class ShareProfileService {
 		shareProfile.setSharePermissions(null);
 		shareProfile.setFamily(family.get());
 		if (shareProfile.getMemberId() != null) {
-			var familyMember = familyMemberRepository.findByFamilyIdAndId(shareProfile.getFamilyId(), shareProfile.getMemberId()).orElseThrow(
-					() -> new NotFoundException("Family member not found"));
+			var familyMember = familyMemberRepository
+					.findByFamilyIdAndId(shareProfile.getFamilyId(), shareProfile.getMemberId()).orElseThrow(
+							() -> new NotFoundException("Family member not found"));
 			shareProfile.setMember(familyMember);
 		} else {
 			shareProfile.setMember(null);
