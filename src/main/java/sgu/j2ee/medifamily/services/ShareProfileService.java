@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import sgu.j2ee.medifamily.dtos.ShareProfileQuery;
 import sgu.j2ee.medifamily.entities.ShareProfile;
 import sgu.j2ee.medifamily.exceptions.NotFoundException;
+import sgu.j2ee.medifamily.repositories.FamilyMemberRepository;
 import sgu.j2ee.medifamily.repositories.FamilyRepository;
 import sgu.j2ee.medifamily.repositories.SharePermissionRepository;
 import sgu.j2ee.medifamily.repositories.ShareProfileRepository;
@@ -19,7 +20,7 @@ import sgu.j2ee.medifamily.repositories.ShareProfileRepository;
 public class ShareProfileService {
 	private final ShareProfileRepository shareProfileRepository;
 	private final SharePermissionRepository sharePermissionRepository;
-
+	private final FamilyMemberRepository familyMemberRepository;
 	private final FamilyRepository familyRepository;
 
 	public ShareProfile shareProfile(ShareProfile shareProfile) {
@@ -30,6 +31,13 @@ public class ShareProfileService {
 		var listPermission = shareProfile.getSharePermissions();
 		shareProfile.setSharePermissions(null);
 		shareProfile.setFamily(family.get());
+		if (shareProfile.getMemberId() != null) {
+			var familyMember = familyMemberRepository.findByFamilyIdAndId(shareProfile.getFamilyId(), shareProfile.getMemberId()).orElseThrow(
+					() -> new NotFoundException("Family member not found"));
+			shareProfile.setMember(familyMember);
+		} else {
+			shareProfile.setMember(null);
+		}
 		var share = shareProfileRepository.save(shareProfile);
 		sharePermissionRepository
 				.saveAll(listPermission.stream().peek(permission -> permission.setShareRequest(share)).toList());

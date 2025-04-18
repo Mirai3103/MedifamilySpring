@@ -5,6 +5,8 @@ import java.time.LocalDateTime;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
@@ -18,27 +20,29 @@ import lombok.*;
 @EntityListeners(AuditingEntityListener.class)
 @Builder
 public class Vaccination {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@ManyToOne
-	@JoinColumn(name = "profile_id", nullable = false)
-	@OnDelete(action = OnDeleteAction.CASCADE)
-	private Profile profile;
-	@Column(name = "profile_id", insertable = false, updatable = false)
-	private Long profileId;
+    @ManyToOne
+    @JoinColumn(name = "profile_id", nullable = false)
+    @OnDelete(action = OnDeleteAction.CASCADE)
+    private Profile profile;
+    @Column(name = "profile_id", insertable = false, updatable = false)
+    private Long profileId;
 
-	private String vaccineName;
-	private LocalDateTime vaccinationDate;
-	private String dose;
-	private String batchNumber;
-	private String location;
-	private String reactions;
-	private String notes;
-	private LocalDateTime createdAt;
-	private LocalDateTime updatedAt;
+    private String vaccineName;
+    private LocalDateTime vaccinationDate;
+    private String dose;
+    private String batchNumber;
+    private String location;
+    private String reactions;
+    private String notes;
+    @CreatedDate
+    private LocalDateTime createdAt;
+    @LastModifiedBy
+    private LocalDateTime updatedAt;
 
-	@CreatedBy
-	private String createdBy;
+    @CreatedBy
+    private String createdBy;
 }
