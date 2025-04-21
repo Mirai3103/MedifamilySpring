@@ -1,8 +1,9 @@
 package sgu.j2ee.medifamily.entities;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
@@ -34,14 +35,12 @@ public class FamilyDoctor {
 	private Doctor doctor;
 	@Column(name = "doctor_id", insertable = false, updatable = false)
 	private Long doctorId;
-
-	private LocalDate startDate;
-	private LocalDate endDate;
-
 	@Enumerated(EnumType.STRING)
 	private Status status;
 
 	private String notes;
+	@CreatedDate
 	private LocalDateTime createdAt;
+	@LastModifiedDate
 	private LocalDateTime updatedAt;
 }

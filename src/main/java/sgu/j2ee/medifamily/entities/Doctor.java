@@ -2,6 +2,10 @@ package sgu.j2ee.medifamily.entities;
 
 import java.time.LocalDateTime;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
@@ -24,9 +28,10 @@ public class Doctor {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_id", nullable = false)
 	@NotNull(message = "Thông tin người dùng không được để trống")
+	@OnDelete(action = OnDeleteAction.CASCADE)
 	private User user;
 
 	@NotBlank(message = "Chuyên khoa không được để trống")
@@ -44,9 +49,11 @@ public class Doctor {
 	@Size(max = 1000, message = "Thông tin giới thiệu không được vượt quá 1000 ký tự")
 	private String bio;
 
+	@CreatedDate
 	private LocalDateTime createdAt;
+	@LastModifiedDate
 	private LocalDateTime updatedAt;
 
 	@NotNull(message = "Trạng thái xác thực không được để trống")
-	private Boolean isVerified;
+	private Boolean isVerified = true;
 }
