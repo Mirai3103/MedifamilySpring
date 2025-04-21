@@ -44,7 +44,7 @@ public class AuthService {
 				.build();
 		profile = profileRepository.save(profile);
 
-		if (registerDTO.isDoctor()) {
+		if (registerDTO.getIsDoctor()) {
 			var doctorInfo = registerDTO.getDoctor();
 			var doctor = Doctor.builder()
 					.user(user)

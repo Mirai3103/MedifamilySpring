@@ -19,9 +19,9 @@ import sgu.j2ee.medifamily.services.DoctorService;
 public class DoctorController {
 	private final DoctorService doctorService;
 
-	@GetMapping("/search")
+	@GetMapping("")
 	public PagedModel<DoctorDTO> searchDoctors(
-			@RequestParam DoctorSearchRequest doctorSearchRequest,
+			@ParameterObject DoctorSearchRequest doctorSearchRequest,
 			@ParameterObject Pageable pageable
 
 	) {

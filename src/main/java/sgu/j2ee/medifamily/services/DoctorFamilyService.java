@@ -99,10 +99,16 @@ public class DoctorFamilyService {
 
 	// Danh sách bác sĩ của gia đình (theo id family, filter theo status, có sort và
 	// phân trang)
-	public Doctor getDoctorsByFamily(Long familyId) {
+	public FamilyDoctor getDoctorsByFamily(Long familyId) {
 		// tạm thời 1 gia đình chỉ định 1 bác sĩ, sau này có thể thay đổi sau
-		var familyDoctor = familyDoctorRepository.findFirstByFamilyId(familyId)
-				.orElseThrow(() -> new NotFoundException("Không tìm thấy bác sĩ cho gia đình"));
-		return familyDoctor.getDoctor();
+		return familyDoctorRepository.findFirstByFamilyId(familyId)
+				.orElse(null);
+	}
+
+	public void deleteRequest(Long id) {
+		FamilyDoctor request = familyDoctorRepository.findById(id)
+				.orElseThrow(() -> new NotFoundException("Không tìm thấy yêu cầu"));
+
+		familyDoctorRepository.delete(request);
 	}
 }

@@ -29,7 +29,9 @@ public class RegisterRequest {
 
 	private Gender gender = Gender.MALE;
 
-	private boolean isDoctor;
+	public boolean getIsDoctor() {
+		return doctor != null;
+	}
 
 	@Data
 	public static class DoctorInFo {
@@ -48,8 +50,4 @@ public class RegisterRequest {
 
 	private DoctorInFo doctor;
 
-	@AssertTrue(message = "Thông tin bác sĩ không được để trống khi đăng ký là bác sĩ")
-	private boolean isDoctorInfoValid() {
-		return !isDoctor || doctor != null;
-	}
 }

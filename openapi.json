@@ -48,6 +48,93 @@
         }
       }
     },
+    "/api/profile-documents/{id}" : {
+      "put" : {
+        "tags" : [ "profile-document-controller" ],
+        "operationId" : "updateDocument",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "name",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "note",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "removeFiles",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "newFiles" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "string",
+                      "format" : "binary"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProfileDocument"
+                }
+              }
+            }
+          }
+        }
+      },
+      "delete" : {
+        "tags" : [ "profile-document-controller" ],
+        "operationId" : "deleteDocument",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
     "/api/family/{id}" : {
       "get" : {
         "tags" : [ "family-controller" ],
@@ -311,6 +398,66 @@
         }
       }
     },
+    "/api/profile-documents" : {
+      "post" : {
+        "tags" : [ "profile-document-controller" ],
+        "operationId" : "createDocument",
+        "parameters" : [ {
+          "name" : "name",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "note",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "profileId",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "requestBody" : {
+          "content" : {
+            "multipart/form-data" : {
+              "schema" : {
+                "type" : "object",
+                "properties" : {
+                  "files" : {
+                    "type" : "array",
+                    "items" : {
+                      "type" : "string",
+                      "format" : "binary"
+                    }
+                  }
+                },
+                "required" : [ "files" ]
+              }
+            }
+          }
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/ProfileDocument"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/prescriptions" : {
       "post" : {
         "tags" : [ "prescription-controller" ],
@@ -551,6 +698,69 @@
       }
     },
     "/api/doctors" : {
+      "get" : {
+        "tags" : [ "doctor-controller" ],
+        "operationId" : "searchDoctors",
+        "parameters" : [ {
+          "name" : "userId",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        }, {
+          "name" : "keyword",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string"
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "Zero-based page index (0..N)",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "default" : 0,
+            "minimum" : 0
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "description" : "The size of the page to be returned",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "default" : 20,
+            "minimum" : 1
+          }
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PagedModelDoctorDTO"
+                }
+              }
+            }
+          }
+        }
+      },
       "post" : {
         "tags" : [ "doctor-controller" ],
         "operationId" : "createDoctor",
@@ -1137,6 +1347,36 @@
         }
       }
     },
+    "/api/profile-documents/{profileId}" : {
+      "get" : {
+        "tags" : [ "profile-document-controller" ],
+        "operationId" : "getDocuments",
+        "parameters" : [ {
+          "name" : "profileId",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/ProfileDocumentDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/prescriptions/{id}" : {
       "get" : {
         "tags" : [ "prescription-controller" ],
@@ -1436,71 +1676,6 @@
         }
       }
     },
-    "/api/doctors/search" : {
-      "get" : {
-        "tags" : [ "doctor-controller" ],
-        "operationId" : "searchDoctors",
-        "parameters" : [ {
-          "name" : "userId",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "format" : "int64"
-          }
-        }, {
-          "name" : "keyword",
-          "in" : "query",
-          "required" : false,
-          "schema" : {
-            "type" : "string"
-          }
-        }, {
-          "name" : "page",
-          "in" : "query",
-          "description" : "Zero-based page index (0..N)",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "default" : 0,
-            "minimum" : 0
-          }
-        }, {
-          "name" : "size",
-          "in" : "query",
-          "description" : "The size of the page to be returned",
-          "required" : false,
-          "schema" : {
-            "type" : "integer",
-            "default" : 20,
-            "minimum" : 1
-          }
-        }, {
-          "name" : "sort",
-          "in" : "query",
-          "description" : "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
-          "required" : false,
-          "schema" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          }
-        } ],
-        "responses" : {
-          "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/PagedModelDoctorDTO"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/api/doctor-family/by-family" : {
       "get" : {
         "tags" : [ "doctor-family-controller" ],
@@ -1520,7 +1695,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/Doctor"
+                  "$ref" : "#/components/schemas/FamilyDoctorDto"
                 }
               }
             }
@@ -1612,6 +1787,26 @@
           "required" : true,
           "schema" : {
             "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/api/doctor-family/{id}" : {
+      "delete" : {
+        "tags" : [ "doctor-family-controller" ],
+        "operationId" : "deleteRequest",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "integer",
+            "format" : "int64"
           }
         } ],
         "responses" : {
@@ -1735,6 +1930,287 @@
           "userId" : {
             "type" : "integer",
             "format" : "int64"
+          }
+        }
+      },
+      "Family" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "familyName" : {
+            "type" : "string",
+            "maxLength" : 255,
+            "minLength" : 3
+          },
+          "address" : {
+            "type" : "string",
+            "maxLength" : 500,
+            "minLength" : 0
+          },
+          "owner" : {
+            "$ref" : "#/components/schemas/Profile"
+          },
+          "ownerId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "phoneNumber" : {
+            "type" : "string",
+            "pattern" : "^(\\+84|0)[3|5|7|8|9][0-9]{8}$"
+          },
+          "email" : {
+            "type" : "string",
+            "maxLength" : 100,
+            "minLength" : 0
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "isActive" : {
+            "type" : "boolean"
+          },
+          "familyMembers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FamilyMember"
+            }
+          }
+        },
+        "required" : [ "address", "familyName", "isActive", "owner" ]
+      },
+      "FamilyMember" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "family" : {
+            "$ref" : "#/components/schemas/Family"
+          },
+          "familyId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "profile" : {
+            "$ref" : "#/components/schemas/Profile"
+          },
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "relationship" : {
+            "type" : "string",
+            "maxLength" : 50,
+            "minLength" : 0
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "isActive" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "family", "relationship" ]
+      },
+      "GrantedAuthority" : {
+        "type" : "object",
+        "properties" : {
+          "authority" : {
+            "type" : "string"
+          }
+        }
+      },
+      "Profile" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "bloodType" : {
+            "type" : "string",
+            "pattern" : "^(A|B|AB|O)[+-]$"
+          },
+          "height" : {
+            "type" : "number",
+            "format" : "double",
+            "maximum" : 300.0,
+            "minimum" : 0.0
+          },
+          "weight" : {
+            "type" : "number",
+            "format" : "double",
+            "maximum" : 500.0,
+            "minimum" : 0.0
+          },
+          "allergies" : {
+            "type" : "string",
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "chronicDiseases" : {
+            "type" : "string",
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "notes" : {
+            "type" : "string",
+            "maxLength" : 2000,
+            "minLength" : 0
+          },
+          "healthInsuranceNumber" : {
+            "type" : "string",
+            "maxLength" : 20,
+            "minLength" : 0
+          },
+          "fullName" : {
+            "type" : "string"
+          },
+          "phoneNumber" : {
+            "type" : "string"
+          },
+          "dateOfBirth" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "gender" : {
+            "type" : "string",
+            "enum" : [ "FEMALE", "MALE" ]
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "address" : {
+            "type" : "string"
+          },
+          "avatarUrl" : {
+            "type" : "string"
+          },
+          "bio" : {
+            "type" : "string"
+          },
+          "user" : {
+            "$ref" : "#/components/schemas/User"
+          },
+          "userId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "familyMembers" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FamilyMember"
+            }
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "attachments" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "ProfileDocument" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "note" : {
+            "type" : "string"
+          },
+          "attachments" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "profile" : {
+            "$ref" : "#/components/schemas/Profile"
+          },
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "User" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "password" : {
+            "type" : "string"
+          },
+          "email" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "isActive" : {
+            "type" : "boolean"
+          },
+          "lastLogin" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "profile" : {
+            "$ref" : "#/components/schemas/Profile"
+          },
+          "username" : {
+            "type" : "string"
+          },
+          "authorities" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/GrantedAuthority"
+            }
+          },
+          "enabled" : {
+            "type" : "boolean"
+          },
+          "credentialsNonExpired" : {
+            "type" : "boolean"
+          },
+          "accountNonExpired" : {
+            "type" : "boolean"
+          },
+          "accountNonLocked" : {
+            "type" : "boolean"
           }
         }
       },
@@ -2286,59 +2762,6 @@
         },
         "required" : [ "isVerified", "licenseNumber", "medicalFacility", "specialty", "user" ]
       },
-      "Family" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "familyName" : {
-            "type" : "string",
-            "maxLength" : 255,
-            "minLength" : 3
-          },
-          "address" : {
-            "type" : "string",
-            "maxLength" : 500,
-            "minLength" : 0
-          },
-          "owner" : {
-            "$ref" : "#/components/schemas/Profile"
-          },
-          "ownerId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "phoneNumber" : {
-            "type" : "string",
-            "pattern" : "^(\\+84|0)[3|5|7|8|9][0-9]{8}$"
-          },
-          "email" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "minLength" : 0
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "isActive" : {
-            "type" : "boolean"
-          },
-          "familyMembers" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/FamilyMember"
-            }
-          }
-        },
-        "required" : [ "address", "familyName", "isActive", "owner" ]
-      },
       "FamilyDoctor" : {
         "type" : "object",
         "properties" : {
@@ -2374,196 +2797,6 @@
           "updatedAt" : {
             "type" : "string",
             "format" : "date-time"
-          }
-        }
-      },
-      "FamilyMember" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "family" : {
-            "$ref" : "#/components/schemas/Family"
-          },
-          "familyId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "profile" : {
-            "$ref" : "#/components/schemas/Profile"
-          },
-          "profileId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "relationship" : {
-            "type" : "string",
-            "maxLength" : 50,
-            "minLength" : 0
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "isActive" : {
-            "type" : "boolean"
-          }
-        },
-        "required" : [ "family", "relationship" ]
-      },
-      "GrantedAuthority" : {
-        "type" : "object",
-        "properties" : {
-          "authority" : {
-            "type" : "string"
-          }
-        }
-      },
-      "Profile" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "bloodType" : {
-            "type" : "string",
-            "pattern" : "^(A|B|AB|O)[+-]$"
-          },
-          "height" : {
-            "type" : "number",
-            "format" : "double",
-            "maximum" : 300.0,
-            "minimum" : 0.0
-          },
-          "weight" : {
-            "type" : "number",
-            "format" : "double",
-            "maximum" : 500.0,
-            "minimum" : 0.0
-          },
-          "allergies" : {
-            "type" : "string",
-            "maxLength" : 1000,
-            "minLength" : 0
-          },
-          "chronicDiseases" : {
-            "type" : "string",
-            "maxLength" : 1000,
-            "minLength" : 0
-          },
-          "notes" : {
-            "type" : "string",
-            "maxLength" : 2000,
-            "minLength" : 0
-          },
-          "healthInsuranceNumber" : {
-            "type" : "string",
-            "maxLength" : 20,
-            "minLength" : 0
-          },
-          "fullName" : {
-            "type" : "string"
-          },
-          "phoneNumber" : {
-            "type" : "string"
-          },
-          "dateOfBirth" : {
-            "type" : "string",
-            "format" : "date"
-          },
-          "gender" : {
-            "type" : "string",
-            "enum" : [ "FEMALE", "MALE" ]
-          },
-          "email" : {
-            "type" : "string"
-          },
-          "address" : {
-            "type" : "string"
-          },
-          "avatarUrl" : {
-            "type" : "string"
-          },
-          "bio" : {
-            "type" : "string"
-          },
-          "user" : {
-            "$ref" : "#/components/schemas/User"
-          },
-          "userId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "familyMembers" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/FamilyMember"
-            }
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          }
-        }
-      },
-      "User" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "password" : {
-            "type" : "string"
-          },
-          "email" : {
-            "type" : "string"
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "isActive" : {
-            "type" : "boolean"
-          },
-          "lastLogin" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "profile" : {
-            "$ref" : "#/components/schemas/Profile"
-          },
-          "username" : {
-            "type" : "string"
-          },
-          "authorities" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/GrantedAuthority"
-            }
-          },
-          "enabled" : {
-            "type" : "boolean"
-          },
-          "accountNonExpired" : {
-            "type" : "boolean"
-          },
-          "credentialsNonExpired" : {
-            "type" : "boolean"
-          },
-          "accountNonLocked" : {
-            "type" : "boolean"
           }
         }
       },
@@ -2620,6 +2853,9 @@
           },
           "doctor" : {
             "$ref" : "#/components/schemas/DoctorInFo"
+          },
+          "isDoctor" : {
+            "type" : "boolean"
           }
         },
         "required" : [ "dateOfBirth", "email", "fullName", "password" ]
@@ -2776,6 +3012,35 @@
           }
         }
       },
+      "ProfileDocumentDto" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "note" : {
+            "type" : "string"
+          },
+          "attachments" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
       "PagedModelDoctorDTO" : {
         "type" : "object",
         "properties" : {
@@ -2787,6 +3052,52 @@
           },
           "page" : {
             "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "FamilyDoctorDto" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "family" : {
+            "$ref" : "#/components/schemas/FamilyDTO"
+          },
+          "familyId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "doctor" : {
+            "$ref" : "#/components/schemas/DoctorDTO"
+          },
+          "doctorId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "startDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "endDate" : {
+            "type" : "string",
+            "format" : "date"
+          },
+          "status" : {
+            "type" : "string",
+            "enum" : [ "PENDING", "ACCEPTED", "REJECTED" ]
+          },
+          "notes" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
           }
         }
       },

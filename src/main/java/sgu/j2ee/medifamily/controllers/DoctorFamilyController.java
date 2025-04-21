@@ -3,12 +3,13 @@ package sgu.j2ee.medifamily.controllers;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import sgu.j2ee.medifamily.entities.Doctor;
+import sgu.j2ee.medifamily.dtos.FamilyDoctorDto;
 import sgu.j2ee.medifamily.entities.FamilyDoctor;
 import sgu.j2ee.medifamily.mappers.FamilyDoctorMapper;
 import sgu.j2ee.medifamily.services.DoctorFamilyService;
@@ -64,7 +65,14 @@ public class DoctorFamilyController {
 
 	// Lấy bác sĩ của gia đình (tạm thời 1 bác sĩ / gia đình)
 	@GetMapping("/by-family")
-	public Doctor getDoctorByFamily(@RequestParam Long familyId) {
-		return doctorFamilyService.getDoctorsByFamily(familyId);
+	public ResponseEntity<FamilyDoctorDto> getDoctorByFamily(@RequestParam Long familyId) {
+		var res = doctorFamilyService.getDoctorsByFamily(familyId);
+		return ResponseEntity.ok(familyDoctorMapper.toDto(res));
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteRequest(@PathVariable Long id) {
+		doctorFamilyService.deleteRequest(id);
+		return ResponseEntity.ok().build();
 	}
 }

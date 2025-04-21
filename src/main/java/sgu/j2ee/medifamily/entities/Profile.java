@@ -5,10 +5,12 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.annotations.Type;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import io.hypersistence.utils.hibernate.type.json.JsonBinaryType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.DecimalMax;
 import jakarta.validation.constraints.DecimalMin;
@@ -84,4 +86,9 @@ public class Profile {
 
 	@LastModifiedDate
 	private LocalDateTime updatedAt;
+
+	@Type(JsonBinaryType.class)
+	@Column(columnDefinition = "jsonb")
+	@Builder.Default
+	private List<String> attachments = new ArrayList<>();
 }
