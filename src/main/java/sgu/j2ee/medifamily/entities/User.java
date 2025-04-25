@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
+import org.hibernate.annotations.ColumnDefault;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -23,34 +24,46 @@ import lombok.Builder.Default;
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    public enum Role {
+        ROLE_USER, ROLE_DOCTOR, ROLE_ADMIN
+    }
 
-	private String password;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(unique = true)
+    private String password;
 
-	@Email(message = "Email không hợp lệ")
-	private String email;
+    @Column(unique = true)
 
-	@CreatedDate
-	private LocalDateTime createdAt;
-	@LastModifiedDate
-	private LocalDateTime updatedAt;
-	@Default
-	private Boolean isActive = true;
-	private LocalDateTime lastLogin;
-	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
-	private Profile profile;
+    @Email(message = "Email không hợp lệ")
+    private String email;
 
-	@Override
-	public Collection<? extends GrantedAuthority> getAuthorities() {
-		return List.of();
-	}
+    @CreatedDate
+    private LocalDateTime createdAt;
+    @LastModifiedDate
+    private LocalDateTime updatedAt;
+    @Default
+    private Boolean isActive = true;
+    private LocalDateTime lastLogin;
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+    private Profile profile;
 
-	@Override
-	public String getUsername() {
-		return this.id.toString();
-	}
+    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+    private Doctor doctor;
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    @ColumnDefault("'ROLE_USER'")
+    private Role role = Role.ROLE_USER;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(() -> this.role.name());
+    }
+
+    @Override
+    public String getUsername() {
+        return this.id.toString();
+    }
 }
