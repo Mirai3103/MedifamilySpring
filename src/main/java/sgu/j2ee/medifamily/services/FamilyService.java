@@ -78,4 +78,8 @@ public class FamilyService {
 	public List<Family> getFamiliesByUserId(Long userId) {
 		return familyRepository.findByFamilyUserId(userId);
 	}
+
+	public List<Family> getFamiliesByIds(List<Long> ids) {
+		return familyRepository.findAllById(ids);
+	}
 }

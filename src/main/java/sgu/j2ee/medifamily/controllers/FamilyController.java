@@ -27,55 +27,62 @@ import sgu.j2ee.medifamily.services.UserDetailsServiceImpl;
 @RequestMapping("/api/family")
 @RequiredArgsConstructor
 public class FamilyController {
-    private final FamilyService familyService;
-    private final AuditorAware<String> auditorAware;
-    private final IFamilyMapper familyMapper;
-    private final UserDetailsServiceImpl userDetailsServiceImpl;
-    private final DoctorFamilyService doctorFamilyService;
-    private final FamilyDoctorMapper familyDoctorMapper;
+	private final FamilyService familyService;
+	private final AuditorAware<String> auditorAware;
+	private final IFamilyMapper familyMapper;
+	private final UserDetailsServiceImpl userDetailsServiceImpl;
+	private final DoctorFamilyService doctorFamilyService;
+	private final FamilyDoctorMapper familyDoctorMapper;
 
-    @GetMapping(path = "/{id:[0-9]+}")
-    public ResponseEntity<FamilyDTO> getFamily(@PathVariable Long id) {
-        var family = familyService.getFamilyById(id);
-        family.getOwner().setFamilyMembers(null);
-        family.getOwner().setUser(null);
-        return ResponseEntity.ok(familyMapper.toDTO(family));
-    }
+	@GetMapping(path = "/{id:[0-9]+}")
+	public ResponseEntity<FamilyDTO> getFamily(@PathVariable Long id) {
+		var family = familyService.getFamilyById(id);
+		family.getOwner().setFamilyMembers(null);
+		family.getOwner().setUser(null);
+		return ResponseEntity.ok(familyMapper.toDTO(family));
+	}
 
-    @GetMapping("/@me")
-    public ResponseEntity<List<FamilyDTO>> getMyFamily() {
-        var currentUserId = auditorAware.getCurrentAuditor().orElseThrow();
-        var family = familyService.getFamiliesByUserId(Long.parseLong(currentUserId));
-        return ResponseEntity.ok(familyMapper.familiesToFamilyDTOs(family));
-    }
+	@GetMapping("/@me")
+	public ResponseEntity<List<FamilyDTO>> getMyFamily() {
+		var currentUserId = auditorAware.getCurrentAuditor().orElseThrow();
+		var family = familyService.getFamiliesByUserId(Long.parseLong(currentUserId));
+		return ResponseEntity.ok(familyMapper.familiesToFamilyDTOs(family));
+	}
 
-    @PostMapping("")
-    public ResponseEntity<FamilyDTO> createFamily(@RequestBody CreateFamilyRequest family) {
-        var currentUserId = auditorAware.getCurrentAuditor().orElseThrow(UnAuthorizedException::new);
-        family.setCreatedBy(Long.parseLong(currentUserId));
-        return ResponseEntity.ok(familyMapper.toDTO(familyService.createFamily(family)));
-    }
+	@PostMapping("")
+	public ResponseEntity<FamilyDTO> createFamily(@RequestBody CreateFamilyRequest family) {
+		var currentUserId = auditorAware.getCurrentAuditor().orElseThrow(UnAuthorizedException::new);
+		family.setCreatedBy(Long.parseLong(currentUserId));
+		return ResponseEntity.ok(familyMapper.toDTO(familyService.createFamily(family)));
+	}
 
-    @PutMapping("/{id}")
-    public ResponseEntity<FamilyDTO> updateFamily(@RequestBody CreateFamilyRequest family, @PathVariable String id) {
-        return ResponseEntity.ok(familyMapper.toDTO(familyService.updateFamily(Long.parseLong(id), family)));
-    }
+	@PutMapping("/{id}")
+	public ResponseEntity<FamilyDTO> updateFamily(@RequestBody CreateFamilyRequest family, @PathVariable String id) {
+		return ResponseEntity.ok(familyMapper.toDTO(familyService.updateFamily(Long.parseLong(id), family)));
+	}
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteFamily(@PathVariable String id) {
-        familyService.deleteFamily(Long.parseLong(id));
-        return ResponseEntity.ok().build();
-    }
+	@DeleteMapping("/{id}")
+	public ResponseEntity<Void> deleteFamily(@PathVariable String id) {
+		familyService.deleteFamily(Long.parseLong(id));
+		return ResponseEntity.ok().build();
+	}
 
-    @GetMapping("/managed/@me")
-    @PreAuthorize("hasRole('ROLE_DOCTOR')")
-    public ResponseEntity<PagedModel<FamilyDoctorDto>> getManagedFamilies(@RequestParam(required = false, defaultValue = "") FamilyDoctor.Status status, @RequestParam(required = false) @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
-        if (pageable == null) {
-            pageable = Pageable.unpaged();
-        }
-        var currentDoctorId = userDetailsServiceImpl.getCurrentUser().getDoctor().getId();
-        var list = doctorFamilyService.getFamiliesByDoctor(currentDoctorId, status, pageable);
-        return ResponseEntity.ok(new PagedModel<>(list.map(familyDoctorMapper::toDto
-        )));
-    }
+	@GetMapping("/managed/@me")
+	@PreAuthorize("hasRole('ROLE_DOCTOR')")
+	public ResponseEntity<PagedModel<FamilyDoctorDto>> getManagedFamilies(
+			@RequestParam(required = false, defaultValue = "") FamilyDoctor.Status status,
+			@RequestParam(required = false) @ParameterObject @PageableDefault(size = 10) Pageable pageable) {
+		if (pageable == null) {
+			pageable = Pageable.unpaged();
+		}
+		var currentDoctorId = userDetailsServiceImpl.getCurrentUser().getDoctor().getId();
+		var list = doctorFamilyService.getFamiliesByDoctor(currentDoctorId, status, pageable);
+		return ResponseEntity.ok(new PagedModel<>(list.map(familyDoctorMapper::toDto)));
+	}
+
+	@GetMapping("/by-ids")
+	public ResponseEntity<List<FamilyDTO>> getFamiliesByIds(@RequestParam List<Long> ids) {
+		var families = familyService.getFamiliesByIds(ids);
+		return ResponseEntity.ok(familyMapper.familiesToFamilyDTOs(families));
+	}
 }

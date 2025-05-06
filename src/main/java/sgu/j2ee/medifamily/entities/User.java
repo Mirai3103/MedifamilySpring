@@ -24,46 +24,46 @@ import lombok.Builder.Default;
 @AllArgsConstructor
 @Builder
 public class User implements UserDetails {
-    public enum Role {
-        ROLE_USER, ROLE_DOCTOR, ROLE_ADMIN
-    }
+	public enum Role {
+		ROLE_USER, ROLE_DOCTOR, ROLE_ADMIN
+	}
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
 
-    private String password;
+	private String password;
 
-    @Column(unique = true)
+	@Column(unique = true)
 
-    @Email(message = "Email không hợp lệ")
-    private String email;
+	@Email(message = "Email không hợp lệ")
+	private String email;
 
-    @CreatedDate
-    private LocalDateTime createdAt;
-    @LastModifiedDate
-    private LocalDateTime updatedAt;
-    @Default
-    private Boolean isActive = true;
-    private LocalDateTime lastLogin;
-    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
-    private Profile profile;
+	@CreatedDate
+	private LocalDateTime createdAt;
+	@LastModifiedDate
+	private LocalDateTime updatedAt;
+	@Default
+	private Boolean isActive = true;
+	private LocalDateTime lastLogin;
+	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER)
+	private Profile profile;
 
-    @OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
-    private Doctor doctor;
+	@OneToOne(mappedBy = "user", fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+	private Doctor doctor;
 
-    @Enumerated(EnumType.STRING)
-    @Builder.Default
-    @ColumnDefault("'ROLE_USER'")
-    private Role role = Role.ROLE_USER;
+	@Enumerated(EnumType.STRING)
+	@Builder.Default
+	@ColumnDefault("'ROLE_USER'")
+	private Role role = Role.ROLE_USER;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(() -> this.role.name());
-    }
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(() -> this.role.name());
+	}
 
-    @Override
-    public String getUsername() {
-        return this.id.toString();
-    }
+	@Override
+	public String getUsername() {
+		return this.id.toString();
+	}
 }

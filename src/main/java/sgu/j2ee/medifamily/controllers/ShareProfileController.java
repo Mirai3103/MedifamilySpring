@@ -45,4 +45,9 @@ public class ShareProfileController {
 		return ResponseEntity.noContent().build();
 	}
 
+	@GetMapping("/by-ids")
+	public ResponseEntity<List<ShareProfileDto>> getShareProfilesByIds(@RequestParam List<UUID> ids) {
+		return ResponseEntity.ok(shareProfileMapper.toDto(shareProfileService.getShareProfilesByIds(ids)));
+	}
+
 }

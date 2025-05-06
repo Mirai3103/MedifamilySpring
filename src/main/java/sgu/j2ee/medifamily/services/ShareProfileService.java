@@ -61,4 +61,8 @@ public class ShareProfileService {
 		sharePermissionRepository.deleteAll(shareProfile.get().getSharePermissions());
 		shareProfileRepository.delete(shareProfile.get());
 	}
+
+	public List<ShareProfile> getShareProfilesByIds(List<UUID> ids) {
+		return shareProfileRepository.findAllById(ids);
+	}
 }

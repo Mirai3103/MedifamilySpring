@@ -1171,14 +1171,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/FamilyDoctor"
-                }
-              }
-            }
+            "description" : "OK"
           }
         }
       }
@@ -1233,14 +1226,7 @@
         } ],
         "responses" : {
           "200" : {
-            "description" : "OK",
-            "content" : {
-              "application/json" : {
-                "schema" : {
-                  "$ref" : "#/components/schemas/FamilyDoctor"
-                }
-              }
-            }
+            "description" : "OK"
           }
         }
       }
@@ -1286,6 +1272,39 @@
         "responses" : {
           "200" : {
             "description" : "OK"
+          }
+        }
+      }
+    },
+    "/api/share-profile/by-ids" : {
+      "get" : {
+        "tags" : [ "share-profile-controller" ],
+        "operationId" : "getShareProfilesByIds",
+        "parameters" : [ {
+          "name" : "ids",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string",
+              "format" : "uuid"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/ShareProfileDto"
+                  }
+                }
+              }
+            }
           }
         }
       }
@@ -1655,6 +1674,97 @@
         }
       }
     },
+    "/api/family/managed/@me" : {
+      "get" : {
+        "tags" : [ "family-controller" ],
+        "operationId" : "getManagedFamilies",
+        "parameters" : [ {
+          "name" : "status",
+          "in" : "query",
+          "required" : false,
+          "schema" : {
+            "type" : "string",
+            "enum" : [ "PENDING", "ACCEPTED", "REJECTED" ]
+          }
+        }, {
+          "name" : "page",
+          "in" : "query",
+          "description" : "Zero-based page index (0..N)",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "default" : 0,
+            "minimum" : 0
+          }
+        }, {
+          "name" : "size",
+          "in" : "query",
+          "description" : "The size of the page to be returned",
+          "required" : false,
+          "schema" : {
+            "type" : "integer",
+            "default" : 10,
+            "minimum" : 1
+          }
+        }, {
+          "name" : "sort",
+          "in" : "query",
+          "description" : "Sorting criteria in the format: property,(asc|desc). Default sort order is ascending. Multiple sort criteria are supported.",
+          "required" : false,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PagedModelFamilyDoctorDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/family/by-ids" : {
+      "get" : {
+        "tags" : [ "family-controller" ],
+        "operationId" : "getFamiliesByIds",
+        "parameters" : [ {
+          "name" : "ids",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "array",
+            "items" : {
+              "type" : "integer",
+              "format" : "int64"
+            }
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/FamilyDTO"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/family/@me" : {
       "get" : {
         "tags" : [ "family-controller" ],
@@ -1933,6 +2043,49 @@
           }
         }
       },
+      "Doctor" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "user" : {
+            "$ref" : "#/components/schemas/User"
+          },
+          "specialty" : {
+            "type" : "string",
+            "maxLength" : 100,
+            "minLength" : 2
+          },
+          "licenseNumber" : {
+            "type" : "string",
+            "pattern" : "^[A-Z0-9]{5,20}$"
+          },
+          "medicalFacility" : {
+            "type" : "string",
+            "maxLength" : 200,
+            "minLength" : 2
+          },
+          "bio" : {
+            "type" : "string",
+            "maxLength" : 1000,
+            "minLength" : 0
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "updatedAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "isVerified" : {
+            "type" : "boolean"
+          }
+        },
+        "required" : [ "isVerified", "licenseNumber", "medicalFacility", "specialty", "user" ]
+      },
       "Family" : {
         "type" : "object",
         "properties" : {
@@ -2191,6 +2344,13 @@
           "profile" : {
             "$ref" : "#/components/schemas/Profile"
           },
+          "doctor" : {
+            "$ref" : "#/components/schemas/Doctor"
+          },
+          "role" : {
+            "type" : "string",
+            "enum" : [ "ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN" ]
+          },
           "username" : {
             "type" : "string"
           },
@@ -2203,10 +2363,10 @@
           "enabled" : {
             "type" : "boolean"
           },
-          "credentialsNonExpired" : {
+          "accountNonExpired" : {
             "type" : "boolean"
           },
-          "accountNonExpired" : {
+          "credentialsNonExpired" : {
             "type" : "boolean"
           },
           "accountNonLocked" : {
@@ -2719,49 +2879,6 @@
         },
         "required" : [ "doctorId", "familyId" ]
       },
-      "Doctor" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "user" : {
-            "$ref" : "#/components/schemas/User"
-          },
-          "specialty" : {
-            "type" : "string",
-            "maxLength" : 100,
-            "minLength" : 2
-          },
-          "licenseNumber" : {
-            "type" : "string",
-            "pattern" : "^[A-Z0-9]{5,20}$"
-          },
-          "medicalFacility" : {
-            "type" : "string",
-            "maxLength" : 200,
-            "minLength" : 2
-          },
-          "bio" : {
-            "type" : "string",
-            "maxLength" : 1000,
-            "minLength" : 0
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "updatedAt" : {
-            "type" : "string",
-            "format" : "date-time"
-          },
-          "isVerified" : {
-            "type" : "boolean"
-          }
-        },
-        "required" : [ "isVerified", "licenseNumber", "medicalFacility", "specialty", "user" ]
-      },
       "FamilyDoctor" : {
         "type" : "object",
         "properties" : {
@@ -2921,6 +3038,13 @@
           },
           "profile" : {
             "$ref" : "#/components/schemas/ProfileDTO"
+          },
+          "doctor" : {
+            "$ref" : "#/components/schemas/DoctorDTO"
+          },
+          "role" : {
+            "type" : "string",
+            "enum" : [ "ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN" ]
           }
         }
       },
@@ -3041,20 +3165,6 @@
           }
         }
       },
-      "PagedModelDoctorDTO" : {
-        "type" : "object",
-        "properties" : {
-          "content" : {
-            "type" : "array",
-            "items" : {
-              "$ref" : "#/components/schemas/DoctorDTO"
-            }
-          },
-          "page" : {
-            "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
       "FamilyDoctorDto" : {
         "type" : "object",
         "properties" : {
@@ -3098,6 +3208,34 @@
           "updatedAt" : {
             "type" : "string",
             "format" : "date-time"
+          }
+        }
+      },
+      "PagedModelFamilyDoctorDto" : {
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/FamilyDoctorDto"
+            }
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "PagedModelDoctorDTO" : {
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/DoctorDTO"
+            }
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
           }
         }
       },
