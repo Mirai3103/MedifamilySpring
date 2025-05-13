@@ -816,6 +816,27 @@
         }
       }
     },
+    "/api/auth/send-reset-password-email" : {
+      "post" : {
+        "tags" : [ "auth-controller" ],
+        "operationId" : "sendResetPasswordEmail",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "type" : "string"
+              }
+            }
+          },
+          "required" : true
+        },
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
     "/api/auth/register" : {
       "post" : {
         "tags" : [ "auth-controller" ],
@@ -1224,6 +1245,27 @@
             "format" : "int64"
           }
         } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/api/auth/reset-password" : {
+      "patch" : {
+        "tags" : [ "auth-controller" ],
+        "operationId" : "resetPassword",
+        "requestBody" : {
+          "content" : {
+            "application/json" : {
+              "schema" : {
+                "$ref" : "#/components/schemas/ResetPasswordDTO"
+              }
+            }
+          },
+          "required" : true
+        },
         "responses" : {
           "200" : {
             "description" : "OK"
@@ -1879,6 +1921,35 @@
         }
       }
     },
+    "/api/auth/verify-reset-password-token" : {
+      "get" : {
+        "tags" : [ "auth-controller" ],
+        "operationId" : "verifyResetPasswordToken",
+        "parameters" : [ {
+          "name" : "token",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "object",
+                  "additionalProperties" : {
+                    "type" : "string"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/files/{id}/{filename}" : {
       "delete" : {
         "tags" : [ "file-controller" ],
@@ -2351,22 +2422,22 @@
             "type" : "string",
             "enum" : [ "ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN" ]
           },
-          "username" : {
-            "type" : "string"
-          },
           "authorities" : {
             "type" : "array",
             "items" : {
               "$ref" : "#/components/schemas/GrantedAuthority"
             }
           },
+          "username" : {
+            "type" : "string"
+          },
           "enabled" : {
             "type" : "boolean"
           },
-          "accountNonExpired" : {
+          "credentialsNonExpired" : {
             "type" : "boolean"
           },
-          "credentialsNonExpired" : {
+          "accountNonExpired" : {
             "type" : "boolean"
           },
           "accountNonLocked" : {
@@ -3100,6 +3171,21 @@
           }
         },
         "required" : [ "newPassword", "oldPassword" ]
+      },
+      "ResetPasswordDTO" : {
+        "type" : "object",
+        "properties" : {
+          "password" : {
+            "type" : "string",
+            "maxLength" : 100,
+            "minLength" : 8,
+            "pattern" : "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=]).*$"
+          },
+          "token" : {
+            "type" : "string"
+          }
+        },
+        "required" : [ "password", "token" ]
       },
       "PageMetadata" : {
         "type" : "object",

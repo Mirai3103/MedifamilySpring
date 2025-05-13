@@ -20,44 +20,44 @@ import sgu.j2ee.medifamily.services.UserDetailsServiceImpl;
 @RequestMapping("/api/auth")
 @AllArgsConstructor
 public class AuthController {
-    private final AuthService authService;
-    private final UserDetailsServiceImpl userDetailsService;
+	private final AuthService authService;
+	private final UserDetailsServiceImpl userDetailsService;
 
-    @PostMapping("/register")
-    public ResponseEntity<Void> register(@Valid @RequestBody RegisterRequest user)
-            throws URISyntaxException {
-        return ResponseEntity.created(new URI("/api/users/" + authService.register(user).getId()))
-                .build();
-    }
+	@PostMapping("/register")
+	public ResponseEntity<Void> register(@Valid @RequestBody RegisterRequest user)
+			throws URISyntaxException {
+		return ResponseEntity.created(new URI("/api/users/" + authService.register(user).getId()))
+				.build();
+	}
 
-    @PostMapping("/login")
-    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
-        String username = request.getUsername();
-        String password = request.getPassword();
+	@PostMapping("/login")
+	public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest request) {
+		String username = request.getUsername();
+		String password = request.getPassword();
 
-        return ResponseEntity.ok(authService.login(username, password));
-    }
+		return ResponseEntity.ok(authService.login(username, password));
+	}
 
-    @PostMapping("/logout")
-    public ResponseEntity<Void> logout() {
-        return ResponseEntity.ok().build();
-    }
+	@PostMapping("/logout")
+	public ResponseEntity<Void> logout() {
+		return ResponseEntity.ok().build();
+	}
 
-    @PostMapping("/send-reset-password-email")
-    public ResponseEntity<Void> sendResetPasswordEmail(@RequestBody String email) {
-        authService.sendPasswordResetEmail(email.replace("\"", ""));
-        return ResponseEntity.ok().build();
-    }
+	@PostMapping("/send-reset-password-email")
+	public ResponseEntity<Void> sendResetPasswordEmail(@RequestBody String email) {
+		authService.sendPasswordResetEmail(email.replace("\"", ""));
+		return ResponseEntity.ok().build();
+	}
 
-    @GetMapping("/verify-reset-password-token")
-    public ResponseEntity<Map<String, String>> verifyResetPasswordToken(@RequestParam String token) {
-        var email = authService.validatePasswordResetToken(token);
-        return ResponseEntity.ok(Map.of("email", email));
-    }
+	@GetMapping("/verify-reset-password-token")
+	public ResponseEntity<Map<String, String>> verifyResetPasswordToken(@RequestParam String token) {
+		var email = authService.validatePasswordResetToken(token);
+		return ResponseEntity.ok(Map.of("email", email));
+	}
 
-    @PatchMapping("/reset-password")
-    public ResponseEntity<Void> resetPassword(@RequestBody @Valid ResetPasswordDTO resetPasswordDTO) {
-        authService.resetPassword(resetPasswordDTO);
-        return ResponseEntity.ok().build();
-    }
+	@PatchMapping("/reset-password")
+	public ResponseEntity<Void> resetPassword(@RequestBody @Valid ResetPasswordDTO resetPasswordDTO) {
+		authService.resetPassword(resetPasswordDTO);
+		return ResponseEntity.ok().build();
+	}
 }
