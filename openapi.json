@@ -1318,6 +1318,27 @@
         }
       }
     },
+    "/api/share-profile/share-with-me" : {
+      "get" : {
+        "tags" : [ "share-profile-controller" ],
+        "operationId" : "getShareProfilesWithMe",
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "type" : "array",
+                  "items" : {
+                    "$ref" : "#/components/schemas/ShareProfileDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/share-profile/by-ids" : {
       "get" : {
         "tags" : [ "share-profile-controller" ],
@@ -2422,25 +2443,25 @@
             "type" : "string",
             "enum" : [ "ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN" ]
           },
+          "username" : {
+            "type" : "string"
+          },
           "authorities" : {
             "type" : "array",
             "items" : {
               "$ref" : "#/components/schemas/GrantedAuthority"
             }
           },
-          "username" : {
-            "type" : "string"
-          },
           "enabled" : {
             "type" : "boolean"
           },
-          "credentialsNonExpired" : {
+          "accountNonLocked" : {
             "type" : "boolean"
           },
           "accountNonExpired" : {
             "type" : "boolean"
           },
-          "accountNonLocked" : {
+          "credentialsNonExpired" : {
             "type" : "boolean"
           }
         }

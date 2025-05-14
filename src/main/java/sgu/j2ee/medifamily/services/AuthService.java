@@ -43,8 +43,11 @@ public class AuthService {
 		var user = User.builder()
 				.password(passwordEncoder.encode(registerDTO.getPassword()))
 				.email(registerDTO.getEmail())
-
+				.role(User.Role.ROLE_USER)
 				.build();
+		if (registerDTO.getIsDoctor()) {
+			user.setRole(User.Role.ROLE_DOCTOR);
+		}
 		user = userRepository.save(user);
 		var profile = Profile.builder().email(registerDTO.getEmail())
 				.dateOfBirth(registerDTO.getDateOfBirth())
@@ -52,6 +55,7 @@ public class AuthService {
 				.gender(registerDTO.getGender())
 				.user(user)
 				.build();
+
 		profile = profileRepository.save(profile);
 
 		if (registerDTO.getIsDoctor()) {

@@ -22,6 +22,7 @@ public class ShareProfileService {
 	private final SharePermissionRepository sharePermissionRepository;
 	private final FamilyMemberRepository familyMemberRepository;
 	private final FamilyRepository familyRepository;
+	private final UserDetailsServiceImpl userDetailsService;
 
 	public ShareProfile shareProfile(ShareProfile shareProfile) {
 		var family = familyRepository.findById(shareProfile.getFamilyId());
@@ -64,5 +65,13 @@ public class ShareProfileService {
 
 	public List<ShareProfile> getShareProfilesByIds(List<UUID> ids) {
 		return shareProfileRepository.findAllById(ids);
+	}
+
+	public List<ShareProfile> getShareProfilesWithMe() {
+		var email = userDetailsService.getCurrentUser().getEmail();
+		if (email == null) {
+			throw new NotFoundException("User not found");
+		}
+		return shareProfileRepository.getShareProfilesWithMe(email);
 	}
 }

@@ -50,4 +50,9 @@ public class ShareProfileController {
 		return ResponseEntity.ok(shareProfileMapper.toDto(shareProfileService.getShareProfilesByIds(ids)));
 	}
 
+	@GetMapping("/share-with-me")
+	public ResponseEntity<List<ShareProfileDto>> getShareProfilesWithMe() {
+		return ResponseEntity.ok(shareProfileMapper.toDto(shareProfileService.getShareProfilesWithMe()));
+	}
+
 }

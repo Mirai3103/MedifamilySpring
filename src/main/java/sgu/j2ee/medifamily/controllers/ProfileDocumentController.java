@@ -29,7 +29,7 @@ public class ProfileDocumentController {
 	}
 
 	@PostMapping(consumes = { "multipart/form-data" })
-	public ResponseEntity<ProfileDocument> createDocument(
+	public ResponseEntity<ProfileDocumentDto> createDocument(
 			@RequestParam("name") String name,
 			@RequestParam("note") String note,
 			@RequestParam("profileId") Long profileId,
@@ -40,7 +40,7 @@ public class ProfileDocumentController {
 		profileDocumentDto.setProfileId(profileId);
 		profileDocumentDto.setFiles(files);
 		var document = profileDocumentService.saveProfileDocument(profileDocumentDto);
-		return ResponseEntity.ok(document);
+		return ResponseEntity.ok(profileDocumentMapper.toDto(document));
 	}
 
 	@PutMapping(value = "/{id}", consumes = { "multipart/form-data" })
