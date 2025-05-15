@@ -16,43 +16,43 @@ import sgu.j2ee.medifamily.services.ShareProfileService;
 @RequiredArgsConstructor
 @RequestMapping("/api/share-profile")
 public class ShareProfileController {
-	private final ShareProfileService shareProfileService;
-	private final ShareProfileMapper shareProfileMapper;
+    private final ShareProfileService shareProfileService;
+    private final ShareProfileMapper shareProfileMapper;
 
-	@PostMapping("")
-	public ResponseEntity<ShareProfileDto> createShareProfile(@RequestBody ShareProfileDto shareProfile) {
+    @PostMapping("")
+    public ResponseEntity<ShareProfileDto> createShareProfile(@RequestBody ShareProfileDto shareProfile) {
 
-		return ResponseEntity.ok(
-				shareProfileMapper.toDto(shareProfileService.shareProfile(shareProfileMapper.toEntity(shareProfile))));
-	}
+        return ResponseEntity.ok(
+                shareProfileMapper.toDto(shareProfileService.shareProfile(shareProfileMapper.toEntity(shareProfile))));
+    }
 
-	@GetMapping("{id}")
-	public ResponseEntity<ShareProfileDto> getShareProfile(@PathVariable UUID id) {
-		return shareProfileService.getShareProfileById(id)
-				.map(shareProfileMapper::toDto)
-				.map(ResponseEntity::ok)
-				.orElse(ResponseEntity.notFound().build());
-	}
+    @GetMapping("{id}")
+    public ResponseEntity<ShareProfileDto> getShareProfile(@PathVariable UUID id) {
+        return shareProfileService.getShareProfileById(id)
+                .map(shareProfileMapper::toDto)
+                .map(ResponseEntity::ok)
+                .orElse(ResponseEntity.notFound().build());
+    }
 
-	@GetMapping("")
-	public ResponseEntity<List<ShareProfileDto>> getAllShareProfiles(ShareProfileQuery query) {
-		return ResponseEntity.ok(shareProfileMapper.toDto(shareProfileService.getAllShareProfiles(query)));
-	}
+    @GetMapping("")
+    public ResponseEntity<List<ShareProfileDto>> getAllShareProfiles(ShareProfileQuery query) {
+        return ResponseEntity.ok(shareProfileMapper.toDto(shareProfileService.getAllShareProfiles(query)));
+    }
 
-	@DeleteMapping("/{id}")
-	public ResponseEntity<Void> deleteShareProfile(@PathVariable UUID id) {
-		shareProfileService.deleteShareProfile(id);
-		return ResponseEntity.noContent().build();
-	}
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteShareProfile(@PathVariable UUID id) {
+        shareProfileService.deleteShareProfile(id);
+        return ResponseEntity.noContent().build();
+    }
 
-	@GetMapping("/by-ids")
-	public ResponseEntity<List<ShareProfileDto>> getShareProfilesByIds(@RequestParam List<UUID> ids) {
-		return ResponseEntity.ok(shareProfileMapper.toDto(shareProfileService.getShareProfilesByIds(ids)));
-	}
+    @GetMapping("/by-ids")
+    public ResponseEntity<List<ShareProfileDto>> getShareProfilesByIds(@RequestParam List<UUID> ids) {
+        return ResponseEntity.ok(shareProfileMapper.toDto(shareProfileService.getShareProfilesByIds(ids)));
+    }
 
-	@GetMapping("/share-with-me")
-	public ResponseEntity<List<ShareProfileDto>> getShareProfilesWithMe() {
-		return ResponseEntity.ok(shareProfileMapper.toDto(shareProfileService.getShareProfilesWithMe()));
-	}
+    @GetMapping("/share-with-me")
+    public ResponseEntity<List<ShareProfileDto>> getShareProfilesWithMe() {
+        return ResponseEntity.ok(shareProfileMapper.toDto(shareProfileService.getShareProfilesWithMe()));
+    }
 
 }

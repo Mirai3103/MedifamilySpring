@@ -140,11 +140,11 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-<!--        <dependency>-->
-<!--            <groupId>com.github.paulcwarren</groupId>-->
-<!--            <artifactId>spring-content-fs-boot-starter</artifactId>-->
-<!--            <version>3.0.13</version>-->
-<!--        </dependency>-->
+        <!--        <dependency>-->
+        <!--            <groupId>com.github.paulcwarren</groupId>-->
+        <!--            <artifactId>spring-content-fs-boot-starter</artifactId>-->
+        <!--            <version>3.0.13</version>-->
+        <!--        </dependency>-->
         <!-- https://mvnrepository.com/artifact/com.github.paulcwarren/spring-content-s3 -->
         <!-- https://mvnrepository.com/artifact/software.amazon.awssdk/s3 -->
         <dependency>
@@ -153,6 +153,7 @@
             <version>2.31.41</version>
             <scope>compile</scope>
         </dependency>
+
         <dependency>
             <groupId>com.github.paulcwarren</groupId>
             <artifactId>spring-content-s3</artifactId>
