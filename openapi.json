@@ -450,7 +450,7 @@
             "content" : {
               "application/json" : {
                 "schema" : {
-                  "$ref" : "#/components/schemas/ProfileDocument"
+                  "$ref" : "#/components/schemas/ProfileDocumentDto"
                 }
               }
             }
@@ -2443,25 +2443,25 @@
             "type" : "string",
             "enum" : [ "ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN" ]
           },
-          "username" : {
-            "type" : "string"
-          },
           "authorities" : {
             "type" : "array",
             "items" : {
               "$ref" : "#/components/schemas/GrantedAuthority"
             }
           },
-          "enabled" : {
-            "type" : "boolean"
+          "username" : {
+            "type" : "string"
           },
-          "accountNonLocked" : {
+          "enabled" : {
             "type" : "boolean"
           },
           "accountNonExpired" : {
             "type" : "boolean"
           },
           "credentialsNonExpired" : {
+            "type" : "boolean"
+          },
+          "accountNonLocked" : {
             "type" : "boolean"
           }
         }
@@ -2693,6 +2693,35 @@
           "createdBy" : {
             "type" : "string",
             "readOnly" : true
+          }
+        }
+      },
+      "ProfileDocumentDto" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "name" : {
+            "type" : "string"
+          },
+          "note" : {
+            "type" : "string"
+          },
+          "attachments" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          },
+          "profileId" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
           }
         }
       },
@@ -3240,35 +3269,6 @@
           },
           "page" : {
             "$ref" : "#/components/schemas/PageMetadata"
-          }
-        }
-      },
-      "ProfileDocumentDto" : {
-        "type" : "object",
-        "properties" : {
-          "id" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "name" : {
-            "type" : "string"
-          },
-          "note" : {
-            "type" : "string"
-          },
-          "attachments" : {
-            "type" : "array",
-            "items" : {
-              "type" : "string"
-            }
-          },
-          "profileId" : {
-            "type" : "integer",
-            "format" : "int64"
-          },
-          "createdAt" : {
-            "type" : "string",
-            "format" : "date-time"
           }
         }
       },
