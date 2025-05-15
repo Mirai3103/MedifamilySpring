@@ -32,7 +32,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 	private final ProfileService profileService;
 	private final UserDetailsServiceImpl userDetailsService;
 	@Value("${frontend.url}")
-	private final String clientUrl = "http://localhost:3000"; // URL của frontend
+	private String clientUrl = "http://localhost:3001"; // URL của frontend
 
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
@@ -51,10 +51,12 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 		registerRequest.setPassword("Password@123");
 		registerRequest.setDateOfBirth(null);
 		registerRequest.setGender(null);
+		boolean isNewUser = false;
 		User user = (User) userDetailsService.loadUserByUsername(email);
 		if (user == null) {
 			user = authService.register(registerRequest);
 			profileService.updateUserAvatar(user.getId(), picture);
+			isNewUser = true;
 
 		}
 
@@ -62,7 +64,7 @@ public class OAuth2SuccessHandler implements AuthenticationSuccessHandler {
 		String jwt = jwtService.generateToken(user);
 
 		// Trả về JWT cho client bằng cách redirect
-		String redirectUrl = clientUrl + "/callback/google?token=" + jwt;
+		String redirectUrl = clientUrl + "/callback/google?token=" + jwt + "&isNewUser=" + isNewUser;
 		response.sendRedirect(redirectUrl);
 
 	}
