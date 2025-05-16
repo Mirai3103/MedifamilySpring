@@ -153,7 +153,10 @@
             <version>2.31.41</version>
             <scope>compile</scope>
         </dependency>
-
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.github.paulcwarren</groupId>
             <artifactId>spring-content-s3</artifactId>

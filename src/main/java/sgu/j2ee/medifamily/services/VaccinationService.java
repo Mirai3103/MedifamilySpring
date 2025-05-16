@@ -1,10 +1,15 @@
 package sgu.j2ee.medifamily.services;
 
+import java.time.LocalDateTime;
+import java.util.List;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
@@ -12,11 +17,10 @@ import lombok.RequiredArgsConstructor;
 import sgu.j2ee.medifamily.dtos.VaccinationDto;
 import sgu.j2ee.medifamily.dtos.VaccinationFilterDTO;
 import sgu.j2ee.medifamily.dtos.VaccinationSpecs;
+import sgu.j2ee.medifamily.entities.Notification;
 import sgu.j2ee.medifamily.entities.Vaccination;
 import sgu.j2ee.medifamily.mappers.VaccinationMapper;
-import sgu.j2ee.medifamily.repositories.FamilyRepository;
-import sgu.j2ee.medifamily.repositories.ProfileRepository;
-import sgu.j2ee.medifamily.repositories.VaccinationRepository;
+import sgu.j2ee.medifamily.repositories.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +30,8 @@ public class VaccinationService {
 	private final FamilyRepository familyRepository;
 	private final ProfileRepository profileRepository;
 	private final VaccinationMapper mapper;
+	private final JavaMailSender mailSender;
+	private final NotificationRepository notificationRepository;
 
 	public Page<VaccinationDto> filterVaccinations(VaccinationFilterDTO filter, Pageable pageable) {
 		Specification<Vaccination> spec = Specification.where(null);
@@ -82,6 +88,48 @@ public class VaccinationService {
 			return;
 		}
 		vaccinationRepository.delete(vaccination.get());
+	}
+
+	public List<Vaccination> getTomorrowVaccinations() {
+		LocalDateTime start = LocalDateTime.now().plusDays(1).withHour(0).withMinute(0).withSecond(0).withNano(0);
+		LocalDateTime end = start.plusDays(1);
+		return vaccinationRepository.findVaccinationsByDateRange(start, end);
+	}
+
+	public void sendReminders() {
+		List<Vaccination> list = getTomorrowVaccinations();
+
+		for (Vaccination v : list) {
+
+			String to = v.getProfile().getEmail(); // cần đảm bảo `Profile` có field `email`
+			if (to == null)
+				continue;
+
+			String subject = "Nhắc nhở lịch tiêm ngừa";
+			String content = String.format(
+					"Xin chào,\n\nBạn có lịch tiêm '%s' vào ngày mai (%s) tại %s.\n\nVui lòng đến đúng giờ.\n\nMediFamily.",
+					v.getVaccineName(),
+					v.getVaccinationDate().toLocalDate(),
+					v.getLocation());
+			Notification notification = new Notification();
+			notification.setUser(v.getProfile().getUser());
+			notification.setTitle(subject);
+			notification.setContent(content);
+			notification.setReferenceType("Vaccination");
+			notification.setReferenceId(v.getId().toString());
+			notification.setIsRead(false);
+			notificationRepository.save(notification);
+			// toDo: send email
+			// sendEmail(to, subject, content);
+		}
+	}
+
+	private void sendEmail(String to, String subject, String content) {
+		SimpleMailMessage message = new SimpleMailMessage();
+		message.setTo(to);
+		message.setSubject(subject);
+		message.setText(content);
+		mailSender.send(message);
 	}
 
 }

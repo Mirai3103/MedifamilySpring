@@ -2,6 +2,7 @@ package sgu.j2ee.medifamily.entities;
 
 import java.time.LocalDateTime;
 
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import jakarta.persistence.*;
@@ -23,8 +24,9 @@ public class Notification {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id", nullable = false)
+
 	private User user;
 
 	private String title;
@@ -37,5 +39,6 @@ public class Notification {
 
 	private String referenceId;
 	private String referenceType;
+	@CreatedDate
 	private LocalDateTime createdAt;
 }
