@@ -3,7 +3,6 @@ package sgu.j2ee.medifamily.controllers;
 import java.io.IOException;
 import java.util.List;
 
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import sgu.j2ee.medifamily.dtos.PrescriptionDto;
@@ -59,20 +59,24 @@ public class ProfileController {
 	}
 
 	@PatchMapping(value = "@me/password")
-	public ResponseEntity<UserDTO> updateMyPassword( @Valid @org.springframework.web.bind.annotation.RequestBody UpdatePasswordRequest newPassword) {
+	public ResponseEntity<UserDTO> updateMyPassword(
+			@Valid @org.springframework.web.bind.annotation.RequestBody UpdatePasswordRequest newPassword) {
 		return ResponseEntity.ok(userMapper.toDTO(userDetailsServiceImpl.updateMyPassword(newPassword)));
 	}
 
 	@PatchMapping("/@me/health")
-	public ResponseEntity<ProfileDTO> updateMyHealthProfile(@Valid @org.springframework.web.bind.annotation.RequestBody UpdateHealthProfile healthProfile) {
+	public ResponseEntity<ProfileDTO> updateMyHealthProfile(
+			@Valid @org.springframework.web.bind.annotation.RequestBody UpdateHealthProfile healthProfile) {
 		var currentUserId = auditorAware.getCurrentAuditor().orElseThrow(UnAuthorizedException::new);
 		healthProfile.setId(Long.parseLong(currentUserId));
 		return ResponseEntity.ok(profileMapper.toDTO(profileService.updateHealthProfile(healthProfile)));
 	}
 
 	@PutMapping("/{id}/health")
-	public ResponseEntity<ProfileDTO> updateHealthProfile(@org.springframework.web.bind.annotation.RequestBody UpdateHealthProfile healthProfile, HttpServletRequest req,
-														  @PathVariable String id) {
+	public ResponseEntity<ProfileDTO> updateHealthProfile(
+			@org.springframework.web.bind.annotation.RequestBody UpdateHealthProfile healthProfile,
+			HttpServletRequest req,
+			@PathVariable String id) {
 		healthProfile.setId(Long.parseLong(id));
 		return ResponseEntity.ok(profileMapper.toDTO(profileService.updateHealthProfile(healthProfile)));
 	}

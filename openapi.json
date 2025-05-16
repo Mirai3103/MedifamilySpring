@@ -32,7 +32,8 @@
                 "$ref" : "#/components/schemas/UpdateHealthProfile"
               }
             }
-          }
+          },
+          "required" : true
         },
         "responses" : {
           "200" : {
@@ -1031,7 +1032,8 @@
                 "$ref" : "#/components/schemas/UpdatePasswordRequest"
               }
             }
-          }
+          },
+          "required" : true
         },
         "responses" : {
           "200" : {
@@ -1058,7 +1060,8 @@
                 "$ref" : "#/components/schemas/UpdateHealthProfile"
               }
             }
-          }
+          },
+          "required" : true
         },
         "responses" : {
           "200" : {
@@ -1104,6 +1107,36 @@
                 }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/notifications/read/{id}" : {
+      "patch" : {
+        "tags" : [ "notification-controller" ],
+        "operationId" : "markAsRead",
+        "parameters" : [ {
+          "name" : "id",
+          "in" : "path",
+          "required" : true,
+          "schema" : {
+            "type" : "string"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK"
+          }
+        }
+      }
+    },
+    "/api/notifications/read-all" : {
+      "patch" : {
+        "tags" : [ "notification-controller" ],
+        "operationId" : "markAllAsRead",
+        "responses" : {
+          "200" : {
+            "description" : "OK"
           }
         }
       }
@@ -1500,6 +1533,32 @@
         "responses" : {
           "200" : {
             "description" : "OK"
+          }
+        }
+      }
+    },
+    "/api/notifications/my-notifications" : {
+      "get" : {
+        "tags" : [ "notification-controller" ],
+        "operationId" : "getMyNotifications",
+        "parameters" : [ {
+          "name" : "pageable",
+          "in" : "query",
+          "required" : true,
+          "schema" : {
+            "$ref" : "#/components/schemas/Pageable"
+          }
+        } ],
+        "responses" : {
+          "200" : {
+            "description" : "OK",
+            "content" : {
+              "application/json" : {
+                "schema" : {
+                  "$ref" : "#/components/schemas/PagedModelNotification"
+                }
+              }
+            }
           }
         }
       }
@@ -2443,14 +2502,14 @@
             "type" : "string",
             "enum" : [ "ROLE_USER", "ROLE_DOCTOR", "ROLE_ADMIN" ]
           },
+          "username" : {
+            "type" : "string"
+          },
           "authorities" : {
             "type" : "array",
             "items" : {
               "$ref" : "#/components/schemas/GrantedAuthority"
             }
-          },
-          "username" : {
-            "type" : "string"
           },
           "enabled" : {
             "type" : "boolean"
@@ -3265,6 +3324,80 @@
             "type" : "array",
             "items" : {
               "$ref" : "#/components/schemas/VaccinationDto"
+            }
+          },
+          "page" : {
+            "$ref" : "#/components/schemas/PageMetadata"
+          }
+        }
+      },
+      "Pageable" : {
+        "type" : "object",
+        "properties" : {
+          "page" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 0
+          },
+          "size" : {
+            "type" : "integer",
+            "format" : "int32",
+            "minimum" : 1
+          },
+          "sort" : {
+            "type" : "array",
+            "items" : {
+              "type" : "string"
+            }
+          }
+        }
+      },
+      "Notification" : {
+        "type" : "object",
+        "properties" : {
+          "id" : {
+            "type" : "integer",
+            "format" : "int64"
+          },
+          "user" : {
+            "$ref" : "#/components/schemas/User"
+          },
+          "title" : {
+            "type" : "string"
+          },
+          "content" : {
+            "type" : "string"
+          },
+          "isRead" : {
+            "type" : "boolean"
+          },
+          "readAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          },
+          "notificationType" : {
+            "type" : "string",
+            "enum" : [ "INFO", "WARNING", "ERROR" ]
+          },
+          "referenceId" : {
+            "type" : "string"
+          },
+          "referenceType" : {
+            "type" : "string"
+          },
+          "createdAt" : {
+            "type" : "string",
+            "format" : "date-time"
+          }
+        }
+      },
+      "PagedModelNotification" : {
+        "type" : "object",
+        "properties" : {
+          "content" : {
+            "type" : "array",
+            "items" : {
+              "$ref" : "#/components/schemas/Notification"
             }
           },
           "page" : {
