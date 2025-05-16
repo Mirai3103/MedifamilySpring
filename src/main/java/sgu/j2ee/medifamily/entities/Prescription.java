@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -29,7 +30,7 @@ public class Prescription {
 	@Column(name = "medical_record_id", insertable = false, updatable = false)
 	private Long medicalRecordId;
 
-	@LastModifiedBy
+	@CreatedDate
 	private LocalDateTime createdAt;
 	@LastModifiedDate
 	private LocalDateTime updatedAt;

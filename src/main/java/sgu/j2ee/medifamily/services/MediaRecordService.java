@@ -19,7 +19,7 @@ public class MediaRecordService {
 	private final FileService fileService;
 
 	public List<MedicalRecord> getAllMedicalRecordsByProfileId(Long profileId) {
-		return medicalRecordRepository.findAllByProfileId(profileId);
+		return medicalRecordRepository.findAllByProfileIdOrderByCreatedAtDesc(profileId);
 	}
 
 	public MedicalRecord createMedicalRecord(MedicalRecord medicalRecord) {
