@@ -38,7 +38,7 @@ Medifamily là một hệ thống quản lý hồ sơ y tế gia đình, giúp c
    - Nhắc nhở lịch uống thuốc, lịch khám
    - Gửi thông báo khi có cập nhật về hồ sơ y tế
   
-DEMO 
+##DEMO 
 
 ## **2.3 GIAO DIỆN**
 ##### Hình 16: Landing page
